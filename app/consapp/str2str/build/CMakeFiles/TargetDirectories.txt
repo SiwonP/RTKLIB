@@ -1,3 +1,0 @@
-/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/str2str/build/CMakeFiles/str2str.dir
-/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/str2str/build/CMakeFiles/edit_cache.dir
-/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/str2str/build/CMakeFiles/rebuild_cache.dir
