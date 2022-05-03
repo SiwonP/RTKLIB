@@ -9,3 +9,7 @@ Debug
 Debug_Build
 __history
 __astcache
+
+.vscode
+
+app/consapp/str2str/build
