@@ -829,7 +829,7 @@ typedef struct NavigationData {        /* navigation data type */
     geph_t *geph;       /* GLONASS ephemeris */
     seph_t *seph;       /* SBAS ephemeris */
     peph_t *peph;       /* precise ephemeris */
-    pclk_t *pclk;       /* precise clock */
+    PreciseClock_t *pclk;       /* precise clock */
     alm_t *alm;         /* almanac data */
     tec_t *tec;         /* tec grid data */
     erp_t  erp;         /* earth rotation parameters */

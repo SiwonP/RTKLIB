@@ -23,7 +23,7 @@ typedef struct PreciseClock {        /* precise clock type */
     int index;          /* clock index for multiple files */
     double clk[MAXSAT][1]; /* satellite clock (s) */
     float  std[MAXSAT][1]; /* satellite clock std (s) */
-} pclk_t;
+} PreciseClock_t;
 
 
 #endif

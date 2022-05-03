@@ -19,7 +19,7 @@ static void dumpeph(peph_t *peph, int n)
         }
     }
 }
-static void dumpclk(pclk_t *pclk, int n)
+static void dumpclk(PreciseClock_t *pclk, int n)
 {
     char s[64];
     int i,j;

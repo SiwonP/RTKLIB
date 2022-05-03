@@ -1421,7 +1421,7 @@ static int readrnxnav(FILE *fp, const char *opt, double ver, int sys,
 /* read RINEX clock ----------------------------------------------------------*/
 static int readrnxclk(FILE *fp, const char *opt, int index, nav_t *nav)
 {
-    pclk_t *nav_pclk;
+    PreciseClock_t *nav_pclk;
     gtime_t time;
     double data[2];
     int i,j,sat,mask;
@@ -1451,7 +1451,7 @@ static int readrnxclk(FILE *fp, const char *opt, int index, nav_t *nav)
         
         if (nav->nc>=nav->ncmax) {
             nav->ncmax+=1024;
-            if (!(nav_pclk=(pclk_t *)realloc(nav->pclk,sizeof(pclk_t)*(nav->ncmax)))) {
+            if (!(nav_pclk=(PreciseClock_t *)realloc(nav->pclk,sizeof(PreciseClock_t)*(nav->ncmax)))) {
                 trace(1,"readrnxclk malloc error: nmax=%d\n",nav->ncmax);
                 free(nav->pclk); nav->pclk=NULL; nav->nc=nav->ncmax=0;
                 return -1;
@@ -1618,21 +1618,21 @@ extern int readrnx(const char *file, int rcv, const char *opt, obs_t *obs,
 /* compare precise clock -----------------------------------------------------*/
 static int cmppclk(const void *p1, const void *p2)
 {
-    pclk_t *q1=(pclk_t *)p1,*q2=(pclk_t *)p2;
+    PreciseClock_t *q1=(PreciseClock_t *)p1,*q2=(PreciseClock_t *)p2;
     double tt=timediff(q1->time,q2->time);
     return tt<-1E-9?-1:(tt>1E-9?1:q1->index-q2->index);
 }
 /* combine precise clock -----------------------------------------------------*/
 static void combpclk(nav_t *nav)
 {
-    pclk_t *nav_pclk;
+    PreciseClock_t *nav_pclk;
     int i,j,k;
     
     trace(3,"combpclk: nc=%d\n",nav->nc);
     
     if (nav->nc<=0) return;
     
-    qsort(nav->pclk,nav->nc,sizeof(pclk_t),cmppclk);
+    qsort(nav->pclk,nav->nc,sizeof(PreciseClock_t),cmppclk);
     
     for (i=0,j=1;j<nav->nc;j++) {
         if (fabs(timediff(nav->pclk[i].time,nav->pclk[j].time))<1E-9) {
@@ -1646,7 +1646,7 @@ static void combpclk(nav_t *nav)
     }
     nav->nc=i+1;
     
-    if (!(nav_pclk=(pclk_t *)realloc(nav->pclk,sizeof(pclk_t)*nav->nc))) {
+    if (!(nav_pclk=(PreciseClock_t *)realloc(nav->pclk,sizeof(PreciseClock_t)*nav->nc))) {
         free(nav->pclk); nav->pclk=NULL; nav->nc=nav->ncmax=0;
         trace(1,"combpclk malloc error nc=%d\n",nav->nc);
         return;
