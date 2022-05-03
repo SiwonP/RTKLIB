@@ -242,7 +242,7 @@ static int inputobs(obsd_t *obs, int solq, const prcopt_t *popt)
     trace(3,"infunc  : revs=%d iobsu=%d iobsr=%d isbs=%d\n",revs,iobsu,iobsr,isbs);
     
     if (0<=iobsu&&iobsu<obss.n) {
-        settime((time=obss.data[iobsu].time));
+        // settime((time=obss.data[iobsu].time));
         if (checkbrk("processing : %s Q=%d",time_str(time,0),solq)) {
             aborts=1; showmsg("aborted"); return -1;
         }
@@ -643,7 +643,7 @@ static int readobsnav(gtime_t ts, gtime_t te, double ti, char **infile,
         if (i<j) {
             if (ts.time==0) ts=obs->data[i].time;
             if (te.time==0) te=obs->data[j].time;
-            settspan(ts,te);
+            // settspan(ts,te);
         }
     }
     return 1;
@@ -1204,7 +1204,7 @@ extern int postpos(gtime_t ts, gtime_t te, double ti, double tu,
             }
         }
         if (tu==0.0||tu>86400.0*MAXPRCDAYS) tu=86400.0*MAXPRCDAYS;
-        settspan(ts,te);
+        // settspan(ts,te);
         tunit=tu<86400.0?tu:86400.0;
         tss=tunit*(int)floor(time2gpst(ts,&week)/tunit);
         

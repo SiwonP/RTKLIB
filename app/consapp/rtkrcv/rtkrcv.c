@@ -235,6 +235,15 @@ static opt_t rcvopts[]={
     
     {"",0,NULL,""}
 };
+
+extern int showmsg(const char *format, ...)
+{
+    va_list arg;
+    va_start(arg,format); vfprintf(stderr,format,arg); va_end(arg);
+    fprintf(stderr,*format?"\r":"\n");
+    return 0;
+}
+
 /* print usage ---------------------------------------------------------------*/
 static void printusage(void)
 {

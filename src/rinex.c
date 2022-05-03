@@ -117,7 +117,7 @@
 *                           use intger types in stdint.h
 *                           suppress warnings
 *-----------------------------------------------------------------------------*/
-#include "rtklib.h"
+#include "rinex.h"
 
 /* constants/macros ----------------------------------------------------------*/
 
@@ -146,16 +146,6 @@ static const double ura_nominal[]={     /* URA nominal values */
     2.0,2.8,4.0,5.7,8.0,11.3,16.0,32.0,64.0,128.0,256.0,512.0,1024.0,
     2048.0,4096.0,8192.0
 };
-/* type definition -----------------------------------------------------------*/
-typedef struct {                        /* signal index type */
-    int n;                              /* number of index */
-    int idx[MAXOBSTYPE];                /* signal freq-index */
-    int pos[MAXOBSTYPE];                /* signal index in obs data (-1:no) */
-    uint8_t pri [MAXOBSTYPE];           /* signal priority (15-0) */
-    uint8_t type[MAXOBSTYPE];           /* type (0:C,1:L,2:D,3:S) */
-    uint8_t code[MAXOBSTYPE];           /* obs-code (CODE_L??) */
-    double shift[MAXOBSTYPE];           /* phase shift (cycle) */
-} sigind_t;
 
 /* set string without tail space ---------------------------------------------*/
 static void setstr(char *dst, const char *src, int n)

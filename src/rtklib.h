@@ -30,6 +30,8 @@
 *-----------------------------------------------------------------------------*/
 #ifndef RTKLIB_H
 #define RTKLIB_H
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -38,6 +40,7 @@
 #include <time.h>
 #include <ctype.h>
 #include <stdint.h>
+
 #ifdef WIN32
 #include <winsock2.h>
 #include <windows.h>
@@ -54,6 +57,10 @@ extern "C" {
 #else
 #define EXPORT
 #endif
+
+#include "rinex.h"
+#include "satellite.h"
+#include "clock.h"
 
 /* constants -----------------------------------------------------------------*/
 
@@ -137,89 +144,6 @@ extern "C" {
 
 #define SNR_UNIT    0.001               /* SNR unit (dBHz) */
 
-#define MINPRNGPS   1                   /* min satellite PRN number of GPS */
-#define MAXPRNGPS   32                  /* max satellite PRN number of GPS */
-#define NSATGPS     (MAXPRNGPS-MINPRNGPS+1) /* number of GPS satellites */
-#define NSYSGPS     1
-
-#ifdef ENAGLO
-#define MINPRNGLO   1                   /* min satellite slot number of GLONASS */
-#define MAXPRNGLO   27                  /* max satellite slot number of GLONASS */
-#define NSATGLO     (MAXPRNGLO-MINPRNGLO+1) /* number of GLONASS satellites */
-#define NSYSGLO     1
-#else
-#define MINPRNGLO   0
-#define MAXPRNGLO   0
-#define NSATGLO     0
-#define NSYSGLO     0
-#endif
-#ifdef ENAGAL
-#define MINPRNGAL   1                   /* min satellite PRN number of Galileo */
-#define MAXPRNGAL   36                  /* max satellite PRN number of Galileo */
-#define NSATGAL    (MAXPRNGAL-MINPRNGAL+1) /* number of Galileo satellites */
-#define NSYSGAL     1
-#else
-#define MINPRNGAL   0
-#define MAXPRNGAL   0
-#define NSATGAL     0
-#define NSYSGAL     0
-#endif
-#ifdef ENAQZS
-#define MINPRNQZS   193                 /* min satellite PRN number of QZSS */
-#define MAXPRNQZS   202                 /* max satellite PRN number of QZSS */
-#define MINPRNQZS_S 183                 /* min satellite PRN number of QZSS L1S */
-#define MAXPRNQZS_S 191                 /* max satellite PRN number of QZSS L1S */
-#define NSATQZS     (MAXPRNQZS-MINPRNQZS+1) /* number of QZSS satellites */
-#define NSYSQZS     1
-#else
-#define MINPRNQZS   0
-#define MAXPRNQZS   0
-#define MINPRNQZS_S 0
-#define MAXPRNQZS_S 0
-#define NSATQZS     0
-#define NSYSQZS     0
-#endif
-#ifdef ENACMP
-#define MINPRNCMP   1                   /* min satellite sat number of BeiDou */
-#define MAXPRNCMP   63                  /* max satellite sat number of BeiDou */
-#define NSATCMP     (MAXPRNCMP-MINPRNCMP+1) /* number of BeiDou satellites */
-#define NSYSCMP     1
-#else
-#define MINPRNCMP   0
-#define MAXPRNCMP   0
-#define NSATCMP     0
-#define NSYSCMP     0
-#endif
-#ifdef ENAIRN
-#define MINPRNIRN   1                   /* min satellite sat number of IRNSS */
-#define MAXPRNIRN   14                  /* max satellite sat number of IRNSS */
-#define NSATIRN     (MAXPRNIRN-MINPRNIRN+1) /* number of IRNSS satellites */
-#define NSYSIRN     1
-#else
-#define MINPRNIRN   0
-#define MAXPRNIRN   0
-#define NSATIRN     0
-#define NSYSIRN     0
-#endif
-#ifdef ENALEO
-#define MINPRNLEO   1                   /* min satellite sat number of LEO */
-#define MAXPRNLEO   10                  /* max satellite sat number of LEO */
-#define NSATLEO     (MAXPRNLEO-MINPRNLEO+1) /* number of LEO satellites */
-#define NSYSLEO     1
-#else
-#define MINPRNLEO   0
-#define MAXPRNLEO   0
-#define NSATLEO     0
-#define NSYSLEO     0
-#endif
-#define NSYS        (NSYSGPS+NSYSGLO+NSYSGAL+NSYSQZS+NSYSCMP+NSYSIRN+NSYSLEO) /* number of systems */
-
-#define MINPRNSBS   120                 /* min satellite PRN number of SBAS */
-#define MAXPRNSBS   158                 /* max satellite PRN number of SBAS */
-#define NSATSBS     (MAXPRNSBS-MINPRNSBS+1) /* number of SBAS satellites */
-
-#define MAXSAT      (NSATGPS+NSATGLO+NSATGAL+NSATQZS+NSATCMP+NSATIRN+NSATSBS+NSATLEO)
-                                        /* max satellite number (1 to MAXSAT) */
 #define MAXSTA      255
 
 #ifndef MAXOBS
@@ -526,14 +450,13 @@ extern "C" {
 #define FILEPATHSEP '/'
 #endif
 
-/* type definitions ----------------------------------------------------------*/
 
-typedef struct {        /* time struct */
-    time_t time;        /* time (s) expressed by standard time_t */
-    double sec;         /* fraction of second under 1 s */
-} gtime_t;
-
-typedef struct {        /* observation data record */
+/**
+ * @struct ObservationDataRecord_t
+ * @brief 
+ * 
+ */
+typedef struct ObservationDataRecord {        /* observation data record */
     gtime_t time;       /* receiver sampling time (GPST) */
     uint8_t sat,rcv;    /* satellite/receiver number */
     uint16_t SNR[NFREQ+NEXOBS]; /* signal strength (0.001 dBHz) */
@@ -544,12 +467,22 @@ typedef struct {        /* observation data record */
     float  D[NFREQ+NEXOBS]; /* observation data doppler frequency (Hz) */
 } obsd_t;
 
-typedef struct {        /* observation data */
+/**
+ * @struct ObservationData_t
+ * @brief 
+ * 
+ */
+typedef struct ObservationData {        /* observation data */
     int n,nmax;         /* number of obervation data/allocated */
     obsd_t *data;       /* observation data records */
 } obs_t;
 
-typedef struct {        /* earth rotation parameter data type */
+/**
+ * @struct EarthRotationParameterData_t
+ * @brief 
+ * 
+ */
+typedef struct EarthRotationParameterData {        /* earth rotation parameter data type */
     double mjd;         /* mjd (days) */
     double xp,yp;       /* pole offset (rad) */
     double xpr,ypr;     /* pole offset rate (rad/day) */
@@ -557,12 +490,22 @@ typedef struct {        /* earth rotation parameter data type */
     double lod;         /* length of day (s/day) */
 } erpd_t;
 
-typedef struct {        /* earth rotation parameter type */
+/**
+ * @struct EarthRotationParameter_t
+ * @brief 
+ * 
+ */
+typedef struct EarthRotationParameter {        /* earth rotation parameter type */
     int n,nmax;         /* number and max number of data */
     erpd_t *data;       /* earth rotation parameter data */
 } erp_t;
 
-typedef struct {        /* antenna parameter type */
+/**
+ * @struct
+ * @brief 
+ * 
+ */
+typedef struct AntennaParameter {        /* antenna parameter type */
     int sat;            /* satellite number (0:receiver) */
     char type[MAXANT];  /* antenna type */
     char code[MAXANT];  /* serial number or satellite code */
@@ -572,12 +515,22 @@ typedef struct {        /* antenna parameter type */
                         /* el=90,85,...,0 or nadir=0,1,2,3,... (deg) */
 } pcv_t;
 
-typedef struct {        /* antenna parameters type */
+/**
+ * @struct
+ * @brief 
+ * 
+ */
+typedef struct AntennaParameters {        /* antenna parameters type */
     int n,nmax;         /* number of data/allocated */
     pcv_t *pcv;         /* antenna parameters data */
 } pcvs_t;
 
-typedef struct {        /* almanac type */
+/**
+ * @struct
+ * @brief 
+ * 
+ */
+typedef struct Almanac {        /* almanac type */
     int sat;            /* satellite number */
     int svh;            /* sv health (0:ok) */
     int svconf;         /* as and sv config */
@@ -589,7 +542,12 @@ typedef struct {        /* almanac type */
     double f0,f1;       /* SV clock parameters (af0,af1) */
 } alm_t;
 
-typedef struct {        /* GPS/QZS/GAL broadcast ephemeris type */
+/**
+ * @struct
+ * @brief 
+ * 
+ */
+typedef struct Ephemeris {        /* GPS/QZS/GAL broadcast ephemeris type */
     int sat;            /* satellite number */
     int iode,iodc;      /* IODE,IODC */
     int sva;            /* SV accuracy (URA index) */
@@ -615,7 +573,12 @@ typedef struct {        /* GPS/QZS/GAL broadcast ephemeris type */
     double Adot,ndot;   /* Adot,ndot for CNAV */
 } eph_t;
 
-typedef struct {        /* GLONASS broadcast ephemeris type */
+/**
+ * @struct
+ * @brief 
+ * 
+ */
+typedef struct GLONASSEphemeris {        /* GLONASS broadcast ephemeris type */
     int sat;            /* satellite number */
     int iode;           /* IODE (0-6 bit of tb field) */
     int frq;            /* satellite frequency number */
@@ -629,7 +592,12 @@ typedef struct {        /* GLONASS broadcast ephemeris type */
     double dtaun;       /* delay between L1 and L2 (s) */
 } geph_t;
 
-typedef struct {        /* precise ephemeris type */
+/**
+ * @struct PreciseEphemeris_t
+ * @brief 
+ * 
+ */
+typedef struct PreciseEphemeris {        /* precise ephemeris type */
     gtime_t time;       /* time (GPST) */
     int index;          /* ephemeris index for multiple files */
     double pos[MAXSAT][4]; /* satellite position/clock (ecef) (m|s) */
@@ -640,14 +608,13 @@ typedef struct {        /* precise ephemeris type */
     float  vco[MAXSAT][3]; /* satellite velocity covariance (m^2) */
 } peph_t;
 
-typedef struct {        /* precise clock type */
-    gtime_t time;       /* time (GPST) */
-    int index;          /* clock index for multiple files */
-    double clk[MAXSAT][1]; /* satellite clock (s) */
-    float  std[MAXSAT][1]; /* satellite clock std (s) */
-} pclk_t;
 
-typedef struct {        /* SBAS ephemeris type */
+/**
+ * @struct SBASEphemeris_t
+ * @brief 
+ * 
+ */
+typedef struct SBASEphemeris {        /* SBAS ephemeris type */
     int sat;            /* satellite number */
     gtime_t t0;         /* reference epoch time (GPST) */
     gtime_t tof;        /* time of message frame (GPST) */
@@ -659,7 +626,12 @@ typedef struct {        /* SBAS ephemeris type */
     double af0,af1;     /* satellite clock-offset/drift (s,s/s) */
 } seph_t;
 
-typedef struct {        /* NORAL TLE data type */
+/**
+ * @struct
+ * @brief 
+ * 
+ */
+typedef struct TLEData {        /* NORAL TLE data type */
     char name [32];     /* common name */
     char alias[32];     /* alias name */
     char satno[16];     /* satellilte catalog number */
@@ -680,11 +652,21 @@ typedef struct {        /* NORAL TLE data type */
     int rev;            /* revolution number at epoch */
 } tled_t;
 
-typedef struct {        /* NORAD TLE (two line element) type */
+/**
+ * @struct
+ * @brief 
+ * 
+ */
+typedef struct TLE {        /* NORAD TLE (two line element) type */
     int n,nmax;         /* number/max number of two line element data */
     tled_t *data;       /* NORAD TLE data */
 } tle_t;
 
+/**
+ * @struct
+ * @brief 
+ * 
+ */
 typedef struct {        /* TEC grid type */
     gtime_t time;       /* epoch time (GPST) */
     int ndata[3];       /* TEC grid data size {nlat,nlon,nhgt} */
@@ -696,18 +678,32 @@ typedef struct {        /* TEC grid type */
     float *rms;         /* RMS values (tecu) */
 } tec_t;
 
-typedef struct {        /* SBAS message type */
+/**
+ * @struct
+ * @brief 
+ * 
+ */
+typedef struct SBASMessage {        /* SBAS message type */
     int week,tow;       /* receiption time */
     uint8_t prn,rcv;    /* SBAS satellite PRN,receiver number */
     uint8_t msg[29];    /* SBAS message (226bit) padded by 0 */
 } sbsmsg_t;
 
-typedef struct {        /* SBAS messages type */
+/**
+ * @struct
+ * @brief 
+ * 
+ */
+typedef struct SBAS {        /* SBAS messages type */
     int n,nmax;         /* number of SBAS messages/allocated */
     sbsmsg_t *msgs;     /* SBAS messages */
 } sbs_t;
 
-typedef struct {        /* SBAS fast correction type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct SBASFastCorrection {        /* SBAS fast correction type */
     gtime_t t0;         /* time of applicability (TOF) */
     double prc;         /* pseudorange correction (PRC) (m) */
     double rrc;         /* range-rate correction (RRC) (m/s) */
@@ -717,7 +713,11 @@ typedef struct {        /* SBAS fast correction type */
     int16_t ai;         /* degradation factor indicator */
 } sbsfcorr_t;
 
-typedef struct {        /* SBAS long term satellite error correction type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct SBASLongTermSatelliteErrorCorrection {        /* SBAS long term satellite error correction type */
     gtime_t t0;         /* correction time */
     int iode;           /* IODE (issue of date ephemeris) */
     double dpos[3];     /* delta position (m) (ecef) */
@@ -725,40 +725,64 @@ typedef struct {        /* SBAS long term satellite error correction type */
     double daf0,daf1;   /* delta clock-offset/drift (s,s/s) */
 } sbslcorr_t;
 
-typedef struct {        /* SBAS satellite correction type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct SBASSatellite {        /* SBAS satellite correction type */
     int sat;            /* satellite number */
     sbsfcorr_t fcorr;   /* fast correction */
     sbslcorr_t lcorr;   /* long term correction */
 } sbssatp_t;
 
-typedef struct {        /* SBAS satellite corrections type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct SBASSatelliteFleet {        /* SBAS satellite corrections type */
     int iodp;           /* IODP (issue of date mask) */
     int nsat;           /* number of satellites */
     int tlat;           /* system latency (s) */
     sbssatp_t sat[MAXSAT]; /* satellite correction */
 } sbssat_t;
 
-typedef struct {        /* SBAS ionospheric correction type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct SBASIonosphericCorrection {        /* SBAS ionospheric correction type */
     gtime_t t0;         /* correction time */
     int16_t lat,lon;    /* latitude/longitude (deg) */
     int16_t give;       /* GIVI+1 */
     float delay;        /* vertical delay estimate (m) */
 } sbsigp_t;
 
-typedef struct {        /* IGP band type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct IGPBand {        /* IGP band type */
     int16_t x;          /* longitude/latitude (deg) */
     const int16_t *y;   /* latitudes/longitudes (deg) */
     uint8_t bits;       /* IGP mask start bit */
     uint8_t bite;       /* IGP mask end bit */
 } sbsigpband_t;
 
+/**
+ * @brief 
+ * 
+ */
 typedef struct {        /* SBAS ionospheric corrections type */
     int iodi;           /* IODI (issue of date ionos corr) */
     int nigp;           /* number of igps */
     sbsigp_t igp[MAXNIGP]; /* ionospheric correction */
 } sbsion_t;
 
-typedef struct {        /* DGPS/GNSS correction type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct DGPSCorrection {        /* DGPS/GNSS correction type */
     gtime_t t0;         /* correction time */
     double prc;         /* pseudorange correction (PRC) (m) */
     double rrc;         /* range rate correction (RRC) (m/s) */
@@ -766,7 +790,11 @@ typedef struct {        /* DGPS/GNSS correction type */
     double udre;        /* UDRE */
 } dgps_t;
 
-typedef struct {        /* SSR correction type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct SSRCorrection {        /* SSR correction type */
     gtime_t t0[6];      /* epoch time (GPST) {eph,clk,hrclk,ura,bias,pbias} */
     double udi[6];      /* SSR update interval (s) */
     int iod[6];         /* iod ssr {eph,clk,hrclk,ura,bias,pbias} */
@@ -785,7 +813,11 @@ typedef struct {        /* SSR correction type */
     uint8_t update;     /* update flag (0:no update,1:update) */
 } ssr_t;
 
-typedef struct {        /* navigation data type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct NavigationData {        /* navigation data type */
     int n,nmax;         /* number of broadcast ephemeris */
     int ng,ngmax;       /* number of glonass ephemeris */
     int ns,nsmax;       /* number of sbas ephemeris */
@@ -823,7 +855,11 @@ typedef struct {        /* navigation data type */
     ssr_t ssr[MAXSAT];  /* SSR corrections */
 } nav_t;
 
-typedef struct {        /* station parameter type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct StationParameter {        /* station parameter type */
     char name   [MAXANT]; /* marker name */
     char marker [MAXANT]; /* marker number */
     char antdes [MAXANT]; /* antenna descriptor */
@@ -841,7 +877,11 @@ typedef struct {        /* station parameter type */
     double glo_cp_bias[4]; /* GLONASS code-phase biases {1C,1P,2C,2P} (m) */
 } sta_t;
 
-typedef struct {        /* solution type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct Solution {        /* solution type */
     gtime_t time;       /* time (GPST) */
     double rr[6];       /* position/velocity (m|m/s) */
                         /* {x,y,z,vx,vy,vz} or {e,n,u,ve,vn,vu} */
@@ -858,7 +898,12 @@ typedef struct {        /* solution type */
     float thres;        /* AR ratio threshold for valiation */
 } sol_t;
 
-typedef struct {        /* solution buffer type */
+/**
+ * @struct SolutionBuffer_t
+ * @brief 
+ * 
+ */
+typedef struct SolutionBuffer {        /* solution buffer type */
     int n,nmax;         /* number of solution/max number of buffer */
     int cyclic;         /* cyclic buffer flag */
     int start,end;      /* start/end index */
@@ -869,7 +914,12 @@ typedef struct {        /* solution buffer type */
     int nb;             /* number of byte in message buffer */
 } solbuf_t;
 
-typedef struct {        /* solution status type */
+/**
+ * @struct SolutionStatus_t
+ * @brief 
+ * 
+ */
+typedef struct SolutionStatus {        /* solution status type */
     gtime_t time;       /* time (GPST) */
     uint8_t sat;        /* satellite number */
     uint8_t frq;        /* frequency (1:L1,2:L2,...) */
@@ -884,7 +934,12 @@ typedef struct {        /* solution status type */
     uint16_t rejc;      /* reject counter */
 } solstat_t;
 
-typedef struct {        /* solution status buffer type */
+/**
+ * @struct SolutionStatusBuffer_t
+ * @brief 
+ * 
+ */
+typedef struct SolutionStatusBuffer {        /* solution status buffer type */
     int n,nmax;         /* number of solution/max number of buffer */
     solstat_t *data;    /* solution status data */
 } solstatbuf_t;
@@ -921,7 +976,11 @@ typedef struct {        /* RTCM control struct type */
     char opt[256];      /* RTCM dependent options */
 } rtcm_t;
 
-typedef struct {        /* RINEX control struct type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct RINEXControl {        /* RINEX control struct type */
     gtime_t time;       /* message time */
     double ver;         /* RINEX version */
     char   type;        /* RINEX file type ('O','N',...) */
@@ -936,26 +995,43 @@ typedef struct {        /* RINEX control struct type */
     char   opt[256];    /* rinex dependent options */
 } rnxctr_t;
 
-typedef struct {        /* download URL type */
+/**
+ * @struct
+ * @brief 
+ * 
+ */
+typedef struct URL {        /* download URL type */
     char type[32];      /* data type */
     char path[1024];    /* URL path */
     char dir [1024];    /* local directory */
     double tint;        /* time interval (s) */
 } url_t;
 
-typedef struct {        /* option type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct OPTION {        /* option type */
     const char *name;   /* option name */
     int format;         /* option format (0:int,1:double,2:string,3:enum) */
     void *var;          /* pointer to option variable */
     const char *comment; /* option comment/enum labels/unit */
 } opt_t;
 
-typedef struct {        /* SNR mask type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct SNRMask {        /* SNR mask type */
     int ena[2];         /* enable flag {rover,base} */
     double mask[NFREQ][9]; /* mask (dBHz) at 5,10,...85 deg */
 } snrmask_t;
 
-typedef struct {        /* processing options type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct ProcessingOption {        /* processing options type */
     int mode;           /* positioning mode (PMODE_???) */
     int soltype;        /* solution type (0:forward,1:backward,2:combined) */
     int nf;             /* number of frequencies (1:L1,2:L1+L2,3:L1+L2+L5) */
@@ -1016,7 +1092,12 @@ typedef struct {        /* processing options type */
     char pppopt[256];   /* ppp option */
 } prcopt_t;
 
-typedef struct {        /* solution options type */
+/**
+ * @struct SolutionOption_t
+ * @brief 
+ * 
+ */
+typedef struct SolutionOption {        /* solution options type */
     int posf;           /* solution format (SOLF_???) */
     int times;          /* time system (TIMES_???) */
     int timef;          /* time format (0:sssss.s,1:yyyy/mm/dd hh:mm:ss.s) */
@@ -1038,7 +1119,12 @@ typedef struct {        /* solution options type */
     double maxsolstd;   /* max std-dev for solution output (m) (0:all) */
 } solopt_t;
 
-typedef struct {        /* file options type */
+/**
+ * @struct FileOption_t
+ * @brief 
+ * 
+ */
+typedef struct FileOption {        /* file options type */
     char satantp[MAXSTRPATH]; /* satellite antenna parameters file */
     char rcvantp[MAXSTRPATH]; /* receiver antenna parameters file */
     char stapos [MAXSTRPATH]; /* station positions file */
@@ -1053,7 +1139,12 @@ typedef struct {        /* file options type */
     char trace  [MAXSTRPATH]; /* debug trace file */
 } filopt_t;
 
-typedef struct {        /* RINEX options type */
+/**
+ * @struct RINEXOption
+ * @brief 
+ * 
+ */
+typedef struct RINEXOption {        /* RINEX options type */
     gtime_t ts,te;      /* time start/end */
     double tint;        /* time interval (s) */
     double ttol;        /* time tolerance (s) */
@@ -1094,7 +1185,12 @@ typedef struct {        /* RINEX options type */
     int nobs[7];        /* number of obs types {GPS,GLO,GAL,QZS,SBS,CMP,IRN} */
 } rnxopt_t;
 
-typedef struct {        /* satellite status type */
+/**
+ * @struct SatelliteStatus_t
+ * @brief 
+ * 
+ */
+typedef struct SatelliteStatus {        /* satellite status type */
     uint8_t sys;        /* navigation system */
     uint8_t vs;         /* valid satellite flag single */
     double azel[2];     /* azimuth/elevation angles {az,el} (rad) */
@@ -1116,7 +1212,12 @@ typedef struct {        /* satellite status type */
     double ph[2][NFREQ]; /* previous carrier-phase observable (cycle) */
 } ssat_t;
 
-typedef struct {        /* ambiguity control type */
+/**
+ * @struct AmbiguityControl_t
+ * @brief 
+ * 
+ */
+typedef struct AmbiguityControl {        /* ambiguity control type */
     gtime_t epoch[4];   /* last epoch */
     int n[4];           /* number of epochs */
     double LC [4];      /* linear combination average */
@@ -1125,7 +1226,11 @@ typedef struct {        /* ambiguity control type */
     char flags[MAXSAT]; /* fix flags */
 } ambc_t;
 
-typedef struct {        /* RTK control/result type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct RTK {        /* RTK control/result type */
     sol_t  sol;         /* RTK solution */
     double rb[6];       /* base position/velocity (ecef) (m|m/s) */
     int nx,na;          /* number of float states/fixed states */
@@ -1140,7 +1245,11 @@ typedef struct {        /* RTK control/result type */
     prcopt_t opt;       /* processing options */
 } rtk_t;
 
-typedef struct {        /* receiver raw data control type */
+/**
+ * @brief 
+ * 
+ */
+typedef struct Raw {        /* receiver raw data control type */
     gtime_t time;       /* message time */
     gtime_t tobs[MAXSAT][NFREQ+NEXOBS]; /* observation data time */
     obs_t obs;          /* observation data */
@@ -1170,7 +1279,12 @@ typedef struct {        /* receiver raw data control type */
     void *rcv_data;     /* receiver dependent data */
 } raw_t;
 
-typedef struct {        /* stream type */
+/**
+ * @struct Stream_t
+ * @brief 
+ * 
+ */
+typedef struct Stream {        /* stream type */
     int type;           /* type (STR_???) */
     int mode;           /* mode (STR_MODE_?) */
     int state;          /* state (-1:error,0:close,1:open) */
@@ -1186,7 +1300,12 @@ typedef struct {        /* stream type */
     char msg [MAXSTRMSG];  /* stream message */
 } stream_t;
 
-typedef struct {        /* stream converter type */
+/**
+ * @struct StreamConverter_t
+ * @brief 
+ * 
+ */
+typedef struct StreamConverter {        /* stream converter type */
     int itype,otype;    /* input and output stream type */
     int nmsg;           /* number of output messages */
     int msgs[32];       /* output message types */
@@ -1199,7 +1318,12 @@ typedef struct {        /* stream converter type */
     rtcm_t out;         /* rtcm output data buffer */
 } strconv_t;
 
-typedef struct {        /* stream server type */
+/**
+ * @struct StreamServer_t
+ * @brief 
+ * 
+ */
+typedef struct StreamServer {        /* stream server type */
     int state;          /* server state (0:stop,1:running) */
     int cycle;          /* server cycle (ms) */
     int buffsize;       /* input/monitor buffer size (bytes) */
@@ -1219,7 +1343,12 @@ typedef struct {        /* stream server type */
     lock_t lock;        /* lock flag */
 } strsvr_t;
 
-typedef struct {        /* RTK server type */
+/**
+ * @struct RTKServer_t
+ * @brief 
+ * 
+ */
+typedef struct RTKServer {        /* RTK server type */
     int state;          /* server state (0:stop,1:running) */
     int cycle;          /* processing cycle (ms) */
     int nmeacycle;      /* NMEA request cycle (ms) (0:no req) */
@@ -1261,29 +1390,54 @@ typedef struct {        /* RTK server type */
     lock_t lock;        /* lock flag */
 } rtksvr_t;
 
-typedef struct {        /* GIS data point type */
+/**
+ * @struct GISDataPoint_t
+ * @brief 
+ * 
+ */
+typedef struct GISDataPoint {        /* GIS data point type */
     double pos[3];      /* point data {lat,lon,height} (rad,m) */
 } gis_pnt_t;
 
-typedef struct {        /* GIS data polyline type */
+/**
+ * @struct GISDataPolyline_t
+ * @brief 
+ * 
+ */
+typedef struct GISDataPolyline {        /* GIS data polyline type */
     int npnt;           /* number of points */
     double bound[4];    /* boundary {lat0,lat1,lon0,lon1} */
     double *pos;        /* position data (3 x npnt) */
 } gis_poly_t;
 
-typedef struct {        /* GIS data polygon type */
+/**
+ * @struct GISDataPolygon_t
+ * @brief 
+ * 
+ */
+typedef struct GISDataPolygon {        /* GIS data polygon type */
     int npnt;           /* number of points */
     double bound[4];    /* boundary {lat0,lat1,lon0,lon1} */
     double *pos;        /* position data (3 x npnt) */
 } gis_polygon_t;
 
+/**
+ * @struct 
+ * @brief 
+ * 
+ */
 typedef struct gisd_tag { /* GIS data list type */
     int type;           /* data type (1:point,2:polyline,3:polygon) */
     void *data;         /* data body */
     struct gisd_tag *next; /* pointer to next */
 } gisd_t;
 
-typedef struct {        /* GIS type */
+/**
+ * @struct GIS_t
+ * @brief 
+ * 
+ */
+typedef struct GIS{        /* GIS type */
     char name[MAXGISLAYER][256]; /* name */
     int flag[MAXGISLAYER];     /* flag */
     gisd_t *data[MAXGISLAYER]; /* gis data list */

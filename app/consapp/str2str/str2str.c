@@ -31,7 +31,7 @@
 *-----------------------------------------------------------------------------*/
 #include <signal.h>
 #include <unistd.h>
-#include "rtklib.h"
+#include "rinex.h"
 
 #define PRGNAME     "str2str"          /* program name */
 #define MAXSTR      5                  /* max number of streams */
@@ -122,6 +122,14 @@ static void printhelp(void)
 static void sigfunc(int sig)
 {
     intrflg=1;
+}
+
+extern int showmsg(const char *format, ...)
+{
+    va_list arg;
+    va_start(arg,format); vfprintf(stderr,format,arg); va_end(arg);
+    fprintf(stderr,*format?"\r":"\n");
+    return 0;
 }
 /* decode format -------------------------------------------------------------*/
 static void decodefmt(char *path, int *fmt)
