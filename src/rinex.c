@@ -118,6 +118,7 @@
 *                           suppress warnings
 *-----------------------------------------------------------------------------*/
 #include "rinex.h"
+#include "clock.h"
 
 /* constants/macros ----------------------------------------------------------*/
 
@@ -1615,15 +1616,10 @@ extern int readrnx(const char *file, int rcv, const char *opt, obs_t *obs,
     
     return readrnxt(file,rcv,t,t,0.0,opt,obs,nav,sta);
 }
-/* compare precise clock -----------------------------------------------------*/
-static int cmppclk(const void *p1, const void *p2)
-{
-    PreciseClock_t *q1=(PreciseClock_t *)p1,*q2=(PreciseClock_t *)p2;
-    double tt=timediff(q1->time,q2->time);
-    return tt<-1E-9?-1:(tt>1E-9?1:q1->index-q2->index);
-}
+
+
 /* combine precise clock -----------------------------------------------------*/
-static void combpclk(nav_t *nav)
+static void CLOCK_combinePreciseClock(nav_t *nav)
 {
     PreciseClock_t *nav_pclk;
     int i,j,k;
@@ -1632,7 +1628,7 @@ static void combpclk(nav_t *nav)
     
     if (nav->nc<=0) return;
     
-    qsort(nav->pclk,nav->nc,sizeof(PreciseClock_t),cmppclk);
+    qsort(nav->pclk,nav->nc,sizeof(PreciseClock_t),CLOCK_comparePreciseClocks);
     
     for (i=0,j=1;j<nav->nc;j++) {
         if (fabs(timediff(nav->pclk[i].time,nav->pclk[j].time))<1E-9) {
@@ -1656,6 +1652,7 @@ static void combpclk(nav_t *nav)
     
     trace(4,"combpclk: nc=%d\n",nav->nc);
 }
+
 /* read RINEX clock files ------------------------------------------------------
 * read RINEX clock files
 * args   : char *file    I      file (wild-card * expanded)
@@ -1692,10 +1689,11 @@ extern int readrnxc(const char *file, nav_t *nav)
     if (!stat) return 0;
     
     /* unique and combine ephemeris and precise clock */
-    combpclk(nav);
+    CLOCK_combinePreciseClock(nav);
     
     return nav->nc;
 }
+
 /* initialize RINEX control ----------------------------------------------------
 * initialize RINEX control struct and reallocate memory for observation and
 * ephemeris buffer in RINEX control struct
