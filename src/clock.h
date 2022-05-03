@@ -1,6 +1,10 @@
 #ifndef CLOCK_H
 #define CLOCK_H
 
+#include <time.h>
+
+#include "satellite.h"
+
 /* type definitions ----------------------------------------------------------*/
 /**
  * @struct
@@ -25,5 +29,6 @@ typedef struct PreciseClock {        /* precise clock type */
     float  std[MAXSAT][1]; /* satellite clock std (s) */
 } PreciseClock_t;
 
+int CLOCK_comparePreciseClocks(const void *p1, const void *p2);
 
 #endif
