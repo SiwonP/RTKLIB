@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5)
 
 project(str2str)
 
@@ -17,4 +17,5 @@ add_executable(
 )
 
 target_link_libraries(str2str m)
-target_link_libraries(str2str System.B)
+target_link_libraries(str2str pthread)
+# target_link_libraries(str2str System.B)
