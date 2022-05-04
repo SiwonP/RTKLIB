@@ -161,7 +161,7 @@ static DWORD WINAPI serialthread(void *arg)
 #endif /* WIN32 */
 
 /* open serial ---------------------------------------------------------------*/
-Serial_t *openserial(const char *path, int mode, char *msg)
+Serial_t *STREAM_openSerial(const char *path, int mode, char *msg)
 {
     const int br[]={
         300,600,1200,2400,4800,9600,19200,38400,57600,115200,230400,460800,
@@ -2546,7 +2546,7 @@ extern int stropen(stream_t *stream, int type, int mode, const char *path)
     stream->msg[0]='\0';
     stream->port=NULL;
     switch (type) {
-        case STR_SERIAL  : stream->port=openserial(path,mode,stream->msg); break;
+        case STR_SERIAL  : stream->port=STREAM_openSerial(path,mode,stream->msg); break;
         case STR_FILE    : stream->port=openfile  (path,mode,stream->msg); break;
         case STR_TCPSVR  : stream->port=opentcpsvr(path,     stream->msg); break;
         case STR_TCPCLI  : stream->port=opentcpcli(path,     stream->msg); break;

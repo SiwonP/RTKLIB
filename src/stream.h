@@ -239,14 +239,14 @@ typedef struct MemoryBuffer {            /* memory buffer type */
  * @param msg 
  * @return Serial_t* 
  */
-Serial_t *openserial(const char *path, int mode, char *msg);
+Serial_t *STREAM_openSerial(const char *path, int mode, char *msg);
 
 /**
  * @brief 
  * 
  * @param serial 
  */
-void closeserial(Serial_t *serial);
+void STREAM_closeSerial(Serial_t *serial);
 
 /**
  * @brief 
@@ -289,10 +289,24 @@ int setsock(socket_t sock, char *msg);
  */
 socket_t accept_nb(socket_t sock, struct sockaddr *addr, socklen_t *len);
 
-
+/**
+ * @brief 
+ * 
+ * @param sock 
+ * @param addr 
+ * @param len 
+ * @return int 
+ */
 int connect_nb(socket_t sock, struct sockaddr *addr, socklen_t len);
 
-
+/**
+ * @brief 
+ * 
+ * @param sock 
+ * @param buff 
+ * @param n 
+ * @return int 
+ */
 int recv_nb(socket_t sock, uint8_t *buff, int n);
 
 #endif
