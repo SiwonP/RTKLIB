@@ -1924,7 +1924,7 @@ static UDP_t *genudp(int type, int port, const char *saddr, char *msg)
     return udp;
 }
 /* open udp server -----------------------------------------------------------*/
-static UDP_t *openudpsvr(const char *path, char *msg)
+static UDP_t *STREAM_openUDPServer(const char *path, char *msg)
 {
     char sport[256]="";
     int port;
@@ -1941,7 +1941,7 @@ static UDP_t *openudpsvr(const char *path, char *msg)
     return genudp(0,port,"",msg);
 }
 /* close udp server ----------------------------------------------------------*/
-static void closeudpsvr(UDP_t *udpsvr)
+static void STREAM_closeUDPServer(UDP_t *udpsvr)
 {
     tracet(3,"closeudpsvr: sock=%d\n",udpsvr->sock);
     
@@ -1949,7 +1949,7 @@ static void closeudpsvr(UDP_t *udpsvr)
     free(udpsvr);
 }
 /* read udp server -----------------------------------------------------------*/
-static int readudpsvr(UDP_t *udpsvr, uint8_t *buff, int n, char *msg)
+static int STREAM_readUDPServer(UDP_t *udpsvr, uint8_t *buff, int n, char *msg)
 {
     struct timeval tv={0};
     fd_set rs;
@@ -1964,12 +1964,12 @@ static int readudpsvr(UDP_t *udpsvr, uint8_t *buff, int n, char *msg)
     return nr<=0?-1:nr;
 }
 /* get state udp server ------------------------------------------------------*/
-static int stateudpsvr(UDP_t *udpsvr)
+static int STREAM_stateUDPServer(UDP_t *udpsvr)
 {
     return udpsvr?udpsvr->state:0;
 }
 /* get extended state udp server ---------------------------------------------*/
-static int statexudpsvr(UDP_t *udpsvr, char *msg)
+static int STREAM_stateExtendedUDPServer(UDP_t *udpsvr, char *msg)
 {
     char *p=msg;
     int state=udpsvr?udpsvr->state:0;
@@ -1983,7 +1983,7 @@ static int statexudpsvr(UDP_t *udpsvr, char *msg)
     return state;
 }
 /* open udp client -----------------------------------------------------------*/
-static UDP_t *openudpcli(const char *path, char *msg)
+static UDP_t *STREAM_openUDPClient(const char *path, char *msg)
 {
     char sport[256]="",saddr[256]="";
     int port;
@@ -2000,7 +2000,7 @@ static UDP_t *openudpcli(const char *path, char *msg)
     return genudp(1,port,saddr,msg);
 }
 /* close udp client ----------------------------------------------------------*/
-static void closeudpcli(UDP_t *udpcli)
+static void STREAM_closeUDPClient(UDP_t *udpcli)
 {
     tracet(3,"closeudpcli: sock=%d\n",udpcli->sock);
     
@@ -2008,7 +2008,7 @@ static void closeudpcli(UDP_t *udpcli)
     free(udpcli);
 }
 /* write udp client -----------------------------------------------------------*/
-static int writeudpcli(UDP_t *udpcli, uint8_t *buff, int n, char *msg)
+static int STREAM_writeUDPClient(UDP_t *udpcli, uint8_t *buff, int n, char *msg)
 {
     tracet(4,"writeudpcli: sock=%d n=%d\n",udpcli->sock,n);
     
@@ -2016,12 +2016,12 @@ static int writeudpcli(UDP_t *udpcli, uint8_t *buff, int n, char *msg)
                        (struct sockaddr *)&udpcli->addr,sizeof(udpcli->addr));
 }
 /* get state udp client ------------------------------------------------------*/
-static int stateudpcli(UDP_t *udpcli)
+static int STREAM_stateUDPClient(UDP_t *udpcli)
 {
     return udpcli?udpcli->state:0;
 }
 /* get extended state udp client ---------------------------------------------*/
-static int statexudpcli(UDP_t *udpcli, char *msg)
+static int STREAM_stateExtendedUDPClient(UDP_t *udpcli, char *msg)
 {
     char *p=msg;
     int state=udpcli?udpcli->state:0;
@@ -2553,8 +2553,8 @@ extern int stropen(stream_t *stream, int type, int mode, const char *path)
         case STR_NTRIPSVR: stream->port=STREAM_openNTRIP (path,0,   stream->msg); break;
         case STR_NTRIPCLI: stream->port=STREAM_openNTRIP (path,1,   stream->msg); break;
         case STR_NTRIPCAS: stream->port=STREAM_openNTRIPCaster(path,     stream->msg); break;
-        case STR_UDPSVR  : stream->port=openudpsvr(path,     stream->msg); break;
-        case STR_UDPCLI  : stream->port=openudpcli(path,     stream->msg); break;
+        case STR_UDPSVR  : stream->port=STREAM_openUDPServer(path,     stream->msg); break;
+        case STR_UDPCLI  : stream->port=STREAM_openUDPClient(path,     stream->msg); break;
         case STR_MEMBUF  : stream->port=openmembuf(path,     stream->msg); break;
         case STR_FTP     : stream->port=openftp   (path,0,   stream->msg); break;
         case STR_HTTP    : stream->port=openftp   (path,1,   stream->msg); break;
@@ -2583,8 +2583,8 @@ extern void strclose(stream_t *stream)
             case STR_NTRIPSVR: STREAM_closeNTRIP ((ntrip_t  *)stream->port); break;
             case STR_NTRIPCLI: STREAM_closeNTRIP ((ntrip_t  *)stream->port); break;
             case STR_NTRIPCAS: STREAM_closeNTRIPCaster((ntripc_t *)stream->port); break;
-            case STR_UDPSVR  : closeudpsvr((UDP_t    *)stream->port); break;
-            case STR_UDPCLI  : closeudpcli((UDP_t    *)stream->port); break;
+            case STR_UDPSVR  : STREAM_closeUDPServer((UDP_t    *)stream->port); break;
+            case STR_UDPCLI  : STREAM_closeUDPClient((UDP_t    *)stream->port); break;
             case STR_MEMBUF  : closemembuf((MemoryBuffer_t *)stream->port); break;
             case STR_FTP     : closeftp   ((FTP_t    *)stream->port); break;
             case STR_HTTP    : closeftp   ((FTP_t    *)stream->port); break;
@@ -2654,7 +2654,7 @@ extern int strread(stream_t *stream, uint8_t *buff, int n)
         case STR_NTRIPSVR:
         case STR_NTRIPCLI: nr=STREAM_readNTRIP ((ntrip_t  *)stream->port,buff,n,msg); break;
         case STR_NTRIPCAS: nr=STREAM_readNTRIPCaster((ntripc_t *)stream->port,buff,n,msg); break;
-        case STR_UDPSVR  : nr=readudpsvr((UDP_t    *)stream->port,buff,n,msg); break;
+        case STR_UDPSVR  : nr=STREAM_readUDPServer((UDP_t    *)stream->port,buff,n,msg); break;
         case STR_MEMBUF  : nr=readmembuf((MemoryBuffer_t *)stream->port,buff,n,msg); break;
         case STR_FTP     : nr=readftp   ((FTP_t    *)stream->port,buff,n,msg); break;
         case STR_HTTP    : nr=readftp   ((FTP_t    *)stream->port,buff,n,msg); break;
@@ -2704,7 +2704,7 @@ extern int strwrite(stream_t *stream, uint8_t *buff, int n)
         case STR_NTRIPSVR:
         case STR_NTRIPCLI: ns=STREAM_writeNTRIP ((ntrip_t  *)stream->port,buff,n,msg); break;
         case STR_NTRIPCAS: ns=STREAM_writeNTRIPCaster((ntripc_t *)stream->port,buff,n,msg); break;
-        case STR_UDPCLI  : ns=writeudpcli((UDP_t    *)stream->port,buff,n,msg); break;
+        case STR_UDPCLI  : ns=STREAM_writeUDPClient((UDP_t    *)stream->port,buff,n,msg); break;
         case STR_MEMBUF  : ns=writemembuf((MemoryBuffer_t *)stream->port,buff,n,msg); break;
         case STR_FTP     :
         case STR_HTTP    :
@@ -2754,8 +2754,8 @@ extern int strstat(stream_t *stream, char *msg)
         case STR_NTRIPSVR:
         case STR_NTRIPCLI: state=STREAM_stateNTRIP ((ntrip_t  *)stream->port); break;
         case STR_NTRIPCAS: state=STREAM_stateNTRIPCaster((ntripc_t *)stream->port); break;
-        case STR_UDPSVR  : state=stateudpsvr((UDP_t    *)stream->port); break;
-        case STR_UDPCLI  : state=stateudpcli((UDP_t    *)stream->port); break;
+        case STR_UDPSVR  : state=STREAM_stateUDPServer((UDP_t    *)stream->port); break;
+        case STR_UDPCLI  : state=STREAM_stateUDPClient((UDP_t    *)stream->port); break;
         case STR_MEMBUF  : state=statemembuf((MemoryBuffer_t *)stream->port); break;
         case STR_FTP     : state=stateftp   ((FTP_t    *)stream->port); break;
         case STR_HTTP    : state=stateftp   ((FTP_t    *)stream->port); break;
@@ -2793,8 +2793,8 @@ extern int strstatx(stream_t *stream, char *msg)
         case STR_NTRIPSVR:
         case STR_NTRIPCLI: state=STREAM_stateExtendedNTRIP ((ntrip_t  *)stream->port,msg); break;
         case STR_NTRIPCAS: state=STREAM_stateExtendedNTRIPCaster((ntripc_t *)stream->port,msg); break;
-        case STR_UDPSVR  : state=statexudpsvr((UDP_t    *)stream->port,msg); break;
-        case STR_UDPCLI  : state=statexudpcli((UDP_t    *)stream->port,msg); break;
+        case STR_UDPSVR  : state=STREAM_stateExtendedUDPServer((UDP_t    *)stream->port,msg); break;
+        case STR_UDPCLI  : state=STREAM_stateExtendedUDPClient((UDP_t    *)stream->port,msg); break;
         case STR_MEMBUF  : state=statexmembuf((MemoryBuffer_t *)stream->port,msg); break;
         case STR_FTP     : state=statexftp   ((FTP_t    *)stream->port,msg); break;
         case STR_HTTP    : state=statexftp   ((FTP_t    *)stream->port,msg); break;
