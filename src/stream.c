@@ -81,9 +81,9 @@
 
 /* proto types for static functions ------------------------------------------*/
 
-static TCPServer_t *opentcpsvr(const char *path, char *msg);
-static void closetcpsvr(TCPServer_t *tcpsvr);
-static int writetcpsvr(TCPServer_t *tcpsvr, uint8_t *buff, int n, char *msg);
+static TCPServer_t *STREAM_openTCPServer(const char *path, char *msg);
+static void STREAM_closeTCPServer(TCPServer_t *tcpsvr);
+static int STREAM_writeTCPserver(TCPServer_t *tcpsvr, uint8_t *buff, int n, char *msg);
 
 /* global options ------------------------------------------------------------*/
 
@@ -295,13 +295,13 @@ Serial_t *STREAM_openSerial(const char *path, int mode, char *msg)
     /* open tcp sever to output received stream */
     if (tcp_port>0) {
         sprintf(path_tcp,":%d",tcp_port);
-        serial->tcpsvr=opentcpsvr(path_tcp,msg_tcp);
+        serial->tcpsvr=STREAM_openTCPServer(path_tcp,msg_tcp);
     }
     tracet(3,"openserial: dev=%d\n",serial->dev);
     return serial;
 }
 /* close serial --------------------------------------------------------------*/
-void closeserial(Serial_t *serial)
+void STREAM_closeSerial(Serial_t *serial)
 {
     tracet(3,"closeserial: dev=%d\n",serial->dev);
     
@@ -315,12 +315,12 @@ void closeserial(Serial_t *serial)
     close(serial->dev);
 #endif
     if (serial->tcpsvr) {
-        closetcpsvr(serial->tcpsvr);
+        STREAM_closeTCPServer(serial->tcpsvr);
     }
     free(serial);
 }
 /* read serial ---------------------------------------------------------------*/
-int readserial(Serial_t *serial, uint8_t *buff, int n, char *msg)
+int STREAM_readSerial(Serial_t *serial, uint8_t *buff, int n, char *msg)
 {
     char msg_tcp[128];
 #ifdef WIN32
@@ -339,12 +339,12 @@ int readserial(Serial_t *serial, uint8_t *buff, int n, char *msg)
     
     /* write received stream to tcp server port */
     if (serial->tcpsvr&&nr>0) {
-        writetcpsvr(serial->tcpsvr,buff,(int)nr,msg_tcp);
+        STREAM_writeTCPserver(serial->tcpsvr,buff,(int)nr,msg_tcp);
     }
     return nr;
 }
 /* write serial --------------------------------------------------------------*/
-int writeserial(Serial_t *serial, uint8_t *buff, int n, char *msg)
+int STREAM_writeSerial(Serial_t *serial, uint8_t *buff, int n, char *msg)
 {
     int ns=0;
     
@@ -362,12 +362,12 @@ int writeserial(Serial_t *serial, uint8_t *buff, int n, char *msg)
     return ns;
 }
 /* get state serial ----------------------------------------------------------*/
-static int stateserial(Serial_t *serial)
+static int STREAM_stateSerial(Serial_t *serial)
 {
     return !serial?0:(serial->error?-1:2);
 }
 /* get extended state serial -------------------------------------------------*/
-static int statexserial(Serial_t *serial, char *msg)
+static int STREAM_stateExtendedSerial(Serial_t *serial, char *msg)
 {
     char *p=msg;
     int state=!serial?0:(serial->error?-1:2);
@@ -972,7 +972,7 @@ static void discontcp(TCP_t *tcp, int tcon)
     tcp->tdis=tickget();
 }
 /* open tcp server -----------------------------------------------------------*/
-static TCPServer_t *opentcpsvr(const char *path, char *msg)
+static TCPServer_t *STREAM_openTCPServer(const char *path, char *msg)
 {
     TCPServer_t *tcpsvr,tcpsvr0={{0}};
     char port[256]="";
@@ -996,7 +996,7 @@ static TCPServer_t *opentcpsvr(const char *path, char *msg)
     return tcpsvr;
 }
 /* close tcp server ----------------------------------------------------------*/
-static void closetcpsvr(TCPServer_t *tcpsvr)
+static void STREAM_closeTCPServer(TCPServer_t *tcpsvr)
 {
     int i;
     
@@ -1009,7 +1009,7 @@ static void closetcpsvr(TCPServer_t *tcpsvr)
     free(tcpsvr);
 }
 /* update tcp server ---------------------------------------------------------*/
-static void updatetcpsvr(TCPServer_t *tcpsvr, char *msg)
+static void STREAM_updateTCPServer(TCPServer_t *tcpsvr, char *msg)
 {
     char saddr[256]="";
     int i,n=0;
@@ -1070,7 +1070,7 @@ static int accsock(TCPServer_t *tcpsvr, char *msg)
     return 1;
 }
 /* wait socket accept --------------------------------------------------------*/
-static int waittcpsvr(TCPServer_t *tcpsvr, char *msg)
+static int STREAM_waitTCPServer(TCPServer_t *tcpsvr, char *msg)
 {
     tracet(4,"waittcpsvr: sock=%d state=%d\n",tcpsvr->svr.sock,tcpsvr->svr.state);
     
@@ -1078,17 +1078,17 @@ static int waittcpsvr(TCPServer_t *tcpsvr, char *msg)
     
     while (accsock(tcpsvr,msg)) ;
     
-    updatetcpsvr(tcpsvr,msg);
+    STREAM_updateTCPServer(tcpsvr,msg);
     return tcpsvr->svr.state==2;
 }
 /* read tcp server -----------------------------------------------------------*/
-static int readtcpsvr(TCPServer_t *tcpsvr, uint8_t *buff, int n, char *msg)
+static int STREAM_readTCPServer(TCPServer_t *tcpsvr, uint8_t *buff, int n, char *msg)
 {
     int i,nr,err;
     
     tracet(4,"readtcpsvr: state=%d\n",tcpsvr->svr.state);
     
-    if (!waittcpsvr(tcpsvr,msg)) return 0;
+    if (!STREAM_waitTCPServer(tcpsvr,msg)) return 0;
     
     for (i=0;i<MAXCLI;i++) {
         if (tcpsvr->cli[i].state!=2) continue;
@@ -1099,7 +1099,7 @@ static int readtcpsvr(TCPServer_t *tcpsvr, uint8_t *buff, int n, char *msg)
                        tcpsvr->cli[i].sock,err);
             }
             discontcp(&tcpsvr->cli[i],ticonnect);
-            updatetcpsvr(tcpsvr,msg);
+            STREAM_updateTCPServer(tcpsvr,msg);
         }
         if (nr>0) {
             tcpsvr->cli[i].tact=tickget();
@@ -1109,13 +1109,13 @@ static int readtcpsvr(TCPServer_t *tcpsvr, uint8_t *buff, int n, char *msg)
     return 0;
 }
 /* write tcp server ----------------------------------------------------------*/
-static int writetcpsvr(TCPServer_t *tcpsvr, uint8_t *buff, int n, char *msg)
+static int STREAM_writeTCPserver(TCPServer_t *tcpsvr, uint8_t *buff, int n, char *msg)
 {
     int i,ns=0,nmax=0,err;
     
     tracet(4,"writetcpsvr: state=%d n=%d\n",tcpsvr->svr.state,n);
     
-    if (!waittcpsvr(tcpsvr,msg)) return 0;
+    if (!STREAM_waitTCPServer(tcpsvr,msg)) return 0;
     
     for (i=0;i<MAXCLI;i++) {
         if (tcpsvr->cli[i].state!=2) continue;
@@ -1126,7 +1126,7 @@ static int writetcpsvr(TCPServer_t *tcpsvr, uint8_t *buff, int n, char *msg)
                        tcpsvr->cli[i].sock,err);
             }
             discontcp(&tcpsvr->cli[i],ticonnect);
-            updatetcpsvr(tcpsvr,msg);
+            STREAM_updateTCPServer(tcpsvr,msg);
         }
         else {
             if (ns>nmax) nmax=ns;
@@ -1136,12 +1136,12 @@ static int writetcpsvr(TCPServer_t *tcpsvr, uint8_t *buff, int n, char *msg)
     return nmax;
 }
 /* get state tcp server ------------------------------------------------------*/
-static int statetcpsvr(TCPServer_t *tcpsvr)
+static int STREAM_stateTCPServer(TCPServer_t *tcpsvr)
 {
     return tcpsvr?tcpsvr->svr.state:0;
 }
 /* print extended state tcp --------------------------------------------------*/
-static int statextcp(TCP_t *tcp, char *msg)
+static int STREAM_stateExtendedTCP(TCP_t *tcp, char *msg)
 {
     char *p=msg;
     
@@ -1157,7 +1157,7 @@ static int statextcp(TCP_t *tcp, char *msg)
     return (int)(p-msg);
 }
 /* get extended state tcp server ---------------------------------------------*/
-static int statextcpsvr(TCPServer_t *tcpsvr, char *msg)
+static int STREAM_stateExtendedTCPServer(TCPServer_t *tcpsvr, char *msg)
 {
     char *p=msg;
     int i,state=tcpsvr?tcpsvr->svr.state:0;
@@ -1166,11 +1166,11 @@ static int statextcpsvr(TCPServer_t *tcpsvr, char *msg)
     p+=sprintf(p,"  state   = %d\n",state);
     if (!state) return 0;
     p+=sprintf(p,"  svr:\n");
-    p+=statextcp(&tcpsvr->svr,p);
+    p+=STREAM_stateExtendedTCP(&tcpsvr->svr,p);
     for (i=0;i<MAXCLI;i++) {
         if (!tcpsvr->cli[i].state) continue;
         p+=sprintf(p,"  cli#%d:\n",i);
-        p+=statextcp(tcpsvr->cli+i,p);
+        p+=STREAM_stateExtendedTCP(tcpsvr->cli+i,p);
     }
     return state;
 }
@@ -1207,7 +1207,7 @@ static int consock(TCPClient_t *tcpcli, char *msg)
     return 1;
 }
 /* open tcp client -----------------------------------------------------------*/
-static TCPClient_t *opentcpcli(const char *path, char *msg)
+static TCPClient_t *STREAM_openTCPClient(const char *path, char *msg)
 {
     TCPClient_t *tcpcli,tcpcli0={{0}};
     char port[256]="";
@@ -1229,7 +1229,7 @@ static TCPClient_t *opentcpcli(const char *path, char *msg)
     return tcpcli;
 }
 /* close tcp client ----------------------------------------------------------*/
-static void closetcpcli(TCPClient_t *tcpcli)
+static void STREAM_closeTCPClient(TCPClient_t *tcpcli)
 {
     tracet(3,"closetcpcli: sock=%d\n",tcpcli->svr.sock);
     
@@ -1237,7 +1237,7 @@ static void closetcpcli(TCPClient_t *tcpcli)
     free(tcpcli);
 }
 /* wait socket connect -------------------------------------------------------*/
-static int waittcpcli(TCPClient_t *tcpcli, char *msg)
+static int STREAM_waitTCPClient(TCPClient_t *tcpcli, char *msg)
 {
     tracet(4,"waittcpcli: sock=%d state=%d\n",tcpcli->svr.sock,tcpcli->svr.state);
     
@@ -1261,13 +1261,13 @@ static int waittcpcli(TCPClient_t *tcpcli, char *msg)
     return 1;
 }
 /* read tcp client -----------------------------------------------------------*/
-static int readtcpcli(TCPClient_t *tcpcli, uint8_t *buff, int n, char *msg)
+static int STREAM_readTCPClient(TCPClient_t *tcpcli, uint8_t *buff, int n, char *msg)
 {
     int nr,err;
     
     tracet(4,"readtcpcli: sock=%d\n",tcpcli->svr.sock);
     
-    if (!waittcpcli(tcpcli,msg)) return 0;
+    if (!STREAM_waitTCPClient(tcpcli,msg)) return 0;
     
     if ((nr=recv_nb(tcpcli->svr.sock,buff,n))==-1) {
         if ((err=errsock())) {
@@ -1285,13 +1285,13 @@ static int readtcpcli(TCPClient_t *tcpcli, uint8_t *buff, int n, char *msg)
     return nr;
 }
 /* write tcp client ----------------------------------------------------------*/
-static int writetcpcli(TCPClient_t *tcpcli, uint8_t *buff, int n, char *msg)
+static int STREAM_writeTCPClient(TCPClient_t *tcpcli, uint8_t *buff, int n, char *msg)
 {
     int ns,err;
     
     tracet(3,"writetcpcli: sock=%d state=%d n=%d\n",tcpcli->svr.sock,tcpcli->svr.state,n);
     
-    if (!waittcpcli(tcpcli,msg)) return 0;
+    if (!STREAM_waitTCPClient(tcpcli,msg)) return 0;
     
     if ((ns=send_nb(tcpcli->svr.sock,buff,n))==-1) {
         if ((err=errsock())) {
@@ -1306,12 +1306,12 @@ static int writetcpcli(TCPClient_t *tcpcli, uint8_t *buff, int n, char *msg)
     return ns;
 }
 /* get state tcp client ------------------------------------------------------*/
-static int statetcpcli(TCPClient_t *tcpcli)
+static int STREAM_stateTCPClient(TCPClient_t *tcpcli)
 {
     return tcpcli?tcpcli->svr.state:0;
 }
 /* get extended state tcp client ---------------------------------------------*/
-static int statextcpcli(TCPClient_t *tcpcli, char *msg)
+static int STREAM_stateExtendedTCPClient(TCPClient_t *tcpcli, char *msg)
 {
     return tcpcli?tcpcli->svr.state:0;
 }
@@ -1347,7 +1347,7 @@ static int reqntrip_s(ntrip_t *ntrip, char *msg)
     p+=sprintf(p,"STR: %s\r\n",ntrip->str);
     p+=sprintf(p,"\r\n");
     
-    if (writetcpcli(ntrip->tcp,(uint8_t *)buff,p-buff,msg)!=p-buff) return 0;
+    if (STREAM_writeTCPClient(ntrip->tcp,(uint8_t *)buff,p-buff,msg)!=p-buff) return 0;
     
     tracet(3,"reqntrip_s: send request state=%d ns=%d\n",ntrip->state,p-buff);
     tracet(5,"reqntrip_s: n=%d buff=\n%s\n",p-buff,buff);
@@ -1376,7 +1376,7 @@ static int reqntrip_c(ntrip_t *ntrip, char *msg)
     }
     p+=sprintf(p,"\r\n");
     
-    if (writetcpcli(ntrip->tcp,(uint8_t *)buff,p-buff,msg)!=p-buff) return 0;
+    if (STREAM_writeTCPClient(ntrip->tcp,(uint8_t *)buff,p-buff,msg)!=p-buff) return 0;
     
     tracet(3,"reqntrip_c: send request state=%d ns=%d\n",ntrip->state,p-buff);
     tracet(5,"reqntrip_c: n=%d buff=\n%s\n",p-buff,buff);
@@ -1479,7 +1479,7 @@ static int rspntrip_c(ntrip_t *ntrip, char *msg)
     return 0;
 }
 /* wait ntrip request/response -----------------------------------------------*/
-static int waitntrip(ntrip_t *ntrip, char *msg)
+static int STREAM_waitNTRIP(ntrip_t *ntrip, char *msg)
 {
     int n;
     char *p;
@@ -1498,7 +1498,7 @@ static int waitntrip(ntrip_t *ntrip, char *msg)
     }
     if (ntrip->state==1) { /* read response */
         p=(char *)ntrip->buff+ntrip->nb;
-        if ((n=readtcpcli(ntrip->tcp,(uint8_t *)p,NTRIP_MAXRSP-ntrip->nb-1,msg))==0) {
+        if ((n=STREAM_readTCPClient(ntrip->tcp,(uint8_t *)p,NTRIP_MAXRSP-ntrip->nb-1,msg))==0) {
             tracet(5,"waitntrip: readtcp n=%d\n",n);
             return 0;
         }
@@ -1510,7 +1510,7 @@ static int waitntrip(ntrip_t *ntrip, char *msg)
     return 1;
 }
 /* open ntrip ----------------------------------------------------------------*/
-static ntrip_t *openntrip(const char *path, int type, char *msg)
+static ntrip_t *STREAM_openNTRIP(const char *path, int type, char *msg)
 {
     ntrip_t *ntrip;
     int i;
@@ -1543,7 +1543,7 @@ static ntrip_t *openntrip(const char *path, int type, char *msg)
         sprintf(tpath,"%.*s",MAXSTRPATH-1,proxyaddr);
     }
     /* open tcp client stream */
-    if (!(ntrip->tcp=opentcpcli(tpath,msg))) {
+    if (!(ntrip->tcp=STREAM_openTCPClient(tpath,msg))) {
         tracet(2,"openntrip: opentcp error\n");
         free(ntrip);
         return NULL;
@@ -1551,21 +1551,21 @@ static ntrip_t *openntrip(const char *path, int type, char *msg)
     return ntrip;
 }
 /* close ntrip ---------------------------------------------------------------*/
-static void closentrip(ntrip_t *ntrip)
+static void STREAM_closeNTRIP(ntrip_t *ntrip)
 {
     tracet(3,"closentrip: state=%d\n",ntrip->state);
     
-    closetcpcli(ntrip->tcp);
+    STREAM_closeTCPClient(ntrip->tcp);
     free(ntrip);
 }
 /* read ntrip ----------------------------------------------------------------*/
-static int readntrip(ntrip_t *ntrip, uint8_t *buff, int n, char *msg)
+static int STREAM_readNTRIP(ntrip_t *ntrip, uint8_t *buff, int n, char *msg)
 {
     int nb;
     
     tracet(4,"readntrip:\n");
     
-    if (!waitntrip(ntrip,msg)) return 0;
+    if (!STREAM_waitNTRIP(ntrip,msg)) return 0;
     
     if (ntrip->nb>0) { /* read response buffer first */
         nb=ntrip->nb<=n?ntrip->nb:n;
@@ -1573,24 +1573,24 @@ static int readntrip(ntrip_t *ntrip, uint8_t *buff, int n, char *msg)
         ntrip->nb=0;
         return nb;
     }
-    return readtcpcli(ntrip->tcp,buff,n,msg);
+    return STREAM_readTCPClient(ntrip->tcp,buff,n,msg);
 }
 /* write ntrip ---------------------------------------------------------------*/
-static int writentrip(ntrip_t *ntrip, uint8_t *buff, int n, char *msg)
+static int STREAM_writeNTRIP(ntrip_t *ntrip, uint8_t *buff, int n, char *msg)
 {
     tracet(3,"writentrip: n=%d\n",n);
     
-    if (!waitntrip(ntrip,msg)) return 0;
+    if (!STREAM_waitNTRIP(ntrip,msg)) return 0;
     
-    return writetcpcli(ntrip->tcp,buff,n,msg);
+    return STREAM_writeTCPClient(ntrip->tcp,buff,n,msg);
 }
 /* get state ntrip -----------------------------------------------------------*/
-static int statentrip(ntrip_t *ntrip)
+static int STREAM_stateNTRIP(ntrip_t *ntrip)
 {
     return !ntrip?0:(ntrip->state==0?ntrip->tcp->svr.state:ntrip->state);
 }
 /* get extended state ntrip --------------------------------------------------*/
-static int statexntrip(ntrip_t *ntrip, char *msg)
+static int STREAM_stateExtendedNTRIP(ntrip_t *ntrip, char *msg)
 {
     char *p=msg;
     int state=!ntrip?0:(ntrip->state==0?ntrip->tcp->svr.state:ntrip->state);
@@ -1607,11 +1607,11 @@ static int statexntrip(ntrip_t *ntrip, char *msg)
     p+=sprintf(p,"  passwd  = %s\n",ntrip->passwd);
     p+=sprintf(p,"  str     = %s\n",ntrip->str);
     p+=sprintf(p,"  svr:\n");
-    p+=statextcp(&ntrip->tcp->svr,p);
+    p+=STREAM_stateExtendedTCP(&ntrip->tcp->svr,p);
     return state;
 }
 /* open ntrip-caster ---------------------------------------------------------*/
-static ntripc_t *openntripc(const char *path, char *msg)
+static ntripc_t *STREAM_openNTRIPCaster(const char *path, char *msg)
 {
     ntripc_t *ntripc;
     int i;
@@ -1644,7 +1644,7 @@ static ntripc_t *openntripc(const char *path, char *msg)
     sprintf(tpath,":%s",port);
     
     /* open tcp server stream */
-    if (!(ntripc->tcp=opentcpsvr(tpath,msg))) {
+    if (!(ntripc->tcp=STREAM_openTCPServer(tpath,msg))) {
         tracet(2,"openntripc: opentcpsvr error port=%d\n",port);
         free(ntripc);
         return NULL;
@@ -1652,11 +1652,11 @@ static ntripc_t *openntripc(const char *path, char *msg)
     return ntripc;
 }
 /* close ntrip-caster --------------------------------------------------------*/
-static void closentripc(ntripc_t *ntripc)
+static void STREAM_closeNTRIPCaster(ntripc_t *ntripc)
 {
     tracet(3,"closentripc: state=%d\n",ntripc->state);
     
-    closetcpsvr(ntripc->tcp);
+    STREAM_closeTCPServer(ntripc->tcp);
     free(ntripc);
 }
 /* disconnect ntrip-caster connection ----------------------------------------*/
@@ -1756,7 +1756,7 @@ static void wait_ntripc(ntripc_t *ntripc, char *msg)
     
     ntripc->state=ntripc->tcp->svr.state;
     
-    if (!waittcpsvr(ntripc->tcp,msg)) return;
+    if (!STREAM_waitTCPServer(ntripc->tcp,msg)) return;
     
     for (i=0;i<MAXCLI;i++) {
         if (ntripc->tcp->cli[i].state!=2||ntripc->con[i].state) continue;
@@ -1781,7 +1781,7 @@ static void wait_ntripc(ntripc_t *ntripc, char *msg)
     }
 }
 /* read ntrip-caster ---------------------------------------------------------*/
-static int readntripc(ntripc_t *ntripc, uint8_t *buff, int n, char *msg)
+static int STREAM_readNTRIPCaster(ntripc_t *ntripc, uint8_t *buff, int n, char *msg)
 {
     int i,nr,err;
     
@@ -1809,7 +1809,7 @@ static int readntripc(ntripc_t *ntripc, uint8_t *buff, int n, char *msg)
     return 0;
 }
 /* write ntrip-caster --------------------------------------------------------*/
-static int writentripc(ntripc_t *ntripc, uint8_t *buff, int n, char *msg)
+static int STREAM_writeNTRIPCaster(ntripc_t *ntripc, uint8_t *buff, int n, char *msg)
 {
     int i,ns=0,err;
 
@@ -1836,12 +1836,12 @@ static int writentripc(ntripc_t *ntripc, uint8_t *buff, int n, char *msg)
     return ns;
 }
 /* get state ntrip-caster ----------------------------------------------------*/
-static int statentripc(ntripc_t *ntripc)
+static int STREAM_stateNTRIPCaster(ntripc_t *ntripc)
 {
     return !ntripc?0:ntripc->state;
 }
 /* get extended state ntrip-caster -------------------------------------------*/
-static int statexntripc(ntripc_t *ntripc, char *msg)
+static int STREAM_stateExtendedNTRIPCaster(ntripc_t *ntripc, char *msg)
 {
     char *p=msg;
     int i,state=!ntripc?0:ntripc->state;
@@ -1855,11 +1855,11 @@ static int statexntripc(ntripc_t *ntripc, char *msg)
     p+=sprintf(p,"  passwd  = %s\n",ntripc->passwd);
     p+=sprintf(p,"  srctbl  = %s\n",ntripc->srctbl);
     p+=sprintf(p,"  svr:\n");
-    p+=statextcp(&ntripc->tcp->svr,p);
+    p+=STREAM_stateExtendedTCP(&ntripc->tcp->svr,p);
     for (i=0;i<MAXCLI;i++) {
         if (!ntripc->tcp->cli[i].state) continue;
         p+=sprintf(p,"  cli#%d:\n",i);
-        p+=statextcp(ntripc->tcp->cli+i,p);
+        p+=STREAM_stateExtendedTCP(ntripc->tcp->cli+i,p);
         p+=sprintf(p,"    mntpnt= %s\n",ntripc->con[i].mntpnt);
         p+=sprintf(p,"    nb    = %d\n",ntripc->con[i].nb);
     }
@@ -2548,11 +2548,11 @@ extern int stropen(stream_t *stream, int type, int mode, const char *path)
     switch (type) {
         case STR_SERIAL  : stream->port=STREAM_openSerial(path,mode,stream->msg); break;
         case STR_FILE    : stream->port=openfile  (path,mode,stream->msg); break;
-        case STR_TCPSVR  : stream->port=opentcpsvr(path,     stream->msg); break;
-        case STR_TCPCLI  : stream->port=opentcpcli(path,     stream->msg); break;
-        case STR_NTRIPSVR: stream->port=openntrip (path,0,   stream->msg); break;
-        case STR_NTRIPCLI: stream->port=openntrip (path,1,   stream->msg); break;
-        case STR_NTRIPCAS: stream->port=openntripc(path,     stream->msg); break;
+        case STR_TCPSVR  : stream->port=STREAM_openTCPServer(path,     stream->msg); break;
+        case STR_TCPCLI  : stream->port=STREAM_openTCPClient(path,     stream->msg); break;
+        case STR_NTRIPSVR: stream->port=STREAM_openNTRIP (path,0,   stream->msg); break;
+        case STR_NTRIPCLI: stream->port=STREAM_openNTRIP (path,1,   stream->msg); break;
+        case STR_NTRIPCAS: stream->port=STREAM_openNTRIPCaster(path,     stream->msg); break;
         case STR_UDPSVR  : stream->port=openudpsvr(path,     stream->msg); break;
         case STR_UDPCLI  : stream->port=openudpcli(path,     stream->msg); break;
         case STR_MEMBUF  : stream->port=openmembuf(path,     stream->msg); break;
@@ -2576,13 +2576,13 @@ extern void strclose(stream_t *stream)
     
     if (stream->port) {
         switch (stream->type) {
-            case STR_SERIAL  : closeserial((Serial_t *)stream->port); break;
+            case STR_SERIAL  : STREAM_closeSerial((Serial_t *)stream->port); break;
             case STR_FILE    : closefile  ((File_t   *)stream->port); break;
-            case STR_TCPSVR  : closetcpsvr((TCPServer_t *)stream->port); break;
-            case STR_TCPCLI  : closetcpcli((TCPClient_t *)stream->port); break;
-            case STR_NTRIPSVR: closentrip ((ntrip_t  *)stream->port); break;
-            case STR_NTRIPCLI: closentrip ((ntrip_t  *)stream->port); break;
-            case STR_NTRIPCAS: closentripc((ntripc_t *)stream->port); break;
+            case STR_TCPSVR  : STREAM_closeTCPServer((TCPServer_t *)stream->port); break;
+            case STR_TCPCLI  : STREAM_closeTCPClient((TCPClient_t *)stream->port); break;
+            case STR_NTRIPSVR: STREAM_closeNTRIP ((ntrip_t  *)stream->port); break;
+            case STR_NTRIPCLI: STREAM_closeNTRIP ((ntrip_t  *)stream->port); break;
+            case STR_NTRIPCAS: STREAM_closeNTRIPCaster((ntripc_t *)stream->port); break;
             case STR_UDPSVR  : closeudpsvr((UDP_t    *)stream->port); break;
             case STR_UDPCLI  : closeudpcli((UDP_t    *)stream->port); break;
             case STR_MEMBUF  : closemembuf((MemoryBuffer_t *)stream->port); break;
@@ -2647,13 +2647,13 @@ extern int strread(stream_t *stream, uint8_t *buff, int n)
     strlock(stream);
     
     switch (stream->type) {
-        case STR_SERIAL  : nr=readserial((Serial_t *)stream->port,buff,n,msg); break;
+        case STR_SERIAL  : nr=STREAM_readSerial((Serial_t *)stream->port,buff,n,msg); break;
         case STR_FILE    : nr=readfile  ((File_t   *)stream->port,buff,n,msg); break;
-        case STR_TCPSVR  : nr=readtcpsvr((TCPServer_t *)stream->port,buff,n,msg); break;
-        case STR_TCPCLI  : nr=readtcpcli((TCPClient_t *)stream->port,buff,n,msg); break;
+        case STR_TCPSVR  : nr=STREAM_readTCPServer((TCPServer_t *)stream->port,buff,n,msg); break;
+        case STR_TCPCLI  : nr=STREAM_readTCPClient((TCPClient_t *)stream->port,buff,n,msg); break;
         case STR_NTRIPSVR:
-        case STR_NTRIPCLI: nr=readntrip ((ntrip_t  *)stream->port,buff,n,msg); break;
-        case STR_NTRIPCAS: nr=readntripc((ntripc_t *)stream->port,buff,n,msg); break;
+        case STR_NTRIPCLI: nr=STREAM_readNTRIP ((ntrip_t  *)stream->port,buff,n,msg); break;
+        case STR_NTRIPCAS: nr=STREAM_readNTRIPCaster((ntripc_t *)stream->port,buff,n,msg); break;
         case STR_UDPSVR  : nr=readudpsvr((UDP_t    *)stream->port,buff,n,msg); break;
         case STR_MEMBUF  : nr=readmembuf((MemoryBuffer_t *)stream->port,buff,n,msg); break;
         case STR_FTP     : nr=readftp   ((FTP_t    *)stream->port,buff,n,msg); break;
@@ -2697,13 +2697,13 @@ extern int strwrite(stream_t *stream, uint8_t *buff, int n)
     strlock(stream);
     
     switch (stream->type) {
-        case STR_SERIAL  : ns=writeserial((Serial_t *)stream->port,buff,n,msg); break;
+        case STR_SERIAL  : ns=STREAM_writeSerial((Serial_t *)stream->port,buff,n,msg); break;
         case STR_FILE    : ns=writefile  ((File_t   *)stream->port,buff,n,msg); break;
-        case STR_TCPSVR  : ns=writetcpsvr((TCPServer_t *)stream->port,buff,n,msg); break;
-        case STR_TCPCLI  : ns=writetcpcli((TCPClient_t *)stream->port,buff,n,msg); break;
+        case STR_TCPSVR  : ns=STREAM_writeTCPserver((TCPServer_t *)stream->port,buff,n,msg); break;
+        case STR_TCPCLI  : ns=STREAM_writeTCPClient((TCPClient_t *)stream->port,buff,n,msg); break;
         case STR_NTRIPSVR:
-        case STR_NTRIPCLI: ns=writentrip ((ntrip_t  *)stream->port,buff,n,msg); break;
-        case STR_NTRIPCAS: ns=writentripc((ntripc_t *)stream->port,buff,n,msg); break;
+        case STR_NTRIPCLI: ns=STREAM_writeNTRIP ((ntrip_t  *)stream->port,buff,n,msg); break;
+        case STR_NTRIPCAS: ns=STREAM_writeNTRIPCaster((ntripc_t *)stream->port,buff,n,msg); break;
         case STR_UDPCLI  : ns=writeudpcli((UDP_t    *)stream->port,buff,n,msg); break;
         case STR_MEMBUF  : ns=writemembuf((MemoryBuffer_t *)stream->port,buff,n,msg); break;
         case STR_FTP     :
@@ -2747,13 +2747,13 @@ extern int strstat(stream_t *stream, char *msg)
         return stream->state;
     }
     switch (stream->type) {
-        case STR_SERIAL  : state=stateserial((Serial_t *)stream->port); break;
+        case STR_SERIAL  : state=STREAM_stateSerial((Serial_t *)stream->port); break;
         case STR_FILE    : state=statefile  ((File_t   *)stream->port); break;
-        case STR_TCPSVR  : state=statetcpsvr((TCPServer_t *)stream->port); break;
-        case STR_TCPCLI  : state=statetcpcli((TCPClient_t *)stream->port); break;
+        case STR_TCPSVR  : state=STREAM_stateTCPServer((TCPServer_t *)stream->port); break;
+        case STR_TCPCLI  : state=STREAM_stateTCPClient((TCPClient_t *)stream->port); break;
         case STR_NTRIPSVR:
-        case STR_NTRIPCLI: state=statentrip ((ntrip_t  *)stream->port); break;
-        case STR_NTRIPCAS: state=statentripc((ntripc_t *)stream->port); break;
+        case STR_NTRIPCLI: state=STREAM_stateNTRIP ((ntrip_t  *)stream->port); break;
+        case STR_NTRIPCAS: state=STREAM_stateNTRIPCaster((ntripc_t *)stream->port); break;
         case STR_UDPSVR  : state=stateudpsvr((UDP_t    *)stream->port); break;
         case STR_UDPCLI  : state=stateudpcli((UDP_t    *)stream->port); break;
         case STR_MEMBUF  : state=statemembuf((MemoryBuffer_t *)stream->port); break;
@@ -2786,13 +2786,13 @@ extern int strstatx(stream_t *stream, char *msg)
         return stream->state;
     }
     switch (stream->type) {
-        case STR_SERIAL  : state=statexserial((Serial_t *)stream->port,msg); break;
+        case STR_SERIAL  : state=STREAM_stateExtendedSerial((Serial_t *)stream->port,msg); break;
         case STR_FILE    : state=statexfile  ((File_t   *)stream->port,msg); break;
-        case STR_TCPSVR  : state=statextcpsvr((TCPServer_t *)stream->port,msg); break;
-        case STR_TCPCLI  : state=statextcpcli((TCPClient_t *)stream->port,msg); break;
+        case STR_TCPSVR  : state=STREAM_stateExtendedTCPServer((TCPServer_t *)stream->port,msg); break;
+        case STR_TCPCLI  : state=STREAM_stateExtendedTCPClient((TCPClient_t *)stream->port,msg); break;
         case STR_NTRIPSVR:
-        case STR_NTRIPCLI: state=statexntrip ((ntrip_t  *)stream->port,msg); break;
-        case STR_NTRIPCAS: state=statexntripc((ntripc_t *)stream->port,msg); break;
+        case STR_NTRIPCLI: state=STREAM_stateExtendedNTRIP ((ntrip_t  *)stream->port,msg); break;
+        case STR_NTRIPCAS: state=STREAM_stateExtendedNTRIPCaster((ntripc_t *)stream->port,msg); break;
         case STR_UDPSVR  : state=statexudpsvr((UDP_t    *)stream->port,msg); break;
         case STR_UDPCLI  : state=statexudpcli((UDP_t    *)stream->port,msg); break;
         case STR_MEMBUF  : state=statexmembuf((MemoryBuffer_t *)stream->port,msg); break;
