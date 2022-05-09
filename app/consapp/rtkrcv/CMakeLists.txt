@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5)
 
 project(rtkrcv)
 
@@ -19,4 +19,5 @@ add_executable(
 )
 
 target_link_libraries(rtkrcv m)
-target_link_libraries(rtkrcv System.B)
+target_link_libraries(rtkrcv pthread)
+# target_link_libraries(rtkrcv System.B)

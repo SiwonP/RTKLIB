@@ -2625,7 +2625,7 @@ extern void strsync(Stream_t *stream1, Stream_t *stream2)
 *-----------------------------------------------------------------------------*/
 extern inline void strlock  (Stream_t *stream)
 {
-    lock  (&stream->lock);
+    lock(&stream->lock);
 }
 
 extern inline void strunlock(Stream_t *stream)

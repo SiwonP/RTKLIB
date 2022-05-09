@@ -6,7 +6,9 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#define __USE_MISC
+#ifndef __USE_MISC
+    #define __USE_MISC
+#endif
 #ifndef CRTSCTS
 #define CRTSCTS  020000000000
 #endif
@@ -350,14 +352,14 @@ int recv_nb(socket_t sock, uint8_t *buff, int n);
  * 
  * @param stream 
  */
-extern inline void strlock(Stream_t *stream);
+void strlock(Stream_t *stream);
 
 /**
  * @brief 
  * 
  * @param stream 
  */
-extern inline void strunlock(Stream_t *stream);
+void strunlock(Stream_t *stream);
 
 /**
  * @brief 
@@ -372,6 +374,6 @@ extern gtime_t STREAM_getTime(Stream_t *stream);
  * 
  * @param addr 
  */
-extern inline void strsetproxy(const char *addr);
+void strsetproxy(const char *addr);
 
 #endif
