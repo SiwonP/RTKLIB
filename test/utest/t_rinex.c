@@ -183,7 +183,7 @@ void utest5(void)
     int i;
     for (i=0;i<8;i++) nav.ion_gps[i]=ion[i];
     for (i=0;i<4;i++) nav.utc_gps[i]=utc[i];
-    nav.leaps=14;
+    // nav.leaps=14;
 
     readrnx(file1,1,"",NULL,&nav,NULL);
 

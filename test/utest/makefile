@@ -2,7 +2,9 @@
 
 SRC    = ../../src
 #CFLAGS = -Wall -O3 -ansi -pedantic -I$(SRC) -DENAGLO
-CFLAGS = -Wall -O3 -ansi -pedantic -I$(SRC) -DTRACE -DENAGLO -DENAQZS
+# CFLAGS = -Wall -O3 -ansi -pedantic -I$(SRC) -DTRACE -DENAGLO -DENAQZS
+CFLAGS = -Wall -O2 -ansi -pedantic -I$(SRC) -DTRACE -DENAGLO -DENAQZS -std=c99
+
 LDLIBS = -lm -llapack -lblas
 CC = gcc
 

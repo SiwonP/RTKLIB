@@ -199,7 +199,7 @@ extern void rtkclosestat(void)
     statlevel=0;
 }
 /* write solution status to buffer -------------------------------------------*/
-extern int rtkoutstat(rtk_t *rtk, char *buff)
+extern int rtkoutstat(RTK_t *rtk, char *buff)
 {
     ssat_t *ssat;
     double tow,pos[3],vel[3],acc[3],vela[3]={0},acca[3]={0},xa[3];
@@ -309,7 +309,7 @@ static void swapsolstat(void)
     trace(3,"swapsolstat: path=%s\n",path);
 }
 /* output solution status ----------------------------------------------------*/
-static void outsolstat(rtk_t *rtk)
+static void outsolstat(RTK_t *rtk)
 {
     ssat_t *ssat;
     double tow;
@@ -348,7 +348,7 @@ static void outsolstat(rtk_t *rtk)
     }
 }
 /* save error message --------------------------------------------------------*/
-static void errmsg(rtk_t *rtk, const char *format, ...)
+static void errmsg(RTK_t *rtk, const char *format, ...)
 {
     char buff[256],tstr[32];
     int n;
@@ -406,7 +406,7 @@ static double baseline(const double *ru, const double *rb, double *dr)
     return norm(dr,3);
 }
 /* initialize state and covariance -------------------------------------------*/
-static void initx(rtk_t *rtk, double xi, double var, int i)
+static void initx(RTK_t *rtk, double xi, double var, int i)
 {
     int j;
     rtk->x[i]=xi;
@@ -433,7 +433,7 @@ static int selsat(const obsd_t *obs, double *azel, int nu, int nr,
     return k;
 }
 /* temporal update of position/velocity/acceleration -------------------------*/
-static void udpos(rtk_t *rtk, double tt)
+static void udpos(RTK_t *rtk, double tt)
 {
     double *F,*P,*FP,*x,*xp,pos[3],Q[9]={0},Qv[9],var=0.0;
     int i,j,*ix,nx;
@@ -519,7 +519,7 @@ static void udpos(rtk_t *rtk, double tt)
     free(ix); free(F); free(P); free(FP); free(x); free(xp);
 }
 /* temporal update of ionospheric parameters ---------------------------------*/
-static void udion(rtk_t *rtk, double tt, double bl, const int *sat, int ns)
+static void udion(RTK_t *rtk, double tt, double bl, const int *sat, int ns)
 {
     double el,fact;
     int i,j;
@@ -547,7 +547,7 @@ static void udion(rtk_t *rtk, double tt, double bl, const int *sat, int ns)
     }
 }
 /* temporal update of tropospheric parameters --------------------------------*/
-static void udtrop(rtk_t *rtk, double tt, double bl)
+static void udtrop(RTK_t *rtk, double tt, double bl)
 {
     int i,j,k;
     
@@ -575,7 +575,7 @@ static void udtrop(rtk_t *rtk, double tt, double bl)
     }
 }
 /* temporal update of receiver h/w biases ------------------------------------*/
-static void udrcvbias(rtk_t *rtk, double tt)
+static void udrcvbias(RTK_t *rtk, double tt)
 {
     int i,j;
     
@@ -597,7 +597,7 @@ static void udrcvbias(rtk_t *rtk, double tt)
     }
 }
 /* detect cycle slip by LLI --------------------------------------------------*/
-static void detslp_ll(rtk_t *rtk, const obsd_t *obs, int i, int rcv)
+static void detslp_ll(RTK_t *rtk, const obsd_t *obs, int i, int rcv)
 {
     uint32_t slip,LLI;
     int f,sat=obs[i].sat;
@@ -645,7 +645,7 @@ static void detslp_ll(rtk_t *rtk, const obsd_t *obs, int i, int rcv)
     }
 }
 /* detect cycle slip by geometry free phase jump -----------------------------*/
-static void detslp_gf(rtk_t *rtk, const obsd_t *obs, int i, int j,
+static void detslp_gf(RTK_t *rtk, const obsd_t *obs, int i, int j,
                       const nav_t *nav)
 {
     int k,sat=obs[i].sat;
@@ -668,7 +668,7 @@ static void detslp_gf(rtk_t *rtk, const obsd_t *obs, int i, int j,
     }
 }
 /* detect cycle slip by doppler and phase difference -------------------------*/
-static void detslp_dop(rtk_t *rtk, const obsd_t *obs, int i, int rcv,
+static void detslp_dop(RTK_t *rtk, const obsd_t *obs, int i, int rcv,
                        const nav_t *nav)
 {
 #if 0 /* detection with doppler disabled because of clock-jump issue (v.2.3.0) */
@@ -701,7 +701,7 @@ static void detslp_dop(rtk_t *rtk, const obsd_t *obs, int i, int rcv,
 #endif
 }
 /* temporal update of phase biases -------------------------------------------*/
-static void udbias(rtk_t *rtk, double tt, const obsd_t *obs, const int *sat,
+static void udbias(RTK_t *rtk, double tt, const obsd_t *obs, const int *sat,
                    const int *iu, const int *ir, int ns, const nav_t *nav)
 {
     double cp,pr,cp1,cp2,pr1,pr2,*bias,offset,freqi,freq1,freq2,C1,C2;
@@ -804,7 +804,7 @@ static void udbias(rtk_t *rtk, double tt, const obsd_t *obs, const int *sat,
     }
 }
 /* temporal update of states --------------------------------------------------*/
-static void udstate(rtk_t *rtk, const obsd_t *obs, const int *sat,
+static void udstate(RTK_t *rtk, const obsd_t *obs, const int *sat,
                     const int *iu, const int *ir, int ns, const nav_t *nav)
 {
     double tt=rtk->tt,bl,dr[3];
@@ -958,7 +958,7 @@ static void ddcov(const int *nb, int n, const double *Ri, const double *Rj,
     trace(5,"R=\n"); tracemat(5,R,nv,nv,8,6);
 }
 /* baseline length constraint ------------------------------------------------*/
-static int constbl(rtk_t *rtk, const double *x, const double *P, double *v,
+static int constbl(RTK_t *rtk, const double *x, const double *P, double *v,
                    double *H, double *Ri, double *Rj, int index)
 {
     const double thres=0.1; /* threshold for nonliearity (v.2.3.0) */
@@ -1039,7 +1039,7 @@ static int test_sys(int sys, int m)
     return 0;
 }
 /* DD (double-differenced) phase/code residuals ------------------------------*/
-static int ddres(rtk_t *rtk, const nav_t *nav, double dt, const double *x,
+static int ddres(RTK_t *rtk, const nav_t *nav, double dt, const double *x,
                  const double *P, const int *sat, double *y, double *e,
                  double *azel, double *freq, const int *iu, const int *ir,
                  int ns, double *v, double *H, double *R, int *vflg)
@@ -1195,7 +1195,7 @@ static int ddres(rtk_t *rtk, const nav_t *nav, double dt, const double *x,
 }
 /* time-interpolation of residuals (for post-processing) ---------------------*/
 static double intpres(gtime_t time, const obsd_t *obs, int n, const nav_t *nav,
-                      rtk_t *rtk, double *y)
+                      RTK_t *rtk, double *y)
 {
     static obsd_t obsb[MAXOBS];
     static double yb[MAXOBS*NFREQ*2],rs[MAXOBS*6],dts[MAXOBS*2],var[MAXOBS];
@@ -1229,7 +1229,7 @@ static double intpres(gtime_t time, const obsd_t *obs, int n, const nav_t *nav,
     return fabs(ttb)>fabs(tt)?ttb:tt;
 }
 /* index for SD to DD transformation matrix D --------------------------------*/
-static int ddidx(rtk_t *rtk, int *ix)
+static int ddidx(RTK_t *rtk, int *ix)
 {
     int i,j,k,m,f,nb=0,na=rtk->na,nf=NF(&rtk->opt),nofix;
     
@@ -1276,7 +1276,7 @@ static int ddidx(rtk_t *rtk, int *ix)
     return nb;
 }
 /* restore SD (single-differenced) ambiguity ---------------------------------*/
-static void restamb(rtk_t *rtk, const double *bias, int nb, double *xa)
+static void restamb(RTK_t *rtk, const double *bias, int nb, double *xa)
 {
     int i,n,m,f,index[MAXSAT],nv=0,nf=NF(&rtk->opt);
     
@@ -1303,7 +1303,7 @@ static void restamb(rtk_t *rtk, const double *bias, int nb, double *xa)
     }
 }
 /* hold integer ambiguity ----------------------------------------------------*/
-static void holdamb(rtk_t *rtk, const double *xa)
+static void holdamb(RTK_t *rtk, const double *xa)
 {
     double *v,*H,*R;
     int i,n,m,f,info,index[MAXSAT],nb=rtk->nx-rtk->na,nv=0,nf=NF(&rtk->opt);
@@ -1344,7 +1344,7 @@ static void holdamb(rtk_t *rtk, const double *xa)
     free(v); free(H);
 }
 /* resolve integer ambiguity by LAMBDA ---------------------------------------*/
-static int resamb_LAMBDA(rtk_t *rtk, double *bias, double *xa)
+static int resamb_LAMBDA(RTK_t *rtk, double *bias, double *xa)
 {
     prcopt_t *opt=&rtk->opt;
     int i,j,nb,info,nx=rtk->nx,na=rtk->na;
@@ -1434,7 +1434,7 @@ static int resamb_LAMBDA(rtk_t *rtk, double *bias, double *xa)
     return nb; /* number of ambiguities */
 }
 /* validation of solution ----------------------------------------------------*/
-static int valpos(rtk_t *rtk, const double *v, const double *R, const int *vflg,
+static int valpos(RTK_t *rtk, const double *v, const double *R, const int *vflg,
                   int nv, double thres)
 {
     double fact=thres*thres;
@@ -1457,7 +1457,7 @@ static int valpos(rtk_t *rtk, const double *v, const double *R, const int *vflg,
     return stat;
 }
 /* relative positioning ------------------------------------------------------*/
-static int relpos(rtk_t *rtk, const obsd_t *obs, int nu, int nr,
+static int relpos(RTK_t *rtk, const obsd_t *obs, int nu, int nr,
                   const nav_t *nav)
 {
     prcopt_t *opt=&rtk->opt;
@@ -1655,9 +1655,9 @@ static int relpos(rtk_t *rtk, const obsd_t *obs, int nu, int nr,
 *          prcopt_t *opt    I   positioning options (see rtklib.h)
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void rtkinit(rtk_t *rtk, const prcopt_t *opt)
+extern void rtkinit(RTK_t *rtk, const prcopt_t *opt)
 {
-    sol_t sol0={{0}};
+    Solution_t sol0={{0}};
     ambc_t ambc0={{{0}}};
     ssat_t ssat0={0};
     int i;
@@ -1686,7 +1686,7 @@ extern void rtkinit(rtk_t *rtk, const prcopt_t *opt)
 * args   : rtk_t    *rtk    IO  rtk control/result struct
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void rtkfree(rtk_t *rtk)
+extern void rtkfree(RTK_t *rtk)
 {
     trace(3,"rtkfree :\n");
     
@@ -1754,10 +1754,10 @@ extern void rtkfree(rtk_t *rtk)
 * notes  : before calling function, base station position rtk->sol.rb[] should
 *          be properly set for relative mode except for moving-baseline
 *-----------------------------------------------------------------------------*/
-extern int rtkpos(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
+extern int rtkpos(RTK_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
 {
     prcopt_t *opt=&rtk->opt;
-    sol_t solb={{0}};
+    Solution_t solb={{0}};
     gtime_t time;
     int i,nu,nr;
     char msg[128]="";

@@ -66,8 +66,8 @@ static int iobsr =0;            /* current reference observation data index */
 static int isbs  =0;            /* current sbas message index */
 static int revs  =0;            /* analysis direction (0:forward,1:backward) */
 static int aborts=0;            /* abort status */
-static sol_t *solf;             /* forward solutions */
-static sol_t *solb;             /* backward solutions */
+static Solution_t *solf;             /* forward solutions */
+static Solution_t *solb;             /* backward solutions */
 static double *rbf;             /* forward base positions */
 static double *rbb;             /* backward base positions */
 static int isolf=0;             /* current forward solutions index */
@@ -329,8 +329,8 @@ static void procpos(FILE *fp, const prcopt_t *popt, const solopt_t *sopt,
                     int mode)
 {
     gtime_t time={0};
-    sol_t sol={{0}};
-    rtk_t rtk;
+    Solution_t sol={{0}};
+    RTK_t rtk;
     obsd_t obs[MAXOBS*2]; /* for rover and base */
     double rb[3]={0};
     int i,nobs,n,solstatic,pri[]={6,1,2,3,4,5,1,6};
@@ -390,7 +390,7 @@ static void procpos(FILE *fp, const prcopt_t *popt, const solopt_t *sopt,
     rtkfree(&rtk);
 }
 /* validation of combined solutions ------------------------------------------*/
-static int valcomb(const sol_t *solf, const sol_t *solb)
+static int valcomb(const Solution_t *solf, const Solution_t *solb)
 {
     double dr[3],var[3];
     int i;
@@ -417,7 +417,7 @@ static int valcomb(const sol_t *solf, const sol_t *solb)
 static void combres(FILE *fp, const prcopt_t *popt, const solopt_t *sopt)
 {
     gtime_t time={0};
-    sol_t sols={{0}},sol={{0}};
+    Solution_t sols={{0}},sol={{0}};
     double tt,Qf[9],Qb[9],Qs[9],rbs[3]={0},rb[3]={0},rr_f[3],rr_b[3],rr_s[3];
     int i,j,k,solstatic,pri[]={0,1,2,3,4,5,1,6};
     
@@ -664,7 +664,7 @@ static int avepos(double *ra, int rcv, const obs_t *obs, const nav_t *nav,
 {
     obsd_t data[MAXOBS];
     gtime_t ts={0};
-    sol_t sol={{0}};
+    Solution_t sol={{0}};
     int i,j,n=0,m,iobs;
     char msg[128];
     
@@ -996,8 +996,8 @@ static int execses(gtime_t ts, gtime_t te, double ti, const prcopt_t *popt,
         }
     }
     else { /* combined */
-        solf=(sol_t *)malloc(sizeof(sol_t)*nepoch);
-        solb=(sol_t *)malloc(sizeof(sol_t)*nepoch);
+        solf=(Solution_t *)malloc(sizeof(Solution_t)*nepoch);
+        solb=(Solution_t *)malloc(sizeof(Solution_t)*nepoch);
         rbf=(double *)malloc(sizeof(double)*nepoch*3);
         rbb=(double *)malloc(sizeof(double)*nepoch*3);
         

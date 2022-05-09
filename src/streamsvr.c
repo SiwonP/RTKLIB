@@ -35,29 +35,32 @@
 #include "rtklib.h"
 
 /* test observation data message ---------------------------------------------*/
-static int is_obsmsg(int msg)
+static inline int is_obsmsg(int msg)
 {
-    return (1001<=msg&&msg<=1004)||(1009<=msg&&msg<=1012)||
-           (1071<=msg&&msg<=1077)||(1081<=msg&&msg<=1087)||
-           (1091<=msg&&msg<=1097)||(1101<=msg&&msg<=1107)||
-           (1111<=msg&&msg<=1117)||(1121<=msg&&msg<=1127)||
-           (1131<=msg&&msg<=1137);
+    return ((1001<=msg)&&(msg<=1004))||((1009<=msg)&&(msg<=1012))||
+           ((1071<=msg)&&(msg<=1077))||((1081<=msg)&&(msg<=1087))||
+           ((1091<=msg)&&(msg<=1097))||((1101<=msg)&&(msg<=1107))||
+           ((1111<=msg)&&(msg<=1117))||((1121<=msg)&&(msg<=1127))||
+           ((1131<=msg)&&(msg<=1137));
 }
 /* test navigation data message ----------------------------------------------*/
-static int is_navmsg(int msg)
+static inline int is_navmsg(int msg)
 {
-    return msg==1019||msg==1020||msg==1044||msg==1045||msg==1046||
-           msg==1042||msg==63  ||msg==1041;
+    return (msg==1019)||(msg==1020)||(msg==1044)||(msg==1045)||(msg==1046)||
+           (msg==1042)||(msg==63  )||(msg==1041);
 }
 /* test station info message -------------------------------------------------*/
-static int is_stamsg(int msg)
+static inline int is_stamsg(int msg)
 {
-    return msg==1005||msg==1006||msg==1007||msg==1008||msg==1033||msg==1230;
+    return (msg==1005)||(msg==1006)||(msg==1007)||(msg==1008)||(msg==1033)||(msg==1230);
 }
 /* test time interval --------------------------------------------------------*/
-static int is_tint(gtime_t time, double tint)
+static inline int is_tint(gtime_t time, double tint)
 {
-    if (tint<=0.0) return 1;
+    if (tint<=0.0)
+    {
+        return 1;
+    }
     return fmod(time2gpst(time,NULL)+DTTOL,tint)<=2.0*DTTOL;
 }
 /* new stream converter --------------------------------------------------------
@@ -220,7 +223,7 @@ static void rtcm2rtcm(rtcm_t *out, const rtcm_t *rtcm, int ret, int stasel)
     }
 }
 /* write rtcm3 msm to stream -------------------------------------------------*/
-static void write_rtcm3_msm(stream_t *str, rtcm_t *out, int msg, int sync)
+static void write_rtcm3_msm(Stream_t *str, rtcm_t *out, int msg, int sync)
 {
     obsd_t *data,buff[MAXOBS];
     int i,j,n,ns,sys,nobs,code,nsat=0,nsig=0,nmsg,mask[MAXCODE]={0};
@@ -275,7 +278,7 @@ static void write_rtcm3_msm(stream_t *str, rtcm_t *out, int msg, int sync)
     out->obs.n=nobs;
 }
 /* write obs data messages ---------------------------------------------------*/
-static void write_obs(gtime_t time, stream_t *str, strconv_t *conv)
+static void write_obs(gtime_t time, Stream_t *str, strconv_t *conv)
 {
     int i,j=0;
     
@@ -306,7 +309,7 @@ static void write_obs(gtime_t time, stream_t *str, strconv_t *conv)
     }
 }
 /* write nav data messages ---------------------------------------------------*/
-static void write_nav(gtime_t time, stream_t *str, strconv_t *conv)
+static void write_nav(gtime_t time, Stream_t *str, strconv_t *conv)
 {
     int i;
     
@@ -359,7 +362,7 @@ static int nextsat(nav_t *nav, int sat, int msg)
     return 0;
 }
 /* write cyclic nav data messages --------------------------------------------*/
-static void write_nav_cycle(stream_t *str, strconv_t *conv)
+static void write_nav_cycle(Stream_t *str, strconv_t *conv)
 {
     uint32_t tick=tickget();
     int i,sat,tint;
@@ -392,7 +395,7 @@ static void write_nav_cycle(stream_t *str, strconv_t *conv)
     }
 }
 /* write cyclic station info messages ----------------------------------------*/
-static void write_sta_cycle(stream_t *str, strconv_t *conv)
+static void write_sta_cycle(Stream_t *str, strconv_t *conv)
 {
     uint32_t tick=tickget();
     int i,tint;
@@ -419,7 +422,7 @@ static void write_sta_cycle(stream_t *str, strconv_t *conv)
     }
 }
 /* convert stearm ------------------------------------------------------------*/
-static void strconv(stream_t *str, strconv_t *conv, uint8_t *buff, int n)
+static void strconv(Stream_t *str, strconv_t *conv, uint8_t *buff, int n)
 {
     int i,ret;
     
@@ -451,7 +454,7 @@ static void strconv(stream_t *str, strconv_t *conv, uint8_t *buff, int n)
     write_sta_cycle(str,conv);
 }
 /* periodic command ----------------------------------------------------------*/
-static void periodic_cmd(int cycle, const char *cmd, stream_t *stream)
+static void periodic_cmd(int cycle, const char *cmd, Stream_t *stream)
 {
     const char *p=cmd,*q;
     char msg[1024],*r;
@@ -482,7 +485,7 @@ static void *strsvrthread(void *arg)
 #endif
 {
     strsvr_t *svr=(strsvr_t *)arg;
-    sol_t sol_nmea={{0}};
+    Solution_t sol_nmea={{0}};
     uint32_t tick,tick_nmea;
     uint8_t buff[1024];
     int i,n,cyc;

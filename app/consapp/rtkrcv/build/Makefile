@@ -129,6 +129,30 @@ rtkrcv/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtkrcv.dir/build.make CMakeFiles/rtkrcv.dir/build
 .PHONY : rtkrcv/fast
 
+Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.o: Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o
+.PHONY : Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.o
+
+# target to build an object file
+Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtkrcv.dir/build.make CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o
+.PHONY : Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o
+
+Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.i: Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.i
+.PHONY : Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.i
+
+# target to preprocess a source file
+Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtkrcv.dir/build.make CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.i
+.PHONY : Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.i
+
+Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.s: Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.s
+.PHONY : Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.s
+
+# target to generate assembly for a file
+Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtkrcv.dir/build.make CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.s
+.PHONY : Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.s
+
 Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.o: Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.o
 .PHONY : Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.o
 
@@ -1170,6 +1194,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... rtkrcv"
+	@echo "... Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.o"
+	@echo "... Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.i"
+	@echo "... Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.s"
 	@echo "... Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.o"
 	@echo "... Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.i"
 	@echo "... Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.s"

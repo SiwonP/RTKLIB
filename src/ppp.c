@@ -118,13 +118,13 @@
 #define IB(s,f,opt) (NR(opt)+MAXSAT*(f)+(s)-1)
 
 /* standard deviation of state -----------------------------------------------*/
-static double STD(rtk_t *rtk, int i)
+static double STD(RTK_t *rtk, int i)
 {
     if (rtk->sol.stat==SOLQ_FIX) return SQRT(rtk->Pa[i+i*rtk->nx]);
     return SQRT(rtk->P[i+i*rtk->nx]);
 }
 /* write solution status for PPP ---------------------------------------------*/
-extern int pppoutstat(rtk_t *rtk, char *buff)
+extern int pppoutstat(RTK_t *rtk, char *buff)
 {
     ssat_t *ssat;
     double tow,pos[3],vel[3],acc[3],*x;
@@ -335,7 +335,7 @@ static double varerr(int sat, int sys, double el, int idx, int type,
     return SQR(fact*opt->err[1])+SQR(fact*opt->err[2]/sinel);
 }
 /* initialize state and covariance -------------------------------------------*/
-static void initx(rtk_t *rtk, double xi, double var, int i)
+static void initx(RTK_t *rtk, double xi, double var, int i)
 {
     int j;
     rtk->x[i]=xi;
@@ -401,7 +401,7 @@ static void corr_meas(const obsd_t *obs, const nav_t *nav, const double *azel,
     if (P[0]!=0.0&&P[1]!=0.0) *Pc=C1*P[0]+C2*P[1];
 }
 /* detect cycle slip by LLI --------------------------------------------------*/
-static void detslp_ll(rtk_t *rtk, const obsd_t *obs, int n)
+static void detslp_ll(RTK_t *rtk, const obsd_t *obs, int n)
 {
     int i,j;
     
@@ -416,7 +416,7 @@ static void detslp_ll(rtk_t *rtk, const obsd_t *obs, int n)
     }
 }
 /* detect cycle slip by geometry free phase jump -----------------------------*/
-static void detslp_gf(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
+static void detslp_gf(RTK_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
 {
     double g0,g1;
     int i,j;
@@ -441,7 +441,7 @@ static void detslp_gf(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
     }
 }
 /* detect slip by Melbourne-Wubbena linear combination jump ------------------*/
-static void detslp_mw(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
+static void detslp_mw(RTK_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
 {
     double w0,w1;
     int i,j;
@@ -465,7 +465,7 @@ static void detslp_mw(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
     }
 }
 /* temporal update of position -----------------------------------------------*/
-static void udpos_ppp(rtk_t *rtk)
+static void udpos_ppp(RTK_t *rtk)
 {
     double *F,*P,*FP,*x,*xp,pos[3],Q[9]={0},Qv[9];
     int i,j,*ix,nx;
@@ -545,7 +545,7 @@ static void udpos_ppp(rtk_t *rtk)
     free(ix); free(F); free(P); free(FP); free(x); free(xp);
 }
 /* temporal update of clock --------------------------------------------------*/
-static void udclk_ppp(rtk_t *rtk)
+static void udclk_ppp(RTK_t *rtk)
 {
     double dtr;
     int i;
@@ -566,7 +566,7 @@ static void udclk_ppp(rtk_t *rtk)
     }
 }
 /* temporal update of tropospheric parameters --------------------------------*/
-static void udtrop_ppp(rtk_t *rtk)
+static void udtrop_ppp(RTK_t *rtk)
 {
     double pos[3],azel[]={0.0,PI/2.0},ztd,var;
     int i=IT(&rtk->opt),j;
@@ -593,7 +593,7 @@ static void udtrop_ppp(rtk_t *rtk)
     }
 }
 /* temporal update of ionospheric parameters ---------------------------------*/
-static void udiono_ppp(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
+static void udiono_ppp(RTK_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
 {
     double freq1,freq2,ion,sinel,pos[3],*azel;
     char *p;
@@ -631,7 +631,7 @@ static void udiono_ppp(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
     }
 }
 /* temporal update of L5-receiver-dcb parameters -----------------------------*/
-static void uddcb_ppp(rtk_t *rtk)
+static void uddcb_ppp(RTK_t *rtk)
 {
     int i=ID(&rtk->opt);
     
@@ -642,7 +642,7 @@ static void uddcb_ppp(rtk_t *rtk)
     }
 }
 /* temporal update of phase biases -------------------------------------------*/
-static void udbias_ppp(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
+static void udbias_ppp(RTK_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
 {
     double L[NFREQ],P[NFREQ],Lc,Pc,bias[MAXOBS],offset=0.0,pos[3]={0};
     double freq1,freq2,ion,dantr[NFREQ]={0},dants[NFREQ]={0};
@@ -732,7 +732,7 @@ static void udbias_ppp(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
     }
 }
 /* temporal update of states --------------------------------------------------*/
-static void udstate_ppp(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
+static void udstate_ppp(RTK_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
 {
     trace(3,"udstate_ppp: n=%d\n",n);
     
@@ -858,7 +858,7 @@ static int model_iono(gtime_t time, const double *pos, const double *azel,
 static int ppp_res(int post, const obsd_t *obs, int n, const double *rs,
                    const double *dts, const double *var_rs, const int *svh,
                    const double *dr, int *exc, const nav_t *nav,
-                   const double *x, rtk_t *rtk, double *v, double *H, double *R,
+                   const double *x, RTK_t *rtk, double *v, double *H, double *R,
                    double *azel)
 {
     prcopt_t *opt=&rtk->opt;
@@ -1005,7 +1005,7 @@ extern int pppnx(const prcopt_t *opt)
     return NX(opt);
 }
 /* update solution status ----------------------------------------------------*/
-static void update_stat(rtk_t *rtk, const obsd_t *obs, int n, int stat)
+static void update_stat(RTK_t *rtk, const obsd_t *obs, int n, int stat)
 {
     const prcopt_t *opt=&rtk->opt;
     int i,j;
@@ -1052,7 +1052,7 @@ static void update_stat(rtk_t *rtk, const obsd_t *obs, int n, int stat)
     }
 }
 /* test hold ambiguity -------------------------------------------------------*/
-static int test_hold_amb(rtk_t *rtk)
+static int test_hold_amb(RTK_t *rtk)
 {
     int i,j,stat=0;
     
@@ -1076,7 +1076,7 @@ static int test_hold_amb(rtk_t *rtk)
     return ++rtk->nfix>=rtk->opt.minfix;
 }
 /* precise point positioning -------------------------------------------------*/
-extern void pppos(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
+extern void pppos(RTK_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
 {
     const prcopt_t *opt=&rtk->opt;
     double *rs,*dts,*var,*v,*H,*R,*azel,*xp,*Pp,dr[3]={0},std[3];

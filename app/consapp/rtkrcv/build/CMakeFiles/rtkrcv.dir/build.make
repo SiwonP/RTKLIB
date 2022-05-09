@@ -97,10 +97,24 @@ CMakeFiles/rtkrcv.dir/vt.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/rtkrcv.dir/vt.c.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/vt.c -o CMakeFiles/rtkrcv.dir/vt.c.s
 
+CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o: CMakeFiles/rtkrcv.dir/flags.make
+CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c
+CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c
+
+CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c > CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.i
+
+CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.s
+
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.i: cmake_force
@@ -114,7 +128,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/co
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c.i: cmake_force
@@ -128,7 +142,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/co
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c.i: cmake_force
@@ -142,7 +156,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/co
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/datum.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/datum.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/datum.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/datum.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/datum.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/datum.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/datum.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/datum.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/datum.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/datum.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/datum.c.i: cmake_force
@@ -156,7 +170,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/da
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/download.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/download.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/download.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/download.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/download.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/download.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/download.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/download.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/download.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/download.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/download.c.i: cmake_force
@@ -170,7 +184,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/do
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ephemeris.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ephemeris.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ephemeris.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ephemeris.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ephemeris.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ephemeris.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ephemeris.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ephemeris.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ephemeris.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ephemeris.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ephemeris.c.i: cmake_force
@@ -184,7 +198,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ep
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/geoid.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/geoid.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/geoid.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/geoid.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/geoid.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/geoid.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/geoid.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/geoid.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/geoid.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/geoid.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/geoid.c.i: cmake_force
@@ -198,7 +212,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ge
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gis.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gis.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gis.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gis.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gis.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gis.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gis.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gis.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gis.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gis.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gis.c.i: cmake_force
@@ -212,7 +226,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/gi
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ionex.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ionex.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ionex.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ionex.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ionex.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ionex.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ionex.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ionex.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ionex.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ionex.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ionex.c.i: cmake_force
@@ -226,7 +240,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/io
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/lambda.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/lambda.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/lambda.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/lambda.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/lambda.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/lambda.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/lambda.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/lambda.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/lambda.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/lambda.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/lambda.c.i: cmake_force
@@ -240,7 +254,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/la
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/options.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/options.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/options.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/options.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/options.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/options.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/options.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/options.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/options.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/options.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/options.c.i: cmake_force
@@ -254,7 +268,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/op
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pntpos.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pntpos.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pntpos.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pntpos.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pntpos.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pntpos.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pntpos.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pntpos.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pntpos.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pntpos.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pntpos.c.i: cmake_force
@@ -268,7 +282,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pn
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/postpos.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/postpos.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/postpos.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/postpos.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/postpos.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/postpos.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/postpos.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/postpos.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/postpos.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/postpos.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/postpos.c.i: cmake_force
@@ -282,7 +296,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/po
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp.c.i: cmake_force
@@ -296,7 +310,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pp
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp_ar.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp_ar.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp_ar.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp_ar.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp_ar.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp_ar.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp_ar.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp_ar.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp_ar.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp_ar.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ppp_ar.c.i: cmake_force
@@ -310,7 +324,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pp
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/preceph.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/preceph.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/preceph.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/preceph.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/preceph.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/preceph.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/preceph.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/preceph.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/preceph.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/preceph.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/preceph.c.i: cmake_force
@@ -324,7 +338,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/pr
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcvraw.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcvraw.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcvraw.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcvraw.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcvraw.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcvraw.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcvraw.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcvraw.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcvraw.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcvraw.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcvraw.c.i: cmake_force
@@ -338,7 +352,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rc
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rinex.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rinex.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rinex.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rinex.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rinex.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rinex.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rinex.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rinex.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rinex.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rinex.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rinex.c.i: cmake_force
@@ -352,7 +366,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ri
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm.c.i: cmake_force
@@ -366,7 +380,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rt
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm2.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm2.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm2.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm2.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm2.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm2.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm2.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm2.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm2.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm2.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm2.c.i: cmake_force
@@ -380,7 +394,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rt
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3.c.i: cmake_force
@@ -394,7 +408,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rt
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3e.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3e.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3e.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3e.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3e.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3e.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3e.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3e.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3e.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3e.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtcm3e.c.i: cmake_force
@@ -408,7 +422,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rt
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkcmn.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkcmn.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkcmn.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkcmn.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkcmn.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkcmn.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkcmn.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkcmn.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkcmn.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkcmn.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkcmn.c.i: cmake_force
@@ -422,7 +436,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rt
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkpos.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkpos.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkpos.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkpos.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkpos.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkpos.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkpos.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkpos.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkpos.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkpos.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtkpos.c.i: cmake_force
@@ -436,7 +450,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rt
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtksvr.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtksvr.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtksvr.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtksvr.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtksvr.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtksvr.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtksvr.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtksvr.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtksvr.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtksvr.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rtksvr.c.i: cmake_force
@@ -450,7 +464,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rt
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sbas.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sbas.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sbas.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sbas.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sbas.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sbas.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sbas.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sbas.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sbas.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sbas.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sbas.c.i: cmake_force
@@ -464,7 +478,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/sb
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/solution.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/solution.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/solution.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/solution.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/solution.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/solution.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/solution.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/solution.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/solution.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/solution.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/solution.c.i: cmake_force
@@ -478,7 +492,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/so
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/stream.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/stream.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/stream.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/stream.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/stream.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/stream.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/stream.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/stream.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/stream.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/stream.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/stream.c.i: cmake_force
@@ -492,7 +506,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/st
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/streamsvr.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/streamsvr.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/streamsvr.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/streamsvr.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/streamsvr.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/streamsvr.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/streamsvr.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/streamsvr.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/streamsvr.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/streamsvr.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/streamsvr.c.i: cmake_force
@@ -506,7 +520,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/st
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tides.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tides.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tides.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tides.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tides.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tides.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tides.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tides.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tides.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tides.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tides.c.i: cmake_force
@@ -520,7 +534,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/ti
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tle.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tle.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tle.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tle.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tle.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tle.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tle.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tle.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tle.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tle.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tle.c.i: cmake_force
@@ -534,7 +548,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/tl
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/binex.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/binex.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/binex.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/binex.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/binex.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/binex.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/binex.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/binex.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/binex.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/binex.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/binex.c.i: cmake_force
@@ -548,7 +562,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rc
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/crescent.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/crescent.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/crescent.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/crescent.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/crescent.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/crescent.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/crescent.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/crescent.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/crescent.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/crescent.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/crescent.c.i: cmake_force
@@ -562,7 +576,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rc
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/javad.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/javad.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/javad.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/javad.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/javad.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/javad.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/javad.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/javad.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/javad.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/javad.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/javad.c.i: cmake_force
@@ -576,7 +590,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rc
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/novatel.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/novatel.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/novatel.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/novatel.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/novatel.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/novatel.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/novatel.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/novatel.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/novatel.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/novatel.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/novatel.c.i: cmake_force
@@ -590,7 +604,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rc
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/nvs.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/nvs.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/nvs.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/nvs.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/nvs.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/nvs.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/nvs.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/nvs.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/nvs.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/nvs.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/nvs.c.i: cmake_force
@@ -604,7 +618,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rc
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/rt17.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/rt17.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/rt17.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/rt17.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/rt17.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/rt17.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/rt17.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/rt17.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/rt17.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/rt17.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/rt17.c.i: cmake_force
@@ -618,7 +632,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rc
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/septentrio.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/septentrio.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/septentrio.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/septentrio.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/septentrio.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/septentrio.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/septentrio.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/septentrio.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/septentrio.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/septentrio.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/septentrio.c.i: cmake_force
@@ -632,7 +646,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rc
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/skytraq.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/skytraq.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/skytraq.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/skytraq.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/skytraq.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/skytraq.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/skytraq.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/skytraq.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/skytraq.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/skytraq.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/skytraq.c.i: cmake_force
@@ -646,7 +660,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rc
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ss2.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ss2.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ss2.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ss2.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ss2.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ss2.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ss2.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ss2.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ss2.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ss2.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ss2.c.i: cmake_force
@@ -660,7 +674,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rc
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c.o: CMakeFiles/rtkrcv.dir/flags.make
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c.o: /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c.o: CMakeFiles/rtkrcv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building C object CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c.o -MF CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c.o.d -o CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c.o -c /Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c
 
 CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c.i: cmake_force
@@ -675,6 +689,7 @@ CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rc
 rtkrcv_OBJECTS = \
 "CMakeFiles/rtkrcv.dir/rtkrcv.c.o" \
 "CMakeFiles/rtkrcv.dir/vt.c.o" \
+"CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o" \
 "CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.o" \
 "CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c.o" \
 "CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c.o" \
@@ -722,6 +737,7 @@ rtkrcv_EXTERNAL_OBJECTS =
 
 rtkrcv: CMakeFiles/rtkrcv.dir/rtkrcv.c.o
 rtkrcv: CMakeFiles/rtkrcv.dir/vt.c.o
+rtkrcv: CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/clock.c.o
 rtkrcv: CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convgpx.c.o
 rtkrcv: CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convkml.c.o
 rtkrcv: CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/convrnx.c.o
@@ -765,7 +781,7 @@ rtkrcv: CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLI
 rtkrcv: CMakeFiles/rtkrcv.dir/Users/simon/Documents/tilmant/projects/forks/RTKLIB/src/rcv/ublox.c.o
 rtkrcv: CMakeFiles/rtkrcv.dir/build.make
 rtkrcv: CMakeFiles/rtkrcv.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Linking C executable rtkrcv"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/simon/Documents/tilmant/projects/forks/RTKLIB/app/consapp/rtkrcv/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Linking C executable rtkrcv"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/rtkrcv.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

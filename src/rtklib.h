@@ -61,6 +61,10 @@ extern "C" {
 #include "rinex.h"
 #include "satellite.h"
 #include "clock.h"
+#include "stream.h"
+
+#include "mathUtils.h"
+#include "utils.h"
 
 /* constants -----------------------------------------------------------------*/
 
@@ -71,13 +75,6 @@ extern "C" {
 #define COPYRIGHT_RTKLIB \
             "Copyright (C) 2007-2020 T.Takasu\nAll rights reserved."
 
-#define PI          3.1415926535897932  /* pi */
-#define D2R         (PI/180.0)          /* deg to rad */
-#define R2D         (180.0/PI)          /* rad to deg */
-#define CLIGHT      299792458.0         /* speed of light (m/s) */
-#define SC2RAD      3.1415926535898     /* semi-circle to radian (IS-GPS) */
-#define AU          149597870691.0      /* 1 AU (m) */
-#define AS2R        (D2R/3600.0)        /* arc sec to radian */
 
 #define OMGE        7.2921151467E-5     /* earth angular velocity (IS-GPS) (rad/s) */
 
@@ -168,29 +165,6 @@ extern "C" {
 
 #define INT_SWAP_TRAC 86400.0           /* swap interval of trace file (s) */
 #define INT_SWAP_STAT 86400.0           /* swap interval of solution status file (s) */
-
-#define MAXEXFILE   1024                /* max number of expanded files */
-#define MAXSBSAGEF  30.0                /* max age of SBAS fast correction (s) */
-#define MAXSBSAGEL  1800.0              /* max age of SBAS long term corr (s) */
-#define MAXSBSURA   8                   /* max URA of SBAS satellite */
-#define MAXBAND     10                  /* max SBAS band of IGP */
-#define MAXNIGP     201                 /* max number of IGP in SBAS band */
-#define MAXNGEO     4                   /* max number of GEO satellites */
-#define MAXCOMMENT  100                 /* max number of RINEX comments */
-#define MAXSTRPATH  1024                /* max length of stream path */
-#define MAXSTRMSG   1024                /* max length of stream message */
-#define MAXSTRRTK   8                   /* max number of stream in RTK server */
-#define MAXSBSMSG   32                  /* max number of SBAS msg in RTK server */
-#define MAXSOLMSG   8191                /* max length of solution message */
-#define MAXRAWLEN   16384               /* max length of receiver raw message */
-#define MAXERRMSG   4096                /* max length of error/warning message */
-#define MAXANT      64                  /* max length of station name/antenna type */
-#define MAXSOLBUF   256                 /* max number of solution buffer */
-#define MAXOBSBUF   128                 /* max number of observation data buffer */
-#define MAXNRPOS    16                  /* max number of reference positions */
-#define MAXLEAPS    64                  /* max number of leap seconds table */
-#define MAXGISLAYER 32                  /* max number of GIS data layers */
-#define MAXRCVCMD   4096                /* max length of receiver commands */
 
 #define RNX2VER     2.10                /* RINEX ver.2 default output version */
 #define RNX3VER     3.00                /* RINEX ver.3 default output version */
@@ -408,47 +382,6 @@ extern "C" {
 #define LLI_BOCTRK  0x04                /* LLI: boc tracking of mboc signal */
 #define LLI_HALFA   0x40                /* LLI: half-cycle added */
 #define LLI_HALFS   0x80                /* LLI: half-cycle subtracted */
-
-#define P2_5        0.03125             /* 2^-5 */
-#define P2_6        0.015625            /* 2^-6 */
-#define P2_11       4.882812500000000E-04 /* 2^-11 */
-#define P2_15       3.051757812500000E-05 /* 2^-15 */
-#define P2_17       7.629394531250000E-06 /* 2^-17 */
-#define P2_19       1.907348632812500E-06 /* 2^-19 */
-#define P2_20       9.536743164062500E-07 /* 2^-20 */
-#define P2_21       4.768371582031250E-07 /* 2^-21 */
-#define P2_23       1.192092895507810E-07 /* 2^-23 */
-#define P2_24       5.960464477539063E-08 /* 2^-24 */
-#define P2_27       7.450580596923828E-09 /* 2^-27 */
-#define P2_29       1.862645149230957E-09 /* 2^-29 */
-#define P2_30       9.313225746154785E-10 /* 2^-30 */
-#define P2_31       4.656612873077393E-10 /* 2^-31 */
-#define P2_32       2.328306436538696E-10 /* 2^-32 */
-#define P2_33       1.164153218269348E-10 /* 2^-33 */
-#define P2_35       2.910383045673370E-11 /* 2^-35 */
-#define P2_38       3.637978807091710E-12 /* 2^-38 */
-#define P2_39       1.818989403545856E-12 /* 2^-39 */
-#define P2_40       9.094947017729280E-13 /* 2^-40 */
-#define P2_43       1.136868377216160E-13 /* 2^-43 */
-#define P2_48       3.552713678800501E-15 /* 2^-48 */
-#define P2_50       8.881784197001252E-16 /* 2^-50 */
-#define P2_55       2.775557561562891E-17 /* 2^-55 */
-
-#ifdef WIN32
-#define thread_t    HANDLE
-#define lock_t      CRITICAL_SECTION
-#define initlock(f) InitializeCriticalSection(f)
-#define lock(f)     EnterCriticalSection(f)
-#define unlock(f)   LeaveCriticalSection(f)
-#define FILEPATHSEP '\\'
-#else
-#define thread_t    pthread_t
-#define lock_t      pthread_mutex_t
-#define initlock(f) pthread_mutex_init(f,NULL)
-#define lock(f)     pthread_mutex_lock(f)
-#define unlock(f)   pthread_mutex_unlock(f)
-#define FILEPATHSEP '/'
-#endif
 
 
 /**
@@ -896,7 +829,7 @@ typedef struct Solution {        /* solution type */
     float age;          /* age of differential (s) */
     float ratio;        /* AR ratio factor for valiation */
     float thres;        /* AR ratio threshold for valiation */
-} sol_t;
+} Solution_t;
 
 /**
  * @struct SolutionBuffer_t
@@ -908,7 +841,7 @@ typedef struct SolutionBuffer {        /* solution buffer type */
     int cyclic;         /* cyclic buffer flag */
     int start,end;      /* start/end index */
     gtime_t time;       /* current solution time */
-    sol_t *data;        /* solution data */
+    Solution_t *data;        /* solution data */
     double rb[3];       /* reference position {x,y,z} (ecef) (m) */
     uint8_t buff[MAXSOLMSG+1]; /* message buffer */
     int nb;             /* number of byte in message buffer */
@@ -1231,7 +1164,7 @@ typedef struct AmbiguityControl {        /* ambiguity control type */
  * 
  */
 typedef struct RTK {        /* RTK control/result type */
-    sol_t  sol;         /* RTK solution */
+    Solution_t  sol;         /* RTK solution */
     double rb[6];       /* base position/velocity (ecef) (m|m/s) */
     int nx,na;          /* number of float states/fixed states */
     double tt;          /* time difference between current and previous (s) */
@@ -1243,7 +1176,7 @@ typedef struct RTK {        /* RTK control/result type */
     int neb;            /* bytes in error message buffer */
     char errbuf[MAXERRMSG]; /* error message buffer */
     prcopt_t opt;       /* processing options */
-} rtk_t;
+} RTK_t;
 
 /**
  * @brief 
@@ -1278,27 +1211,6 @@ typedef struct Raw {        /* receiver raw data control type */
     int format;         /* receiver stream format */
     void *rcv_data;     /* receiver dependent data */
 } raw_t;
-
-/**
- * @struct Stream_t
- * @brief 
- * 
- */
-typedef struct Stream {        /* stream type */
-    int type;           /* type (STR_???) */
-    int mode;           /* mode (STR_MODE_?) */
-    int state;          /* state (-1:error,0:close,1:open) */
-    uint32_t inb,inr;   /* input bytes/rate */
-    uint32_t outb,outr; /* output bytes/rate */
-    uint32_t tick_i;    /* input tick tick */
-    uint32_t tick_o;    /* output tick */
-    uint32_t tact;      /* active tick */
-    uint32_t inbt,outbt; /* input/output bytes at tick */
-    lock_t lock;        /* lock flag */
-    void *port;         /* type dependent port control struct */
-    char path[MAXSTRPATH]; /* stream path */
-    char msg [MAXSTRMSG];  /* stream message */
-} stream_t;
 
 /**
  * @struct StreamConverter_t
@@ -1336,8 +1248,8 @@ typedef struct StreamServer {        /* stream server type */
     uint8_t *buff;      /* input buffers */
     uint8_t *pbuf;      /* peek buffer */
     uint32_t tick;      /* start tick */
-    stream_t stream[16]; /* input/output streams */
-    stream_t strlog[16]; /* return log streams */
+    Stream_t stream[16]; /* input/output streams */
+    Stream_t strlog[16]; /* return log streams */
     strconv_t *conv[16]; /* stream converter */
     thread_t thread;    /* server thread */
     lock_t lock;        /* lock flag */
@@ -1360,14 +1272,14 @@ typedef struct RTKServer {        /* RTK server type */
     int navsel;         /* ephemeris select (0:all,1:rover,2:base,3:corr) */
     int nsbs;           /* number of sbas message */
     int nsol;           /* number of solution buffer */
-    rtk_t rtk;          /* RTK control/result struct */
+    RTK_t rtk;          /* RTK control/result struct */
     int nb [3];         /* bytes in input buffers {rov,base} */
     int nsb[2];         /* bytes in soulution buffers */
     int npb[3];         /* bytes in input peek buffers */
     uint8_t *buff[3];   /* input buffers {rov,base,corr} */
     uint8_t *sbuf[2];   /* output buffers {sol1,sol2} */
     uint8_t *pbuf[3];   /* peek buffers {rov,base,corr} */
-    sol_t solbuf[MAXSOLBUF]; /* solution buffer */
+    Solution_t solbuf[MAXSOLBUF]; /* solution buffer */
     uint32_t nmsg[3][10]; /* input message counts */
     raw_t  raw [3];     /* receiver raw control {rov,base,corr} */
     rtcm_t rtcm[3];     /* RTCM control {rov,base,corr} */
@@ -1376,8 +1288,8 @@ typedef struct RTKServer {        /* RTK server type */
     obs_t obs[3][MAXOBSBUF]; /* observation data {rov,base,corr} */
     nav_t nav;          /* navigation data */
     sbsmsg_t sbsmsg[MAXSBSMSG]; /* SBAS message buffer */
-    stream_t stream[8]; /* streams {rov,base,corr,sol1,sol2,logr,logb,logc} */
-    stream_t *moni;     /* monitor stream */
+    Stream_t stream[8]; /* streams {rov,base,corr,sol1,sol2,logr,logb,logc} */
+    Stream_t *moni;     /* monitor stream */
     uint32_t tick;      /* start tick */
     thread_t thread;    /* server thread */
     int cputime;        /* CPU time (ms) for a processing cycle */
@@ -1388,7 +1300,7 @@ typedef struct RTKServer {        /* RTK server type */
     char cmd_reset[MAXRCVCMD]; /* reset command */
     double bl_reset;    /* baseline length to reset (km) */
     lock_t lock;        /* lock flag */
-} rtksvr_t;
+} RTKServer_t;
 
 /**
  * @struct GISDataPoint_t
@@ -1717,7 +1629,7 @@ EXPORT int init_rt17  (raw_t *raw);
 EXPORT int init_cmr   (raw_t *raw);
 EXPORT void free_rt17 (raw_t *raw);
 EXPORT void free_cmr  (raw_t *raw);
-EXPORT int update_cmr (raw_t *raw, rtksvr_t *svr, obs_t *obs);
+EXPORT int update_cmr (raw_t *raw, RTKServer_t *svr, obs_t *obs);
 
 EXPORT int input_oem4  (raw_t *raw, uint8_t data);
 EXPORT int input_oem3  (raw_t *raw, uint8_t data);
@@ -1760,8 +1672,8 @@ EXPORT int gen_rtcm3   (rtcm_t *rtcm, int type, int subtype, int sync);
 EXPORT void initsolbuf(solbuf_t *solbuf, int cyclic, int nmax);
 EXPORT void freesolbuf(solbuf_t *solbuf);
 EXPORT void freesolstatbuf(solstatbuf_t *solstatbuf);
-EXPORT sol_t *getsol(solbuf_t *solbuf, int index);
-EXPORT int addsol(solbuf_t *solbuf, const sol_t *sol);
+EXPORT Solution_t *getsol(solbuf_t *solbuf, int index);
+EXPORT int addsol(solbuf_t *solbuf, const Solution_t *sol);
 EXPORT int readsol (char *files[], int nfile, solbuf_t *sol);
 EXPORT int readsolt(char *files[], int nfile, gtime_t ts, gtime_t te,
                     double tint, int qflag, solbuf_t *sol);
@@ -1773,21 +1685,21 @@ EXPORT int inputsol(uint8_t data, gtime_t ts, gtime_t te, double tint,
 
 EXPORT int outprcopts(uint8_t *buff, const prcopt_t *opt);
 EXPORT int outsolheads(uint8_t *buff, const solopt_t *opt);
-EXPORT int outsols  (uint8_t *buff, const sol_t *sol, const double *rb,
+EXPORT int outsols  (uint8_t *buff, const Solution_t *sol, const double *rb,
                      const solopt_t *opt);
-EXPORT int outsolexs(uint8_t *buff, const sol_t *sol, const ssat_t *ssat,
+EXPORT int outsolexs(uint8_t *buff, const Solution_t *sol, const ssat_t *ssat,
                      const solopt_t *opt);
 EXPORT void outprcopt(FILE *fp, const prcopt_t *opt);
 EXPORT void outsolhead(FILE *fp, const solopt_t *opt);
-EXPORT void outsol  (FILE *fp, const sol_t *sol, const double *rb,
+EXPORT void outsol  (FILE *fp, const Solution_t *sol, const double *rb,
                      const solopt_t *opt);
-EXPORT void outsolex(FILE *fp, const sol_t *sol, const ssat_t *ssat,
+EXPORT void outsolex(FILE *fp, const Solution_t *sol, const ssat_t *ssat,
                      const solopt_t *opt);
-EXPORT int outnmea_rmc(uint8_t *buff, const sol_t *sol);
-EXPORT int outnmea_gga(uint8_t *buff, const sol_t *sol);
-EXPORT int outnmea_gsa(uint8_t *buff, const sol_t *sol,
+EXPORT int outnmea_rmc(uint8_t *buff, const Solution_t *sol);
+EXPORT int outnmea_gga(uint8_t *buff, const Solution_t *sol);
+EXPORT int outnmea_gsa(uint8_t *buff, const Solution_t *sol,
                        const ssat_t *ssat);
-EXPORT int outnmea_gsv(uint8_t *buff, const sol_t *sol,
+EXPORT int outnmea_gsv(uint8_t *buff, const Solution_t *sol,
                        const ssat_t *ssat);
 
 /* google earth kml converter ------------------------------------------------*/
@@ -1830,24 +1742,21 @@ EXPORT void setsysopts(const prcopt_t *popt, const solopt_t *sopt,
 
 /* stream data input and output functions ------------------------------------*/
 EXPORT void strinitcom(void);
-EXPORT void strinit  (stream_t *stream);
-EXPORT void strlock  (stream_t *stream);
-EXPORT void strunlock(stream_t *stream);
-EXPORT int  stropen  (stream_t *stream, int type, int mode, const char *path);
-EXPORT void strclose (stream_t *stream);
-EXPORT int  strread  (stream_t *stream, uint8_t *buff, int n);
-EXPORT int  strwrite (stream_t *stream, uint8_t *buff, int n);
-EXPORT void strsync  (stream_t *stream1, stream_t *stream2);
-EXPORT int  strstat  (stream_t *stream, char *msg);
-EXPORT int  strstatx (stream_t *stream, char *msg);
-EXPORT void strsum   (stream_t *stream, int *inb, int *inr, int *outb, int *outr);
+EXPORT void strinit  (Stream_t *stream);
+EXPORT int  stropen  (Stream_t *stream, int type, int mode, const char *path);
+EXPORT void strclose (Stream_t *stream);
+EXPORT int  strread  (Stream_t *stream, uint8_t *buff, int n);
+EXPORT int  strwrite (Stream_t *stream, uint8_t *buff, int n);
+EXPORT void strsync  (Stream_t *stream1, Stream_t *stream2);
+EXPORT int  strstat  (Stream_t *stream, char *msg);
+EXPORT int  strstatx (Stream_t *stream, char *msg);
+EXPORT void strsum   (Stream_t *stream, int *inb, int *inr, int *outb, int *outr);
 EXPORT void strsetopt(const int *opt);
-EXPORT gtime_t strgettime(stream_t *stream);
-EXPORT void strsendnmea(stream_t *stream, const sol_t *sol);
-EXPORT void strsendcmd(stream_t *stream, const char *cmd);
-EXPORT void strsettimeout(stream_t *stream, int toinact, int tirecon);
+EXPORT gtime_t strgettime(Stream_t *stream);
+EXPORT void strsendnmea(Stream_t *stream, const Solution_t *sol);
+EXPORT void strsendcmd(Stream_t *stream, const char *cmd);
+EXPORT void strsettimeout(Stream_t *stream, int toinact, int tirecon);
 EXPORT void strsetdir(const char *dir);
-EXPORT void strsetproxy(const char *addr);
 
 /* integer ambiguity resolution ----------------------------------------------*/
 EXPORT int lambda(int n, int m, const double *a, const double *Q, double *F,
@@ -1858,23 +1767,23 @@ EXPORT int lambda_search(int n, int m, const double *a, const double *Q,
 
 /* standard positioning ------------------------------------------------------*/
 EXPORT int pntpos(const obsd_t *obs, int n, const nav_t *nav,
-                  const prcopt_t *opt, sol_t *sol, double *azel,
+                  const prcopt_t *opt, Solution_t *sol, double *azel,
                   ssat_t *ssat, char *msg);
 
 /* precise positioning -------------------------------------------------------*/
-EXPORT void rtkinit(rtk_t *rtk, const prcopt_t *opt);
-EXPORT void rtkfree(rtk_t *rtk);
-EXPORT int  rtkpos (rtk_t *rtk, const obsd_t *obs, int nobs, const nav_t *nav);
+EXPORT void rtkinit(RTK_t *rtk, const prcopt_t *opt);
+EXPORT void rtkfree(RTK_t *rtk);
+EXPORT int  rtkpos (RTK_t *rtk, const obsd_t *obs, int nobs, const nav_t *nav);
 EXPORT int  rtkopenstat(const char *file, int level);
 EXPORT void rtkclosestat(void);
-EXPORT int  rtkoutstat(rtk_t *rtk, char *buff);
+EXPORT int  rtkoutstat(RTK_t *rtk, char *buff);
 
 /* precise point positioning -------------------------------------------------*/
-EXPORT void pppos(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav);
+EXPORT void pppos(RTK_t *rtk, const obsd_t *obs, int n, const nav_t *nav);
 EXPORT int pppnx(const prcopt_t *opt);
-EXPORT int pppoutstat(rtk_t *rtk, char *buff);
+EXPORT int pppoutstat(RTK_t *rtk, char *buff);
 
-EXPORT int ppp_ar(rtk_t *rtk, const obsd_t *obs, int n, int *exc,
+EXPORT int ppp_ar(RTK_t *rtk, const obsd_t *obs, int n, int *exc,
                   const nav_t *nav, const double *azel, double *x, double *P);
 
 /* post-processing positioning -----------------------------------------------*/
@@ -1896,23 +1805,23 @@ EXPORT strconv_t *strconvnew(int itype, int otype, const char *msgs, int staid,
 EXPORT void strconvfree(strconv_t *conv);
 
 /* rtk server functions ------------------------------------------------------*/
-EXPORT int  rtksvrinit  (rtksvr_t *svr);
-EXPORT void rtksvrfree  (rtksvr_t *svr);
-EXPORT int  rtksvrstart (rtksvr_t *svr, int cycle, int buffsize, int *strs,
+EXPORT int  rtksvrinit  (RTKServer_t *svr);
+EXPORT void rtksvrfree  (RTKServer_t *svr);
+EXPORT int  rtksvrstart (RTKServer_t *svr, int cycle, int buffsize, int *strs,
                          char **paths, int *formats, int navsel, char **cmds,
                          char **cmds_periodic, char **rcvopts, int nmeacycle,
                          int nmeareq, const double *nmeapos, prcopt_t *prcopt,
-                         solopt_t *solopt, stream_t *moni, char *errmsg);
-EXPORT void rtksvrstop  (rtksvr_t *svr, char **cmds);
-EXPORT int  rtksvropenstr(rtksvr_t *svr, int index, int str, const char *path,
+                         solopt_t *solopt, Stream_t *moni, char *errmsg);
+EXPORT void rtksvrstop  (RTKServer_t *svr, char **cmds);
+EXPORT int  rtksvropenstr(RTKServer_t *svr, int index, int str, const char *path,
                           const solopt_t *solopt);
-EXPORT void rtksvrclosestr(rtksvr_t *svr, int index);
-EXPORT void rtksvrlock  (rtksvr_t *svr);
-EXPORT void rtksvrunlock(rtksvr_t *svr);
-EXPORT int  rtksvrostat (rtksvr_t *svr, int type, gtime_t *time, int *sat,
+EXPORT void rtksvrclosestr(RTKServer_t *svr, int index);
+EXPORT void rtksvrlock  (RTKServer_t *svr);
+EXPORT void rtksvrunlock(RTKServer_t *svr);
+EXPORT int  rtksvrostat (RTKServer_t *svr, int type, gtime_t *time, int *sat,
                          double *az, double *el, int **snr, int *vsat);
-EXPORT void rtksvrsstat (rtksvr_t *svr, int *sstat, char *msg);
-EXPORT int  rtksvrmark(rtksvr_t *svr, const char *name, const char *comment);
+EXPORT void rtksvrsstat (RTKServer_t *svr, int *sstat, char *msg);
+EXPORT int  rtksvrmark(RTKServer_t *svr, const char *name, const char *comment);
 
 /* downloader functions ------------------------------------------------------*/
 EXPORT int dl_readurls(const char *file, char **types, int ntype, url_t *urls,

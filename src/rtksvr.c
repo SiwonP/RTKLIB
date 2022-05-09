@@ -48,7 +48,7 @@
 #define MIN_INT_RESET   30000   /* mininum interval of reset command (ms) */
 
 /* write solution header to output stream ------------------------------------*/
-static void writesolhead(stream_t *stream, const solopt_t *solopt)
+static void writesolhead(Stream_t *stream, const solopt_t *solopt)
 {
     uint8_t buff[1024];
     int n;
@@ -57,7 +57,7 @@ static void writesolhead(stream_t *stream, const solopt_t *solopt)
     strwrite(stream,buff,n);
 }
 /* save output buffer --------------------------------------------------------*/
-static void saveoutbuf(rtksvr_t *svr, uint8_t *buff, int n, int index)
+static void saveoutbuf(RTKServer_t *svr, uint8_t *buff, int n, int index)
 {
     rtksvrlock(svr);
     
@@ -68,7 +68,7 @@ static void saveoutbuf(rtksvr_t *svr, uint8_t *buff, int n, int index)
     rtksvrunlock(svr);
 }
 /* write solution to output stream -------------------------------------------*/
-static void writesol(rtksvr_t *svr, int index)
+static void writesol(RTKServer_t *svr, int index)
 {
     solopt_t solopt=solopt_default;
     uint8_t buff[MAXSOLMSG+1];
@@ -114,7 +114,7 @@ static void writesol(rtksvr_t *svr, int index)
     }
 }
 /* update glonass frequency channel number in raw data struct ----------------*/
-static void update_glofcn(rtksvr_t *svr)
+static void update_glofcn(RTKServer_t *svr)
 {
     int i,j,sat,frq;
     
@@ -135,7 +135,7 @@ static void update_glofcn(rtksvr_t *svr)
     }
 }
 /* update observation data ---------------------------------------------------*/
-static void update_obs(rtksvr_t *svr, obs_t *obs, int index, int iobs)
+static void update_obs(RTKServer_t *svr, obs_t *obs, int index, int iobs)
 {
     int i,n=0,sat,sys;
 
@@ -155,7 +155,7 @@ static void update_obs(rtksvr_t *svr, obs_t *obs, int index, int iobs)
     svr->nmsg[index][0]++;
 }
 /* update ephemeris ----------------------------------------------------------*/
-static void update_eph(rtksvr_t *svr, nav_t *nav, int ephsat, int ephset,
+static void update_eph(RTKServer_t *svr, nav_t *nav, int ephsat, int ephset,
                        int index)
 {
     eph_t *eph1,*eph2,*eph3;
@@ -196,7 +196,7 @@ static void update_eph(rtksvr_t *svr, nav_t *nav, int ephsat, int ephset,
     }
 }
 /* update sbas message -------------------------------------------------------*/
-static void update_sbs(rtksvr_t *svr, sbsmsg_t *sbsmsg, int index)
+static void update_sbs(RTKServer_t *svr, sbsmsg_t *sbsmsg, int index)
 {
     int i,sbssat=svr->rtk.opt.sbassatsel;
     
@@ -214,7 +214,7 @@ static void update_sbs(rtksvr_t *svr, sbsmsg_t *sbsmsg, int index)
     svr->nmsg[index][3]++;
 }
 /* update ion/utc parameters -------------------------------------------------*/
-static void update_ionutc(rtksvr_t *svr, nav_t *nav, int index)
+static void update_ionutc(RTKServer_t *svr, nav_t *nav, int index)
 {
     if (svr->navsel==0||svr->navsel==index+1) {
         matcpy(svr->nav.utc_gps,nav->utc_gps,8,1);
@@ -233,7 +233,7 @@ static void update_ionutc(rtksvr_t *svr, nav_t *nav, int index)
     svr->nmsg[index][2]++;
 }
 /* update antenna position ---------------------------------------------------*/
-static void update_antpos(rtksvr_t *svr, int index)
+static void update_antpos(RTKServer_t *svr, int index)
 {
     sta_t *sta;
     double pos[3],del[3]={0},dr[3];
@@ -269,7 +269,7 @@ static void update_antpos(rtksvr_t *svr, int index)
     svr->nmsg[index][4]++;
 }
 /* update ssr corrections ----------------------------------------------------*/
-static void update_ssr(rtksvr_t *svr, int index)
+static void update_ssr(RTKServer_t *svr, int index)
 {
     int i,sys,prn,iode;
 
@@ -303,7 +303,7 @@ static void update_ssr(rtksvr_t *svr, int index)
     svr->nmsg[index][7]++;
 }
 /* update rtk server struct --------------------------------------------------*/
-static void update_svr(rtksvr_t *svr, int ret, obs_t *obs, nav_t *nav,
+static void update_svr(RTKServer_t *svr, int ret, obs_t *obs, nav_t *nav,
                        int ephsat, int ephset, sbsmsg_t *sbsmsg, int index,
                        int iobs)
 {
@@ -336,7 +336,7 @@ static void update_svr(rtksvr_t *svr, int ret, obs_t *obs, nav_t *nav,
     }
 }
 /* decode receiver raw/rtcm data ---------------------------------------------*/
-static int decoderaw(rtksvr_t *svr, int index)
+static int decoderaw(RTKServer_t *svr, int index)
 {
     obs_t *obs;
     nav_t *nav;
@@ -394,7 +394,7 @@ static int decoderaw(rtksvr_t *svr, int index)
     return fobs;
 }
 /* decode download file ------------------------------------------------------*/
-static void decodefile(rtksvr_t *svr, int index)
+static void decodefile(RTKServer_t *svr, int index)
 {
     nav_t nav={0};
     char file[1024];
@@ -469,7 +469,7 @@ static void corr_phase_bias(obsd_t *obs, int n, const nav_t *nav)
     }
 }
 /* periodic command ----------------------------------------------------------*/
-static void periodic_cmd(int cycle, const char *cmd, stream_t *stream)
+static void periodic_cmd(int cycle, const char *cmd, Stream_t *stream)
 {
     const char *p=cmd,*q;
     char msg[1024],*r;
@@ -493,7 +493,7 @@ static void periodic_cmd(int cycle, const char *cmd, stream_t *stream)
 	}
 }
 /* baseline length -----------------------------------------------------------*/
-static double baseline_len(const rtk_t *rtk)
+static double baseline_len(const RTK_t *rtk)
 {
 	double dr[3];
 	int i;
@@ -506,9 +506,9 @@ static double baseline_len(const rtk_t *rtk)
 	return norm(dr,3)*0.001; /* (km) */
 }
 /* send nmea request to base/nrtk input stream -------------------------------*/
-static void send_nmea(rtksvr_t *svr, uint32_t *tickreset)
+static void send_nmea(RTKServer_t *svr, uint32_t *tickreset)
 {
-	sol_t sol_nmea={{0}};
+	Solution_t sol_nmea={{0}};
 	double vel,bl;
 	uint32_t tick=tickget();
 	int i;
@@ -564,10 +564,10 @@ static DWORD WINAPI rtksvrthread(void *arg)
 static void *rtksvrthread(void *arg)
 #endif
 {
-    rtksvr_t *svr=(rtksvr_t *)arg;
+    RTKServer_t *svr=(RTKServer_t *)arg;
     obs_t obs;
     obsd_t data[MAXOBS*2];
-    sol_t sol={{0}};
+    Solution_t sol={{0}};
     double tt;
     uint32_t tick,ticknmea,tick1hz,tickreset;
     uint8_t *p,*q;
@@ -692,10 +692,10 @@ static void *rtksvrthread(void *arg)
 * args   : rtksvr_t *svr    IO rtk server
 * return : status (0:error,1:ok)
 *-----------------------------------------------------------------------------*/
-extern int rtksvrinit(rtksvr_t *svr)
+extern int rtksvrinit(RTKServer_t *svr)
 {
     gtime_t time0={0};
-    sol_t  sol0 ={{0}};
+    Solution_t  sol0 ={{0}};
     eph_t  eph0 ={0,-1,-1};
     geph_t geph0={0,-1};
     seph_t seph0={0};
@@ -764,7 +764,7 @@ extern int rtksvrinit(rtksvr_t *svr)
 * args   : rtksvr_t *svr    IO rtk server
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void rtksvrfree(rtksvr_t *svr)
+extern void rtksvrfree(RTKServer_t *svr)
 {
     int i,j;
     
@@ -781,8 +781,8 @@ extern void rtksvrfree(rtksvr_t *svr)
 * args   : rtksvr_t *svr    IO rtk server
 * return : status (1:ok 0:error)
 *-----------------------------------------------------------------------------*/
-extern void rtksvrlock  (rtksvr_t *svr) {lock  (&svr->lock);}
-extern void rtksvrunlock(rtksvr_t *svr) {unlock(&svr->lock);}
+extern inline void rtksvrlock  (RTKServer_t *svr) {lock  (&svr->lock);}
+extern inline void rtksvrunlock(RTKServer_t *svr) {unlock(&svr->lock);}
 
 /* start rtk server ------------------------------------------------------------
 * start rtk server thread
@@ -829,11 +829,11 @@ extern void rtksvrunlock(rtksvr_t *svr) {unlock(&svr->lock);}
 *          char   *errmsg   O  error message
 * return : status (1:ok 0:error)
 *-----------------------------------------------------------------------------*/
-extern int rtksvrstart(rtksvr_t *svr, int cycle, int buffsize, int *strs,
+extern int rtksvrstart(RTKServer_t *svr, int cycle, int buffsize, int *strs,
                        char **paths, int *formats, int navsel, char **cmds,
                        char **cmds_periodic, char **rcvopts, int nmeacycle,
                        int nmeareq, const double *nmeapos, prcopt_t *prcopt,
-                       solopt_t *solopt, stream_t *moni, char *errmsg)
+                       solopt_t *solopt, Stream_t *moni, char *errmsg)
 {
     gtime_t time,time0={0};
     int i,j,rw;
@@ -923,8 +923,8 @@ extern int rtksvrstart(rtksvr_t *svr, int cycle, int buffsize, int *strs,
         /* set initial time for rtcm and raw */
         if (i<3) {
             time=utc2gpst(timeget());
-            svr->raw [i].time=strs[i]==STR_FILE?strgettime(svr->stream+i):time;
-            svr->rtcm[i].time=strs[i]==STR_FILE?strgettime(svr->stream+i):time;
+            svr->raw [i].time=strs[i]==STR_FILE?STREAM_getTime(svr->stream+i):time;
+            svr->rtcm[i].time=strs[i]==STR_FILE?STREAM_getTime(svr->stream+i):time;
         }
     }
     /* sync input streams */
@@ -963,7 +963,7 @@ extern int rtksvrstart(rtksvr_t *svr, int cycle, int buffsize, int *strs,
 *                              cmds[2]=input stream ephem (NULL: no command)
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void rtksvrstop(rtksvr_t *svr, char **cmds)
+extern void rtksvrstop(RTKServer_t *svr, char **cmds)
 {
     int i;
     
@@ -998,7 +998,7 @@ extern void rtksvrstop(rtksvr_t *svr, char **cmds)
 *          solopt_t *solopt I  solution options
 * return : status (1:ok 0:error)
 *-----------------------------------------------------------------------------*/
-extern int rtksvropenstr(rtksvr_t *svr, int index, int str, const char *path,
+extern int rtksvropenstr(RTKServer_t *svr, int index, int str, const char *path,
                          const solopt_t *solopt)
 {
     tracet(3,"rtksvropenstr: index=%d str=%d path=%s\n",index,str,path);
@@ -1033,7 +1033,7 @@ extern int rtksvropenstr(rtksvr_t *svr, int index, int str, const char *path,
 *                               6:log base station,7:log correction)
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void rtksvrclosestr(rtksvr_t *svr, int index)
+extern void rtksvrclosestr(RTKServer_t *svr, int index)
 {
     tracet(3,"rtksvrclosestr: index=%d\n",index);
     
@@ -1058,7 +1058,7 @@ extern void rtksvrclosestr(rtksvr_t *svr, int index)
 *          int     *vsat    O  valid satellite flag
 * return : number of satellites
 *-----------------------------------------------------------------------------*/
-extern int rtksvrostat(rtksvr_t *svr, int rcv, gtime_t *time, int *sat,
+extern int rtksvrostat(RTKServer_t *svr, int rcv, gtime_t *time, int *sat,
                        double *az, double *el, int **snr, int *vsat)
 {
     int i,j,ns;
@@ -1095,7 +1095,7 @@ extern int rtksvrostat(rtksvr_t *svr, int rcv, gtime_t *time, int *sat,
 *          char    *msg     O  status messages
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void rtksvrsstat(rtksvr_t *svr, int *sstat, char *msg)
+extern void rtksvrsstat(RTKServer_t *svr, int *sstat, char *msg)
 {
     int i;
     char s[MAXSTRMSG],*p=msg;
@@ -1116,7 +1116,7 @@ extern void rtksvrsstat(rtksvr_t *svr, int *sstat, char *msg)
 *          char    *comment I  comment string
 * return : status (1:ok 0:error)
 *-----------------------------------------------------------------------------*/
-extern int rtksvrmark(rtksvr_t *svr, const char *name, const char *comment)
+extern int rtksvrmark(RTKServer_t *svr, const char *name, const char *comment)
 {
     char buff[MAXSOLMSG+1],tstr[32],*p,*q;
     double tow,pos[3];

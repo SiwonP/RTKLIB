@@ -268,9 +268,12 @@ void utest10(void)
 {
     char s1[64],s2[64];
     gtime_t time1,time2;
-    int i;
+    int i,j;
     time1=timeget();
-    for (i=0;i<2000000000;i++) j=1;
+    for (i=0;i<2000000000;i++)
+    {
+        j=1;
+    }
     time2=timeget();
     time2str(time1,s1,6);
     time2str(time2,s2,6);

@@ -84,8 +84,8 @@ extern FILE *popen(const char *, const char *);
 extern int pclose(FILE *);
 
 /* global variables ----------------------------------------------------------*/
-static rtksvr_t svr;                    /* rtk server struct */
-static stream_t moni;                   /* monitor stream */
+static RTKServer_t svr;                    /* rtk server struct */
+static Stream_t moni;                   /* monitor stream */
 
 static int intflg       =0;             /* interrupt flag (2:shtdown) */
 
@@ -538,7 +538,7 @@ static void prtime(vt_t *vt, gtime_t time)
     vt_printf(vt,"%s ",tstr);
 }
 /* print solution ------------------------------------------------------------*/
-static void prsolution(vt_t *vt, const sol_t *sol, const double *rb)
+static void prsolution(vt_t *vt, const Solution_t *sol, const double *rb)
 {
     const char *solstr[]={"------","FIX","FLOAT","SBAS","DGPS","SINGLE","PPP",""};
     double pos[3]={0},Qr[9],Qe[9]={0},dms1[3]={0},dms2[3]={0},bl[3]={0};
@@ -634,7 +634,7 @@ static void prsolution(vt_t *vt, const sol_t *sol, const double *rb)
 /* print status --------------------------------------------------------------*/
 static void prstatus(vt_t *vt)
 {
-    rtk_t rtk;
+    RTK_t rtk;
     const char *svrstate[]={"stop","run"},*type[]={"rover","base","corr"};
     const char *sol[]={"-","fix","float","SBAS","DGPS","single","PPP",""};
     const char *mode[]={
@@ -777,7 +777,7 @@ static void prstatus(vt_t *vt)
 /* print satellite -----------------------------------------------------------*/
 static void prsatellite(vt_t *vt, int nf)
 {
-    rtk_t rtk;
+    RTK_t rtk;
     double az,el;
     char id[32];
     int i,j,fix,frq[]={1,2,5,7,8,6};
@@ -936,7 +936,7 @@ static void prstream(vt_t *vt)
     const char *fmt[]={"rtcm2","rtcm3","oem4","oem3","ubx","ss2","hemis","skytreq",
                        "gw10","javad","nvs","binex","rt17","sbf","cmr","","","sp3",""};
     const char *sol[]={"llh","xyz","enu","nmea","stat","-"};
-    stream_t stream[9];
+    Stream_t stream[9];
     int i,format[9]={0};
     
     trace(4,"prstream:\n");

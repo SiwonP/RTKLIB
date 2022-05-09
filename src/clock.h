@@ -29,6 +29,13 @@ typedef struct PreciseClock {        /* precise clock type */
     float  std[MAXSAT][1]; /* satellite clock std (s) */
 } PreciseClock_t;
 
+/**
+ * @brief 
+ * 
+ * @param p1 
+ * @param p2 
+ * @return int 
+ */
 int CLOCK_comparePreciseClocks(const void *p1, const void *p2);
 
 #endif

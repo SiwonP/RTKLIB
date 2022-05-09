@@ -367,7 +367,7 @@ static int valsol(const double *azel, const int *vsat, int n,
 /* estimate receiver position ------------------------------------------------*/
 static int estpos(const obsd_t *obs, int n, const double *rs, const double *dts,
                   const double *vare, const int *svh, const nav_t *nav,
-                  const prcopt_t *opt, sol_t *sol, double *azel, int *vsat,
+                  const prcopt_t *opt, Solution_t *sol, double *azel, int *vsat,
                   double *resp, char *msg)
 {
     double x[NX]={0},dx[NX],Q[NX*NX],*v,*H,*var,sig;
@@ -435,11 +435,11 @@ static int estpos(const obsd_t *obs, int n, const double *rs, const double *dts,
 /* RAIM FDE (failure detection and exclution) -------------------------------*/
 static int raim_fde(const obsd_t *obs, int n, const double *rs,
                     const double *dts, const double *vare, const int *svh,
-                    const nav_t *nav, const prcopt_t *opt, sol_t *sol,
+                    const nav_t *nav, const prcopt_t *opt, Solution_t *sol,
                     double *azel, int *vsat, double *resp, char *msg)
 {
     obsd_t *obs_e;
-    sol_t sol_e={{0}};
+    Solution_t sol_e={{0}};
     char tstr[32],name[16],msg_e[128];
     double *rs_e,*dts_e,*vare_e,*azel_e,*resp_e,rms_e,rms=100.0;
     int i,j,k,nvsat,stat=0,*svh_e,*vsat_e,sat=0;
@@ -557,7 +557,7 @@ static int resdop(const obsd_t *obs, int n, const double *rs, const double *dts,
 }
 /* estimate receiver velocity ------------------------------------------------*/
 static void estvel(const obsd_t *obs, int n, const double *rs, const double *dts,
-                   const nav_t *nav, const prcopt_t *opt, sol_t *sol,
+                   const nav_t *nav, const prcopt_t *opt, Solution_t *sol,
                    const double *azel, const int *vsat)
 {
     double x[4]={0},dx[4],Q[16],*v,*H;
@@ -606,7 +606,7 @@ static void estvel(const obsd_t *obs, int n, const double *rs, const double *dts
 * return : status(1:ok,0:error)
 *-----------------------------------------------------------------------------*/
 extern int pntpos(const obsd_t *obs, int n, const nav_t *nav,
-                  const prcopt_t *opt, sol_t *sol, double *azel, ssat_t *ssat,
+                  const prcopt_t *opt, Solution_t *sol, double *azel, ssat_t *ssat,
                   char *msg)
 {
     prcopt_t opt_=*opt;

@@ -87,7 +87,7 @@ static int STREAM_writeTCPserver(TCPServer_t *tcpsvr, uint8_t *buff, int n, char
 
 /* global options ------------------------------------------------------------*/
 
-static int toinact  =10000; /* inactive timeout (ms) */
+static int inactiveTMO  =10000; /* inactive timeout (ms) */
 static int ticonnect=10000; /* interval to re-connect (ms) */
 static int tirate   =1000;  /* averaging time for data rate (ms) */
 static int buffsize =32768; /* receive/send buffer size (bytes) */
@@ -102,7 +102,7 @@ static int readseribuff(Serial_t *serial, uint8_t *buff, int nmax)
 {
     int ns;
     
-    tracet(5,"readseribuff: dev=%d\n",serial->dev);
+    tracet(5,"readseribuff: dev=%d\n",serial->device);
     
     lock(&serial->lock);
     for (ns=0;serial->rp!=serial->wp&&ns<nmax;ns++) {
@@ -117,7 +117,7 @@ static int writeseribuff(Serial_t *serial, uint8_t *buff, int n)
 {
     int ns,wp;
     
-    tracet(5,"writeseribuff: dev=%d n=%d\n",serial->dev,n);
+    tracet(5,"writeseribuff: dev=%d n=%d\n",serial->device,n);
     
     lock(&serial->lock);
     for (ns=0;ns<n;ns++) {
@@ -150,7 +150,7 @@ static DWORD WINAPI serialthread(void *arg)
     for (;;) {
         tick=tickget();
         while ((n=readseribuff(serial,buff,sizeof(buff)))>0) {
-            if (!WriteFile(serial->dev,buff,n,&ns,NULL)) serial->error=1;
+            if (!WriteFile(serial->device,buff,n,&ns,NULL)) serial->error=1;
         }
         if (!serial->state) break;
         sleepms(10-(int)(tickget()-tick)); /* cycle=10ms */
@@ -212,17 +212,17 @@ Serial_t *STREAM_openSerial(const char *path, int mode, char *msg)
     if (mode&STR_MODE_R) rw|=GENERIC_READ;
     if (mode&STR_MODE_W) rw|=GENERIC_WRITE;
     
-    serial->dev=CreateFile(dev,rw,0,0,OPEN_EXISTING,0,NULL);
-    if (serial->dev==INVALID_HANDLE_VALUE) {
+    serial->device=CreateFile(dev,rw,0,0,OPEN_EXISTING,0,NULL);
+    if (serial->device==INVALID_HANDLE_VALUE) {
         sprintf(msg,"%s open error (%d)",port,(int)GetLastError());
         tracet(1,"openserial: %s path=%s\n",msg,path);
         free(serial);
         return NULL;
     }
-    if (!GetCommConfig(serial->dev,&cc,&siz)) {
+    if (!GetCommConfig(serial->device,&cc,&siz)) {
         sprintf(msg,"%s getconfig error (%d)",port,(int)GetLastError());
         tracet(1,"openserial: %s\n",msg);
-        CloseHandle(serial->dev);
+        CloseHandle(serial->device);
         free(serial);
         return NULL;
     }
@@ -230,24 +230,24 @@ Serial_t *STREAM_openSerial(const char *path, int mode, char *msg)
     if (!BuildCommDCB(dcb,&cc.dcb)) {
         sprintf(msg,"%s buiddcb error (%d)",port,(int)GetLastError());
         tracet(1,"openserial: %s\n",msg);
-        CloseHandle(serial->dev);
+        CloseHandle(serial->device);
         free(serial);
         return NULL;
     }
     if (!strcmp(fctr,"rts")) {
         cc.dcb.fRtsControl=RTS_CONTROL_HANDSHAKE;
     }
-    SetCommConfig(serial->dev,&cc,siz); /* ignore error to support novatel */
-    SetCommTimeouts(serial->dev,&co);
-    ClearCommError(serial->dev,&error,NULL);
-    PurgeComm(serial->dev,PURGE_TXABORT|PURGE_RXABORT|PURGE_TXCLEAR|PURGE_RXCLEAR);
+    SetCommConfig(serial->device,&cc,siz); /* ignore error to support novatel */
+    SetCommTimeouts(serial->device,&co);
+    ClearCommError(serial->device,&error,NULL);
+    PurgeComm(serial->device,PURGE_TXABORT|PURGE_RXABORT|PURGE_TXCLEAR|PURGE_RXCLEAR);
     
     /* create write thread */
     initlock(&serial->lock);
     serial->state=serial->wp=serial->rp=serial->error=0;
     serial->buffsize=buffsize;
     if (!(serial->buff=(uint8_t *)malloc(buffsize))) {
-        CloseHandle(serial->dev);
+        CloseHandle(serial->device);
         free(serial);
         return NULL;
     }
@@ -255,7 +255,7 @@ Serial_t *STREAM_openSerial(const char *path, int mode, char *msg)
     if (!(serial->thread=CreateThread(NULL,0,serialthread,serial,0,NULL))) {
         sprintf(msg,"%s serial thread error (%d)",port,(int)GetLastError());
         tracet(1,"openserial: %s\n",msg);
-        CloseHandle(serial->dev);
+        CloseHandle(serial->device);
         serial->state=0;
         free(serial);
         return NULL;
@@ -268,13 +268,13 @@ Serial_t *STREAM_openSerial(const char *path, int mode, char *msg)
     else if (mode&STR_MODE_R) rw=O_RDONLY;
     else if (mode&STR_MODE_W) rw=O_WRONLY;
     
-    if ((serial->dev=open(dev,rw|O_NOCTTY|O_NONBLOCK))<0) {
+    if ((serial->device=open(dev,rw|O_NOCTTY|O_NONBLOCK))<0) {
         sprintf(msg,"%s open error (%d)",dev,errno);
         tracet(1,"openserial: %s dev=%s\n",msg,dev);
         free(serial);
         return NULL;
     }
-    tcgetattr(serial->dev,&ios);
+    tcgetattr(serial->device,&ios);
     ios.c_iflag=0;
     ios.c_oflag=0;
     ios.c_lflag=0;     /* non-canonical */
@@ -286,8 +286,8 @@ Serial_t *STREAM_openSerial(const char *path, int mode, char *msg)
     ios.c_cflag|=parity=='O'?(PARENB|PARODD):(parity=='E'?PARENB:0);
     ios.c_cflag|=stopb==2?CSTOPB:0;
     ios.c_cflag|=!strcmp(fctr,"rts")?CRTSCTS:0;
-    tcsetattr(serial->dev,TCSANOW,&ios);
-    tcflush(serial->dev,TCIOFLUSH);
+    tcsetattr(serial->device,TCSANOW,&ios);
+    tcflush(serial->device,TCIOFLUSH);
     sprintf(msg,"%s",dev);
 #endif
     serial->tcpsvr=NULL;
@@ -297,22 +297,22 @@ Serial_t *STREAM_openSerial(const char *path, int mode, char *msg)
         sprintf(path_tcp,":%d",tcp_port);
         serial->tcpsvr=STREAM_openTCPServer(path_tcp,msg_tcp);
     }
-    tracet(3,"openserial: dev=%d\n",serial->dev);
+    tracet(3,"openserial: dev=%d\n",serial->device);
     return serial;
 }
 /* close serial --------------------------------------------------------------*/
 void STREAM_closeSerial(Serial_t *serial)
 {
-    tracet(3,"closeserial: dev=%d\n",serial->dev);
+    tracet(3,"closeserial: dev=%d\n",serial->device);
     
     if (!serial) return;
 #ifdef WIN32
     serial->state=0;
     WaitForSingleObject(serial->thread,10000);
-    CloseHandle(serial->dev);
+    CloseHandle(serial->device);
     CloseHandle(serial->thread);
 #else
-    close(serial->dev);
+    close(serial->device);
 #endif
     if (serial->tcpsvr) {
         STREAM_closeTCPServer(serial->tcpsvr);
@@ -328,14 +328,14 @@ int STREAM_readSerial(Serial_t *serial, uint8_t *buff, int n, char *msg)
 #else
     int nr;
 #endif
-    tracet(4,"readserial: dev=%d n=%d\n",serial->dev,n);
+    tracet(4,"readserial: dev=%d n=%d\n",serial->device,n);
     if (!serial) return 0;
 #ifdef WIN32
-    if (!ReadFile(serial->dev,buff,n,&nr,NULL)) return 0;
+    if (!ReadFile(serial->device,buff,n,&nr,NULL)) return 0;
 #else
-    if ((nr=read(serial->dev,buff,n))<0) return 0;
+    if ((nr=read(serial->device,buff,n))<0) return 0;
 #endif
-    tracet(5,"readserial: exit dev=%d nr=%d\n",serial->dev,nr);
+    tracet(5,"readserial: exit dev=%d nr=%d\n",serial->device,nr);
     
     /* write received stream to tcp server port */
     if (serial->tcpsvr&&nr>0) {
@@ -348,17 +348,17 @@ int STREAM_writeSerial(Serial_t *serial, uint8_t *buff, int n, char *msg)
 {
     int ns=0;
     
-    tracet(3,"writeserial: dev=%d n=%d\n",serial->dev,n);
+    tracet(3,"writeserial: dev=%d n=%d\n",serial->device,n);
     
     if (!serial) return 0;
 #ifdef WIN32
     if ((ns=writeseribuff(serial,buff,n))<n) serial->error=1;
 #else
-    if (write(serial->dev,buff,n)<n) {
+    if (write(serial->device,buff,n)<n) {
         serial->error=1;
     }
 #endif
-    tracet(5,"writeserial: exit dev=%d ns=%d\n",serial->dev,ns);
+    tracet(5,"writeserial: exit dev=%d ns=%d\n",serial->device,ns);
     return ns;
 }
 /* get state serial ----------------------------------------------------------*/
@@ -375,7 +375,7 @@ static int STREAM_stateExtendedSerial(Serial_t *serial, char *msg)
     p+=sprintf(p,"serial:\n");
     p+=sprintf(p,"  state   = %d\n",state);
     if (!state) return 0;
-    p+=sprintf(p,"  dev     = %d\n",(int)serial->dev);
+    p+=sprintf(p,"  dev     = %d\n",(int)serial->device);
     p+=sprintf(p,"  error   = %d\n",serial->error);
 #ifdef WIN32
     p+=sprintf(p,"  buffsize= %d\n",serial->buffsize);
@@ -578,12 +578,12 @@ static void swapclose(File_t *file)
     file->fp_tmp=file->fp_tag_tmp=NULL;
 }
 /* get state file ------------------------------------------------------------*/
-static int statefile(File_t *file)
+static int STREAM_stateFile(File_t *file)
 {
     return file?2:0;
 }
 /* get extended state file ---------------------------------------------------*/
-static int statexfile(File_t *file, char *msg)
+static int STREAM_stateExtendedFile(File_t *file, char *msg)
 {
     char *p=msg,tstr1[32],tstr2[32];
     int state=file?2:0;
@@ -950,26 +950,26 @@ static int gentcp(TCP_t *tcp, int type, char *msg)
             tracet(1,"gentcp: gethostbyname error addr=%s err=%d\n",tcp->saddr,errsock());
             closesocket(tcp->sock);
             tcp->state=0;
-            tcp->tcon=ticonnect;
-            tcp->tdis=tickget();
+            tcp->reconnectTime=ticonnect;
+            tcp->disconnectTick=tickget();
             return 0;
         }
         memcpy(&tcp->addr.sin_addr,hp->h_addr,hp->h_length);
     }
     tcp->state=1;
-    tcp->tact=tickget();
+    tcp->activeTick=tickget();
     tracet(5,"gentcp: exit sock=%d\n",tcp->sock);
     return 1;
 }
 /* disconnect tcp ------------------------------------------------------------*/
-static void discontcp(TCP_t *tcp, int tcon)
+static void discontcp(TCP_t *tcp, int reconnectTime)
 {
-    tracet(3,"discontcp: sock=%d tcon=%d\n",tcp->sock,tcon);
+    tracet(3,"discontcp: sock=%d tcon=%d\n",tcp->sock,reconnectTime);
     
     closesocket(tcp->sock);
     tcp->state=0;
-    tcp->tcon=tcon;
-    tcp->tdis=tickget();
+    tcp->reconnectTime=reconnectTime;
+    tcp->disconnectTick=tickget();
 }
 /* open tcp server -----------------------------------------------------------*/
 static TCPServer_t *STREAM_openTCPServer(const char *path, char *msg)
@@ -992,7 +992,7 @@ static TCPServer_t *STREAM_openTCPServer(const char *path, char *msg)
         free(tcpsvr);
         return NULL;
     }
-    tcpsvr->svr.tcon=0;
+    tcpsvr->svr.reconnectTime=0;
     return tcpsvr;
 }
 /* close tcp server ----------------------------------------------------------*/
@@ -1066,7 +1066,7 @@ static int accsock(TCPServer_t *tcpsvr, char *msg)
     tracet(3,"accsock: connected sock=%d addr=%s i=%d\n",
            tcpsvr->cli[i].sock,tcpsvr->cli[i].saddr,i);
     tcpsvr->cli[i].state=2;
-    tcpsvr->cli[i].tact=tickget();
+    tcpsvr->cli[i].activeTick=tickget();
     return 1;
 }
 /* wait socket accept --------------------------------------------------------*/
@@ -1102,7 +1102,7 @@ static int STREAM_readTCPServer(TCPServer_t *tcpsvr, uint8_t *buff, int n, char 
             STREAM_updateTCPServer(tcpsvr,msg);
         }
         if (nr>0) {
-            tcpsvr->cli[i].tact=tickget();
+            tcpsvr->cli[i].activeTick=tickget();
             return nr;
         }
     }
@@ -1130,7 +1130,7 @@ static int STREAM_writeTCPserver(TCPServer_t *tcpsvr, uint8_t *buff, int n, char
         }
         else {
             if (ns>nmax) nmax=ns;
-            if (ns>0) tcpsvr->cli[i].tact=tickget();
+            if (ns>0) tcpsvr->cli[i].activeTick=tickget();
         }
     }
     return nmax;
@@ -1150,9 +1150,9 @@ static int STREAM_stateExtendedTCP(TCP_t *tcp, char *msg)
     p+=sprintf(p,"    port  = %d\n",tcp->port);
     p+=sprintf(p,"    sock  = %d\n",(int)tcp->sock);
 #if 0 /* for debug */
-    p+=sprintf(p,"    tcon  = %d\n",tcp->tcon);
-    p+=sprintf(p,"    tact  = %u\n",tcp->tact);
-    p+=sprintf(p,"    tdis  = %u\n",tcp->tdis);
+    p+=sprintf(p,"    tcon  = %d\n",tcp->reconnectTime);
+    p+=sprintf(p,"    tact  = %u\n",tcp->activeTick);
+    p+=sprintf(p,"    tdis  = %u\n",tcp->disconnectTick);
 #endif
     return (int)(p-msg);
 }
@@ -1182,8 +1182,8 @@ static int consock(TCPClient_t *tcpcli, char *msg)
     tracet(4,"consock: sock=%d\n",tcpcli->svr.sock);
     
     /* wait re-connect */
-    if (tcpcli->svr.tcon<0||(tcpcli->svr.tcon>0&&
-        (int)(tickget()-tcpcli->svr.tdis)<tcpcli->svr.tcon)) {
+    if (tcpcli->svr.reconnectTime<0||(tcpcli->svr.reconnectTime>0&&
+        (int)(tickget()-tcpcli->svr.disconnectTick)<tcpcli->svr.reconnectTime)) {
         return 0;
     }
     /* non-block connect */
@@ -1203,7 +1203,7 @@ static int consock(TCPClient_t *tcpcli, char *msg)
     sprintf(msg,"%s",tcpcli->svr.saddr);
     tracet(3,"consock: connected sock=%d addr=%s\n",tcpcli->svr.sock,tcpcli->svr.saddr);
     tcpcli->svr.state=2;
-    tcpcli->svr.tact=tickget();
+    tcpcli->svr.activeTick=tickget();
     return 1;
 }
 /* open tcp client -----------------------------------------------------------*/
@@ -1223,9 +1223,9 @@ static TCPClient_t *STREAM_openTCPClient(const char *path, char *msg)
         free(tcpcli);
         return NULL;
     }
-    tcpcli->svr.tcon=0;
-    tcpcli->toinact=toinact;
-    tcpcli->tirecon=ticonnect;
+    tcpcli->svr.reconnectTime=0;
+    tcpcli->inactiveTMO=inactiveTMO;
+    tcpcli->reconnectInterval=ticonnect;
     return tcpcli;
 }
 /* close tcp client ----------------------------------------------------------*/
@@ -1250,11 +1250,11 @@ static int STREAM_waitTCPClient(TCPClient_t *tcpcli, char *msg)
         if (!consock(tcpcli,msg)) return 0;
     }
     if (tcpcli->svr.state==2) { /* connect */
-        if (tcpcli->toinact>0&&
-            (int)(tickget()-tcpcli->svr.tact)>tcpcli->toinact) {
+        if (tcpcli->inactiveTMO>0&&
+            (int)(tickget()-tcpcli->svr.activeTick)>tcpcli->inactiveTMO) {
             sprintf(msg,"timeout");
             tracet(2,"waittcpcli: inactive timeout sock=%d\n",tcpcli->svr.sock);
-            discontcp(&tcpcli->svr,tcpcli->tirecon);
+            discontcp(&tcpcli->svr,tcpcli->reconnectInterval);
             return 0;
         }
     }
@@ -1277,10 +1277,10 @@ static int STREAM_readTCPClient(TCPClient_t *tcpcli, uint8_t *buff, int n, char 
         else {
             sprintf(msg,"disconnected");
         }
-        discontcp(&tcpcli->svr,tcpcli->tirecon);
+        discontcp(&tcpcli->svr,tcpcli->reconnectInterval);
         return 0;
     }
-    if (nr>0) tcpcli->svr.tact=tickget();
+    if (nr>0) tcpcli->svr.activeTick=tickget();
     tracet(5,"readtcpcli: exit sock=%d nr=%d\n",tcpcli->svr.sock,nr);
     return nr;
 }
@@ -1298,10 +1298,10 @@ static int STREAM_writeTCPClient(TCPClient_t *tcpcli, uint8_t *buff, int n, char
             tracet(2,"writetcp: send error sock=%d err=%d\n",tcpcli->svr.sock,err);
             sprintf(msg,"send error (%d)",err);
         }
-        discontcp(&tcpcli->svr,tcpcli->tirecon);
+        discontcp(&tcpcli->svr,tcpcli->reconnectInterval);
         return 0;
     }
-    if (ns>0) tcpcli->svr.tact=tickget();
+    if (ns>0) tcpcli->svr.activeTick=tickget();
     tracet(5,"writetcpcli: exit sock=%d ns=%d\n",tcpcli->svr.sock,ns);
     return ns;
 }
@@ -1411,7 +1411,7 @@ static int rspntrip_s(ntrip_t *ntrip, char *msg)
         ntrip->nb=0;
         ntrip->buff[0]='\0';
         ntrip->state=0;
-        discontcp(&ntrip->tcp->svr,ntrip->tcp->tirecon);
+        discontcp(&ntrip->tcp->svr,ntrip->tcp->reconnectInterval);
     }
     else if (ntrip->nb>=NTRIP_MAXRSP) { /* buffer overflow */
         sprintf(msg,"response overflow");
@@ -1419,7 +1419,7 @@ static int rspntrip_s(ntrip_t *ntrip, char *msg)
         ntrip->nb=0;
         ntrip->buff[0]='\0';
         ntrip->state=0;
-        discontcp(&ntrip->tcp->svr,ntrip->tcp->tirecon);
+        discontcp(&ntrip->tcp->svr,ntrip->tcp->reconnectInterval);
     }
     tracet(5,"rspntrip_s: exit state=%d nb=%d\n",ntrip->state,ntrip->nb);
     return 0;
@@ -1456,7 +1456,7 @@ static int rspntrip_c(ntrip_t *ntrip, char *msg)
         ntrip->nb=0;
         ntrip->buff[0]='\0';
         ntrip->state=0;
-        discontcp(&ntrip->tcp->svr,ntrip->tcp->tirecon);
+        discontcp(&ntrip->tcp->svr,ntrip->tcp->reconnectInterval);
     }
     else if ((p=strstr((char *)ntrip->buff,NTRIP_RSP_HTTP))) { /* http response */
         if ((q=strchr(p,'\r'))) *q='\0'; else ntrip->buff[128]='\0';
@@ -1465,7 +1465,7 @@ static int rspntrip_c(ntrip_t *ntrip, char *msg)
         ntrip->nb=0;
         ntrip->buff[0]='\0';
         ntrip->state=0;
-        discontcp(&ntrip->tcp->svr,ntrip->tcp->tirecon);
+        discontcp(&ntrip->tcp->svr,ntrip->tcp->reconnectInterval);
     }
     else if (ntrip->nb>=NTRIP_MAXRSP) { /* buffer overflow */
         sprintf(msg,"response overflow");
@@ -1473,7 +1473,7 @@ static int rspntrip_c(ntrip_t *ntrip, char *msg)
         ntrip->nb=0;
         ntrip->buff[0]='\0';
         ntrip->state=0;
-        discontcp(&ntrip->tcp->svr,ntrip->tcp->tirecon);
+        discontcp(&ntrip->tcp->svr,ntrip->tcp->reconnectInterval);
     }
     tracet(5,"rspntrip_c: exit state=%d nb=%d\n",ntrip->state,ntrip->nb);
     return 0;
@@ -1625,7 +1625,7 @@ static ntripc_t *STREAM_openNTRIPCaster(const char *path, char *msg)
     ntripc->mntpnt[0]=ntripc->user[0]=ntripc->passwd[0]=ntripc->srctbl[0]='\0';
     for (i=0;i<MAXCLI;i++) {
         ntripc->con[i].state=0;
-        ntripc->con[i].nb=0;
+        ntripc->con[i].bufferSize=0;
         memset(ntripc->con[i].buff,0,NTRIP_MAXRSP);
     }
     /* decode tcp/ntrip path */
@@ -1665,7 +1665,7 @@ static void discon_ntripc(ntripc_t *ntripc, int i)
     tracet(3,"discon_ntripc: i=%d\n",i);
     
     discontcp(&ntripc->tcp->cli[i],ticonnect);
-    ntripc->con[i].nb=0;
+    ntripc->con[i].bufferSize=0;
     ntripc->con[i].buff[0]='\0';
     ntripc->con[i].state=0;
 }
@@ -1693,10 +1693,10 @@ static void rsp_ntripc(ntripc_t *ntripc, int i)
     char url[256]="",mntpnt[256]="",proto[256]="",user[513],user_pwd[256],*p,*q;
     
     tracet(3,"rspntripc_c i=%d\n",i);
-    con->buff[con->nb]='\0';
-    tracet(5,"rspntripc_c: n=%d,buff=\n%s\n",con->nb,con->buff);
+    con->buff[con->bufferSize]='\0';
+    tracet(5,"rspntripc_c: n=%d,buff=\n%s\n",con->bufferSize,con->buff);
     
-    if (con->nb>=NTRIP_MAXRSP-1) { /* buffer overflow */
+    if (con->bufferSize>=NTRIP_MAXRSP-1) { /* buffer overflow */
         tracet(2,"rsp_ntripc_c: request buffer overflow\n");
         discon_ntripc(ntripc,i);
         return;
@@ -1762,8 +1762,8 @@ static void wait_ntripc(ntripc_t *ntripc, char *msg)
         if (ntripc->tcp->cli[i].state!=2||ntripc->con[i].state) continue;
         
         /* receive ntrip client request */
-        buff=ntripc->con[i].buff+ntripc->con[i].nb;
-        nmax=NTRIP_MAXRSP-ntripc->con[i].nb-1;
+        buff=ntripc->con[i].buff+ntripc->con[i].bufferSize;
+        nmax=NTRIP_MAXRSP-ntripc->con[i].bufferSize-1;
         
         if ((n=recv_nb(ntripc->tcp->cli[i].sock,buff,nmax))==-1) {
             if ((err=errsock())) {
@@ -1776,7 +1776,7 @@ static void wait_ntripc(ntripc_t *ntripc, char *msg)
         if (n<=0) continue;
         
         /* test ntrip client request */
-        ntripc->con[i].nb+=n;
+        ntripc->con[i].bufferSize+=n;
         rsp_ntripc(ntripc,i);
     }
 }
@@ -1802,7 +1802,7 @@ static int STREAM_readNTRIPCaster(ntripc_t *ntripc, uint8_t *buff, int n, char *
             discon_ntripc(ntripc,i);
         }
         else if (nr>0) {
-            ntripc->tcp->cli[i].tact=tickget();
+            ntripc->tcp->cli[i].activeTick=tickget();
             return nr;
         }
     }
@@ -1830,7 +1830,7 @@ static int STREAM_writeNTRIPCaster(ntripc_t *ntripc, uint8_t *buff, int n, char 
             discon_ntripc(ntripc,i);
         }
         else {
-            ntripc->tcp->cli[i].tact=tickget();
+            ntripc->tcp->cli[i].activeTick=tickget();
         }
     }
     return ns;
@@ -1861,7 +1861,7 @@ static int STREAM_stateExtendedNTRIPCaster(ntripc_t *ntripc, char *msg)
         p+=sprintf(p,"  cli#%d:\n",i);
         p+=STREAM_stateExtendedTCP(ntripc->tcp->cli+i,p);
         p+=sprintf(p,"    mntpnt= %s\n",ntripc->con[i].mntpnt);
-        p+=sprintf(p,"    nb    = %d\n",ntripc->con[i].nb);
+        p+=sprintf(p,"    nb    = %d\n",ntripc->con[i].bufferSize);
     }
     return state;
 }
@@ -2104,7 +2104,7 @@ static gtime_t nextdltime(const int *topts, int stat)
 #ifdef WIN32
 static DWORD WINAPI ftpthread(void *arg)
 #else
-static void *ftpthread(void *arg)
+static void *STREAM_FTPThread(void *arg)
 #endif
 {
     FTP_t *ftp=(FTP_t *)arg;
@@ -2197,7 +2197,7 @@ static void *ftpthread(void *arg)
     return 0;
 }
 /* open ftp ------------------------------------------------------------------*/
-static FTP_t *openftp(const char *path, int type, char *msg)
+static FTP_t *STREAM_openFTP(const char *path, int type, char *msg)
 {
     FTP_t *ftp;
     
@@ -2222,14 +2222,14 @@ static FTP_t *openftp(const char *path, int type, char *msg)
     return ftp;
 }
 /* close ftp -----------------------------------------------------------------*/
-static void closeftp(FTP_t *ftp)
+static void STREAM_closeFTP(FTP_t *ftp)
 {
     tracet(3,"closeftp: state=%d\n",ftp->state);
     
     if (ftp->state!=1) free(ftp);
 }
 /* read ftp ------------------------------------------------------------------*/
-static int readftp(FTP_t *ftp, uint8_t *buff, int n, char *msg)
+static int STREAM_readFTP(FTP_t *ftp, uint8_t *buff, int n, char *msg)
 {
     gtime_t time;
     uint8_t *p,*q;
@@ -2246,9 +2246,9 @@ static int readftp(FTP_t *ftp, uint8_t *buff, int n, char *msg)
         sprintf(msg,"%s://%s",ftp->proto?"http":"ftp",ftp->addr);
     
 #ifdef WIN32
-        if (!(ftp->thread=CreateThread(NULL,0,ftpthread,ftp,0,NULL))) {
+        if (!(ftp->thread=CreateThread(NULL,0,STREAM_FTPThread,ftp,0,NULL))) {
 #else
-        if (pthread_create(&ftp->thread,NULL,ftpthread,ftp)) {
+        if (pthread_create(&ftp->thread,NULL,STREAM_FTPThread,ftp)) {
 #endif
             tracet(2,"readftp: ftp thread create error\n");
             ftp->state=3;
@@ -2281,17 +2281,17 @@ static int readftp(FTP_t *ftp, uint8_t *buff, int n, char *msg)
     return (int)(p-buff);
 }
 /* get state ftp -------------------------------------------------------------*/
-static int stateftp(FTP_t *ftp)
+static int STREAM_stateFTP(FTP_t *ftp)
 {
     return !ftp?0:(ftp->state==0?2:(ftp->state<=2?3:-1));
 }
 /* get extended state ftp ----------------------------------------------------*/
-static int statexftp(FTP_t *ftp, char *msg)
+static int STREAM_stateExtendedFTP(FTP_t *ftp, char *msg)
 {
     return !ftp?0:(ftp->state==0?2:(ftp->state<=2?3:-1));
 }
 /* open memory buffer --------------------------------------------------------*/
-static MemoryBuffer_t *openmembuf(const char *path, char *msg)
+static MemoryBuffer_t *STREAM_openMemoryBuffer(const char *path, char *msg)
 {
     MemoryBuffer_t *membuf;
     int bufsize=DEFAULT_MEMBUF_SIZE;
@@ -2318,7 +2318,7 @@ static MemoryBuffer_t *openmembuf(const char *path, char *msg)
     return membuf;
 }
 /* close memory buffer -------------------------------------------------------*/
-static void closemembuf(MemoryBuffer_t *membuf)
+static void STREAM_closeMemoryBuffer(MemoryBuffer_t *membuf)
 {
     tracet(3,"closemembufp\n");
     
@@ -2326,7 +2326,7 @@ static void closemembuf(MemoryBuffer_t *membuf)
     free(membuf);
 }
 /* read memory buffer --------------------------------------------------------*/
-static int readmembuf(MemoryBuffer_t *membuf, uint8_t *buff, int n, char *msg)
+static int STREAM_readMemoryBuffer(MemoryBuffer_t *membuf, uint8_t *buff, int n, char *msg)
 {
     int i,nr=0;
     
@@ -2345,7 +2345,7 @@ static int readmembuf(MemoryBuffer_t *membuf, uint8_t *buff, int n, char *msg)
     return nr;
 }
 /* write memory buffer -------------------------------------------------------*/
-static int writemembuf(MemoryBuffer_t *membuf, uint8_t *buff, int n, char *msg)
+static int STREAM_writeMemoryBuffer(MemoryBuffer_t *membuf, uint8_t *buff, int n, char *msg)
 {
     int i;
     
@@ -2369,12 +2369,12 @@ static int writemembuf(MemoryBuffer_t *membuf, uint8_t *buff, int n, char *msg)
     return i;
 }
 /* get state memory buffer ---------------------------------------------------*/
-static int statemembuf(MemoryBuffer_t *membuf)
+static int STREAM_stateMemoryBuffer(MemoryBuffer_t *membuf)
 {
     return !membuf?0:membuf->state;
 }
 /* get extended state memory buffer ------------------------------------------*/
-static int statexmembuf(MemoryBuffer_t *membuf, char *msg)
+static int STREAM_stateExtendedMemoryBuffer(MemoryBuffer_t *membuf, char *msg)
 {
     char *p=msg;
     int state=!membuf?0:membuf->state;
@@ -2408,7 +2408,7 @@ extern void strinitcom(void)
 * args   : stream_t *stream IO  stream
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void strinit(stream_t *stream)
+extern void strinit(Stream_t *stream)
 {
     tracet(3,"strinit:\n");
     
@@ -2416,7 +2416,7 @@ extern void strinit(stream_t *stream)
     stream->mode=0;
     stream->state=0;
     stream->inb=stream->inr=stream->outb=stream->outr=0;
-    stream->tick_i=stream->tick_o=stream->tact=stream->inbt=stream->outbt=0;
+    stream->inputTick=stream->outputTick=stream->activeTick=stream->inbt=stream->outbt=0;
     initlock(&stream->lock);
     stream->port=NULL;
     stream->path[0]='\0';
@@ -2533,7 +2533,7 @@ extern void strinit(stream_t *stream)
 *                    tret  = download retry interval (s) (0:no retry)
 *
 *-----------------------------------------------------------------------------*/
-extern int stropen(stream_t *stream, int type, int mode, const char *path)
+extern int stropen(Stream_t *stream, int type, int mode, const char *path)
 {
     tracet(3,"stropen: type=%d mode=%d path=%s\n",type,mode,path);
     
@@ -2541,7 +2541,7 @@ extern int stropen(stream_t *stream, int type, int mode, const char *path)
     stream->mode=mode;
     strcpy(stream->path,path);
     stream->inb=stream->inr=stream->outb=stream->outr=0;
-    stream->tick_i=stream->tick_o=tickget();
+    stream->inputTick=stream->outputTick=tickget();
     stream->inbt=stream->outbt=0;
     stream->msg[0]='\0';
     stream->port=NULL;
@@ -2555,9 +2555,9 @@ extern int stropen(stream_t *stream, int type, int mode, const char *path)
         case STR_NTRIPCAS: stream->port=STREAM_openNTRIPCaster(path,     stream->msg); break;
         case STR_UDPSVR  : stream->port=STREAM_openUDPServer(path,     stream->msg); break;
         case STR_UDPCLI  : stream->port=STREAM_openUDPClient(path,     stream->msg); break;
-        case STR_MEMBUF  : stream->port=openmembuf(path,     stream->msg); break;
-        case STR_FTP     : stream->port=openftp   (path,0,   stream->msg); break;
-        case STR_HTTP    : stream->port=openftp   (path,1,   stream->msg); break;
+        case STR_MEMBUF  : stream->port=STREAM_openMemoryBuffer(path,     stream->msg); break;
+        case STR_FTP     : stream->port=STREAM_openFTP   (path,0,   stream->msg); break;
+        case STR_HTTP    : stream->port=STREAM_openFTP   (path,1,   stream->msg); break;
         default: stream->state=0; return 1;
     }
     stream->state=!stream->port?-1:1;
@@ -2568,7 +2568,7 @@ extern int stropen(stream_t *stream, int type, int mode, const char *path)
 * args   : stream_t *stream IO  stream
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void strclose(stream_t *stream)
+extern void strclose(Stream_t *stream)
 {
     tracet(3,"strclose: type=%d mode=%d\n",stream->type,stream->mode);
     
@@ -2585,9 +2585,9 @@ extern void strclose(stream_t *stream)
             case STR_NTRIPCAS: STREAM_closeNTRIPCaster((ntripc_t *)stream->port); break;
             case STR_UDPSVR  : STREAM_closeUDPServer((UDP_t    *)stream->port); break;
             case STR_UDPCLI  : STREAM_closeUDPClient((UDP_t    *)stream->port); break;
-            case STR_MEMBUF  : closemembuf((MemoryBuffer_t *)stream->port); break;
-            case STR_FTP     : closeftp   ((FTP_t    *)stream->port); break;
-            case STR_HTTP    : closeftp   ((FTP_t    *)stream->port); break;
+            case STR_MEMBUF  : STREAM_closeMemoryBuffer((MemoryBuffer_t *)stream->port); break;
+            case STR_FTP     : STREAM_closeFTP   ((FTP_t    *)stream->port); break;
+            case STR_HTTP    : STREAM_closeFTP   ((FTP_t    *)stream->port); break;
         }
     }
     else {
@@ -2610,7 +2610,7 @@ extern void strclose(stream_t *stream)
 * return : none
 * notes  : for replay files with time tags
 *-----------------------------------------------------------------------------*/
-extern void strsync(stream_t *stream1, stream_t *stream2)
+extern void strsync(Stream_t *stream1, Stream_t *stream2)
 {
     File_t *file1,*file2;
     if (stream1->type!=STR_FILE||stream2->type!=STR_FILE) return;
@@ -2623,8 +2623,15 @@ extern void strsync(stream_t *stream1, stream_t *stream2)
 * args   : stream_t *stream I  stream
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void strlock  (stream_t *stream) {lock  (&stream->lock);}
-extern void strunlock(stream_t *stream) {unlock(&stream->lock);}
+extern inline void strlock  (Stream_t *stream)
+{
+    lock  (&stream->lock);
+}
+
+extern inline void strunlock(Stream_t *stream)
+{
+    unlock(&stream->lock);
+}
 
 /* read stream -----------------------------------------------------------------
 * read data from stream (unblocked)
@@ -2634,7 +2641,7 @@ extern void strunlock(stream_t *stream) {unlock(&stream->lock);}
 * return : read data length
 * notes  : if no data, return immediately with no data
 *-----------------------------------------------------------------------------*/
-extern int strread(stream_t *stream, uint8_t *buff, int n)
+extern int strread(Stream_t *stream, uint8_t *buff, int n)
 {
     uint32_t tick=tickget();
     char *msg=stream->msg;
@@ -2655,22 +2662,22 @@ extern int strread(stream_t *stream, uint8_t *buff, int n)
         case STR_NTRIPCLI: nr=STREAM_readNTRIP ((ntrip_t  *)stream->port,buff,n,msg); break;
         case STR_NTRIPCAS: nr=STREAM_readNTRIPCaster((ntripc_t *)stream->port,buff,n,msg); break;
         case STR_UDPSVR  : nr=STREAM_readUDPServer((UDP_t    *)stream->port,buff,n,msg); break;
-        case STR_MEMBUF  : nr=readmembuf((MemoryBuffer_t *)stream->port,buff,n,msg); break;
-        case STR_FTP     : nr=readftp   ((FTP_t    *)stream->port,buff,n,msg); break;
-        case STR_HTTP    : nr=readftp   ((FTP_t    *)stream->port,buff,n,msg); break;
+        case STR_MEMBUF  : nr=STREAM_readMemoryBuffer((MemoryBuffer_t *)stream->port,buff,n,msg); break;
+        case STR_FTP     : nr=STREAM_readFTP   ((FTP_t    *)stream->port,buff,n,msg); break;
+        case STR_HTTP    : nr=STREAM_readFTP   ((FTP_t    *)stream->port,buff,n,msg); break;
         default:
             strunlock(stream);
             return 0;
     }
     if (nr>0) {
         stream->inb+=nr;
-        stream->tact=tick;
+        stream->activeTick=tick;
     }
-    tt=(int)(tick-stream->tick_i);
+    tt=(int)(tick-stream->inputTick);
     if (tt>=tirate) {
         stream->inr=
             (uint32_t)((double)((stream->inb-stream->inbt)*8)/(tt*0.001));
-        stream->tick_i=tick;
+        stream->inputTick=tick;
         stream->inbt=stream->inb;
     }
     strunlock(stream);
@@ -2684,7 +2691,7 @@ extern int strread(stream_t *stream, uint8_t *buff, int n)
 * return : status (0:error,1:ok)
 * notes  : write data to buffer and return immediately
 *-----------------------------------------------------------------------------*/
-extern int strwrite(stream_t *stream, uint8_t *buff, int n)
+extern int strwrite(Stream_t *stream, uint8_t *buff, int n)
 {
     uint32_t tick=tickget();
     char *msg=stream->msg;
@@ -2705,7 +2712,7 @@ extern int strwrite(stream_t *stream, uint8_t *buff, int n)
         case STR_NTRIPCLI: ns=STREAM_writeNTRIP ((ntrip_t  *)stream->port,buff,n,msg); break;
         case STR_NTRIPCAS: ns=STREAM_writeNTRIPCaster((ntripc_t *)stream->port,buff,n,msg); break;
         case STR_UDPCLI  : ns=STREAM_writeUDPClient((UDP_t    *)stream->port,buff,n,msg); break;
-        case STR_MEMBUF  : ns=writemembuf((MemoryBuffer_t *)stream->port,buff,n,msg); break;
+        case STR_MEMBUF  : ns=STREAM_writeMemoryBuffer((MemoryBuffer_t *)stream->port,buff,n,msg); break;
         case STR_FTP     :
         case STR_HTTP    :
         default:
@@ -2714,13 +2721,13 @@ extern int strwrite(stream_t *stream, uint8_t *buff, int n)
     }
     if (ns>0) {
         stream->outb+=ns;
-        stream->tact=tick;
+        stream->activeTick=tick;
     }
-    tt=(int)(tick-stream->tick_o);
+    tt=(int)(tick-stream->outputTick);
     if (tt>tirate) {
         stream->outr=
             (uint32_t)((double)((stream->outb-stream->outbt)*8)/(tt*0.001));
-        stream->tick_o=tick;
+        stream->outputTick=tick;
         stream->outbt=stream->outb;
     }
     strunlock(stream);
@@ -2732,7 +2739,7 @@ extern int strwrite(stream_t *stream, uint8_t *buff, int n)
 *          char   *msg      IO  status message (NULL: no output)
 * return : status (-1:error,0:close,1:wait,2:connect,3:active)
 *-----------------------------------------------------------------------------*/
-extern int strstat(stream_t *stream, char *msg)
+extern int strstat(Stream_t *stream, char *msg)
 {
     int state=0;
     
@@ -2748,7 +2755,7 @@ extern int strstat(stream_t *stream, char *msg)
     }
     switch (stream->type) {
         case STR_SERIAL  : state=STREAM_stateSerial((Serial_t *)stream->port); break;
-        case STR_FILE    : state=statefile  ((File_t   *)stream->port); break;
+        case STR_FILE    : state=STREAM_stateFile  ((File_t   *)stream->port); break;
         case STR_TCPSVR  : state=STREAM_stateTCPServer((TCPServer_t *)stream->port); break;
         case STR_TCPCLI  : state=STREAM_stateTCPClient((TCPClient_t *)stream->port); break;
         case STR_NTRIPSVR:
@@ -2756,14 +2763,14 @@ extern int strstat(stream_t *stream, char *msg)
         case STR_NTRIPCAS: state=STREAM_stateNTRIPCaster((ntripc_t *)stream->port); break;
         case STR_UDPSVR  : state=STREAM_stateUDPServer((UDP_t    *)stream->port); break;
         case STR_UDPCLI  : state=STREAM_stateUDPClient((UDP_t    *)stream->port); break;
-        case STR_MEMBUF  : state=statemembuf((MemoryBuffer_t *)stream->port); break;
-        case STR_FTP     : state=stateftp   ((FTP_t    *)stream->port); break;
-        case STR_HTTP    : state=stateftp   ((FTP_t    *)stream->port); break;
+        case STR_MEMBUF  : state=STREAM_stateMemoryBuffer((MemoryBuffer_t *)stream->port); break;
+        case STR_FTP     : state=STREAM_stateFTP   ((FTP_t    *)stream->port); break;
+        case STR_HTTP    : state=STREAM_stateFTP   ((FTP_t    *)stream->port); break;
         default:
             strunlock(stream);
             return 0;
     }
-    if (state==2&&(int)(tickget()-stream->tact)<=TINTACT) state=3;
+    if (state==2&&(int)(tickget()-stream->activeTick)<=TINTACT) state=3;
     strunlock(stream);
     return state;
 }
@@ -2773,7 +2780,7 @@ extern int strstat(stream_t *stream, char *msg)
 *          char   *msg      IO  extended status message
 * return : status (-1:error,0:close,1:wait,2:connect,3:active)
 *-----------------------------------------------------------------------------*/
-extern int strstatx(stream_t *stream, char *msg)
+extern int strstatx(Stream_t *stream, char *msg)
 {
     int state=0;
     
@@ -2787,7 +2794,7 @@ extern int strstatx(stream_t *stream, char *msg)
     }
     switch (stream->type) {
         case STR_SERIAL  : state=STREAM_stateExtendedSerial((Serial_t *)stream->port,msg); break;
-        case STR_FILE    : state=statexfile  ((File_t   *)stream->port,msg); break;
+        case STR_FILE    : state=STREAM_stateExtendedFile  ((File_t   *)stream->port,msg); break;
         case STR_TCPSVR  : state=STREAM_stateExtendedTCPServer((TCPServer_t *)stream->port,msg); break;
         case STR_TCPCLI  : state=STREAM_stateExtendedTCPClient((TCPClient_t *)stream->port,msg); break;
         case STR_NTRIPSVR:
@@ -2795,15 +2802,15 @@ extern int strstatx(stream_t *stream, char *msg)
         case STR_NTRIPCAS: state=STREAM_stateExtendedNTRIPCaster((ntripc_t *)stream->port,msg); break;
         case STR_UDPSVR  : state=STREAM_stateExtendedUDPServer((UDP_t    *)stream->port,msg); break;
         case STR_UDPCLI  : state=STREAM_stateExtendedUDPClient((UDP_t    *)stream->port,msg); break;
-        case STR_MEMBUF  : state=statexmembuf((MemoryBuffer_t *)stream->port,msg); break;
-        case STR_FTP     : state=statexftp   ((FTP_t    *)stream->port,msg); break;
-        case STR_HTTP    : state=statexftp   ((FTP_t    *)stream->port,msg); break;
+        case STR_MEMBUF  : state=STREAM_stateExtendedMemoryBuffer((MemoryBuffer_t *)stream->port,msg); break;
+        case STR_FTP     : state=STREAM_stateExtendedFTP   ((FTP_t    *)stream->port,msg); break;
+        case STR_HTTP    : state=STREAM_stateExtendedFTP   ((FTP_t    *)stream->port,msg); break;
         default:
             msg[0]='\0';
             strunlock(stream);
             return 0;
     }
-    if (state==2&&(int)(tickget()-stream->tact)<=TINTACT) state=3;
+    if (state==2&&(int)(tickget()-stream->activeTick)<=TINTACT) state=3;
     strunlock(stream);
     return state;
 }
@@ -2816,7 +2823,7 @@ extern int strstatx(stream_t *stream, char *msg)
 *          int    *outr     IO   bps of output   (NULL: no output)
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void strsum(stream_t *stream, int *inb, int *inr, int *outb, int *outr)
+extern void strsum(Stream_t *stream, int *inb, int *inr, int *outb, int *outr)
 {
     tracet(4,"strsum:\n");
     
@@ -2845,7 +2852,7 @@ extern void strsetopt(const int *opt)
     tracet(3,"strsetopt: opt=%d %d %d %d %d %d %d %d\n",opt[0],opt[1],opt[2],
            opt[3],opt[4],opt[5],opt[6],opt[7]);
     
-    toinact    =0<opt[0]&&opt[0]<1000?1000:opt[0]; /* >=1s */
+    inactiveTMO    =0<opt[0]&&opt[0]<1000?1000:opt[0]; /* >=1s */
     ticonnect  =opt[1]<1000?1000:opt[1]; /* >=1s */
     tirate     =opt[2]<100 ?100 :opt[2]; /* >=0.1s */
     buffsize   =opt[3]<4096?4096:opt[3]; /* >=4096byte */
@@ -2858,11 +2865,11 @@ extern void strsetopt(const int *opt)
 *          int     tirecon  I   reconnect interval (ms) (0: no reconnect)
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void strsettimeout(stream_t *stream, int toinact, int tirecon)
+extern void strsettimeout(Stream_t *stream, int inactiveTMO, int reconnectInterval)
 {
     TCPClient_t *tcpcli;
     
-    tracet(3,"strsettimeout: toinact=%d tirecon=%d\n",toinact,tirecon);
+    tracet(3,"strsettimeout: toinact=%d tirecon=%d\n",inactiveTMO,reconnectInterval);
     
     if (stream->type==STR_TCPCLI) {
         tcpcli=(TCPClient_t *)stream->port;
@@ -2872,8 +2879,8 @@ extern void strsettimeout(stream_t *stream, int toinact, int tirecon)
     }
     else return;
     
-    tcpcli->toinact=toinact;
-    tcpcli->tirecon=tirecon;
+    tcpcli->inactiveTMO=inactiveTMO;
+    tcpcli->reconnectInterval=reconnectInterval;
 }
 /* set local directory ---------------------------------------------------------
 * set local directory path for ftp/http download
@@ -2891,7 +2898,7 @@ extern void strsetdir(const char *dir)
 * args   : char   *addr     I   http/ntrip proxy address <address>:<port>
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void strsetproxy(const char *addr)
+extern inline void strsetproxy(const char *addr)
 {
     tracet(3,"strsetproxy: addr=%s\n",addr);
     
@@ -2902,7 +2909,8 @@ extern void strsetproxy(const char *addr)
 * args   : stream_t *stream I   stream
 * return : current time or replay time for playback file
 *-----------------------------------------------------------------------------*/
-extern gtime_t strgettime(stream_t *stream)
+// extern gtime_t strgettime(stream_t *stream)
+extern gtime_t STREAM_getTime(Stream_t *stream)
 {
     File_t *file;
     if (stream->type==STR_FILE&&(stream->mode&STR_MODE_R)&&
@@ -2917,7 +2925,7 @@ extern gtime_t strgettime(stream_t *stream)
 *          sol_t *sol       I   solution
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void strsendnmea(stream_t *stream, const sol_t *sol)
+extern void strsendnmea(Stream_t *stream, const Solution_t *sol)
 {
     uint8_t buff[1024];
     int n;
@@ -2947,12 +2955,15 @@ static int gen_hex(const char *msg, uint8_t *buff)
     return (int)(q-buff);
 }
 /* set bitrate ---------------------------------------------------------------*/
-static int set_brate(stream_t *str, int brate)
+static int STREAM_setBitRate(Stream_t *str, int brate)
 {
     char path[1024],buff[1024]="",*p,*q;
     int type=str->type,mode=str->mode;
     
-    if (type!=STR_SERIAL) return 0;
+    if (type!=STR_SERIAL)
+    {
+        return 0;
+    }
     
     strcpy(path,str->path);
     
@@ -2972,7 +2983,7 @@ static int set_brate(stream_t *str, int brate)
 *          char   *cmd      I   receiver command strings
 * return : none
 *-----------------------------------------------------------------------------*/
-extern void strsendcmd(stream_t *str, const char *cmd)
+extern void strsendcmd(Stream_t *str, const char *cmd)
 {
     uint8_t buff[1024];
     const char *p=cmd,*q;
@@ -2997,7 +3008,7 @@ extern void strsendcmd(stream_t *str, const char *cmd)
             }
             else if (!strncmp(msg+1,"BRATE",5)) { /* set bitrate */
                 if (sscanf(msg+6,"%d",&brate)<1) brate=9600;
-                set_brate(str,brate);
+                STREAM_setBitRate(str,brate);
                 sleepms(500);
             }
             else if (!strncmp(msg+1,"UBX",3)) { /* ublox */

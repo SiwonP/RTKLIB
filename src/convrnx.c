@@ -1181,7 +1181,7 @@ static void convsbs(FILE **ofp, rnxopt_t *opt, strfile_t *str, int *n,
 static void setopt_apppos(strfile_t *str, rnxopt_t *opt)
 {
     prcopt_t prcopt=prcopt_default;
-    sol_t sol={{0}};
+    Solution_t sol={{0}};
     char msg[128];
     
     prcopt.navsys=opt->navsys;
