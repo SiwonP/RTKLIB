@@ -13,3 +13,4 @@ __astcache
 .vscode
 
 app/consapp/str2str/build
+app/consapp/rtkrcv/build
