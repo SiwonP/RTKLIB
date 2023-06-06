@@ -2616,19 +2616,22 @@ extern void strsync(Stream_t *stream1, Stream_t *stream2)
     if (stream1->type!=STR_FILE||stream2->type!=STR_FILE) return;
     file1=(File_t*)stream1->port;
     file2=(File_t*)stream2->port;
-    if (file1&&file2) syncfile(file1,file2);
+    if (file1&&file2) 
+    {
+        syncfile(file1,file2);
+    }
 }
 /* lock/unlock stream ----------------------------------------------------------
 * lock/unlock stream
 * args   : stream_t *stream I  stream
 * return : none
 *-----------------------------------------------------------------------------*/
-extern inline void strlock  (Stream_t *stream)
+extern void strlock  (Stream_t *stream)
 {
     lock(&stream->lock);
 }
 
-extern inline void strunlock(Stream_t *stream)
+extern void strunlock(Stream_t *stream)
 {
     unlock(&stream->lock);
 }
@@ -2898,7 +2901,7 @@ extern void strsetdir(const char *dir)
 * args   : char   *addr     I   http/ntrip proxy address <address>:<port>
 * return : none
 *-----------------------------------------------------------------------------*/
-extern inline void strsetproxy(const char *addr)
+extern void strsetproxy(const char *addr)
 {
     tracet(3,"strsetproxy: addr=%s\n",addr);
     
@@ -2909,7 +2912,7 @@ extern inline void strsetproxy(const char *addr)
 * args   : stream_t *stream I   stream
 * return : current time or replay time for playback file
 *-----------------------------------------------------------------------------*/
-// extern gtime_t strgettime(stream_t *stream)
+/* extern gtime_t strgettime(stream_t *stream) */
 extern gtime_t STREAM_getTime(Stream_t *stream)
 {
     File_t *file;

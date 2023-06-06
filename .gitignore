@@ -14,3 +14,4 @@ __astcache
 
 app/consapp/str2str/build
 app/consapp/rtkrcv/build
+app/consapp/pos2kml/gcc/pos2kml

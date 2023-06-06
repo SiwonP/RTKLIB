@@ -781,8 +781,15 @@ extern void rtksvrfree(RTKServer_t *svr)
 * args   : rtksvr_t *svr    IO rtk server
 * return : status (1:ok 0:error)
 *-----------------------------------------------------------------------------*/
-extern inline void rtksvrlock  (RTKServer_t *svr) {lock  (&svr->lock);}
-extern inline void rtksvrunlock(RTKServer_t *svr) {unlock(&svr->lock);}
+extern void rtksvrlock  (RTKServer_t *svr)
+{
+    lock  (&svr->lock);
+}
+
+extern void rtksvrunlock(RTKServer_t *svr)
+{
+    unlock(&svr->lock);
+}
 
 /* start rtk server ------------------------------------------------------------
 * start rtk server thread

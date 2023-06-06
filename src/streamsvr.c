@@ -35,7 +35,7 @@
 #include "rtklib.h"
 
 /* test observation data message ---------------------------------------------*/
-static inline int is_obsmsg(int msg)
+static int is_obsmsg(int msg)
 {
     return ((1001<=msg)&&(msg<=1004))||((1009<=msg)&&(msg<=1012))||
            ((1071<=msg)&&(msg<=1077))||((1081<=msg)&&(msg<=1087))||
@@ -44,18 +44,18 @@ static inline int is_obsmsg(int msg)
            ((1131<=msg)&&(msg<=1137));
 }
 /* test navigation data message ----------------------------------------------*/
-static inline int is_navmsg(int msg)
+static int is_navmsg(int msg)
 {
     return (msg==1019)||(msg==1020)||(msg==1044)||(msg==1045)||(msg==1046)||
            (msg==1042)||(msg==63  )||(msg==1041);
 }
 /* test station info message -------------------------------------------------*/
-static inline int is_stamsg(int msg)
+static int is_stamsg(int msg)
 {
     return (msg==1005)||(msg==1006)||(msg==1007)||(msg==1008)||(msg==1033)||(msg==1230);
 }
 /* test time interval --------------------------------------------------------*/
-static inline int is_tint(gtime_t time, double tint)
+static int is_tint(gtime_t time, double tint)
 {
     if (tint<=0.0)
     {

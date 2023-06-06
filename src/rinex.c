@@ -1628,7 +1628,7 @@ static void CLOCK_combinePreciseClock(nav_t *nav)
     
     if (nav->nc<=0) return;
     
-    qsort(nav->pclk,nav->nc,sizeof(PreciseClock_t),CLOCK_comparePreciseClocks);
+    qsort(nav->pclk, nav->nc, sizeof(PreciseClock_t), CLOCK_comparePreciseClocks);
     
     for (i=0,j=1;j<nav->nc;j++) {
         if (fabs(timediff(nav->pclk[i].time,nav->pclk[j].time))<1E-9) {
@@ -1638,7 +1638,10 @@ static void CLOCK_combinePreciseClock(nav_t *nav)
                 nav->pclk[i].std[k][0]=nav->pclk[j].std[k][0];
             }
         }
-        else if (++i<j) nav->pclk[i]=nav->pclk[j];
+        else if (++i<j)
+        {
+            nav->pclk[i]=nav->pclk[j];
+        }
     }
     nav->nc=i+1;
     
@@ -1684,9 +1687,15 @@ extern int readrnxc(const char *file, nav_t *nav)
         stat=0;
         break;
     }
-    for (i=0;i<MAXEXFILE;i++) free(files[i]);
+    for (i=0;i<MAXEXFILE;i++)
+    {
+        free(files[i]);
+    }
     
-    if (!stat) return 0;
+    if (!stat)
+    {
+        return 0;
+    }
     
     /* unique and combine ephemeris and precise clock */
     CLOCK_combinePreciseClock(nav);

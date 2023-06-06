@@ -93,7 +93,7 @@ typedef struct File {
     double speed;               /**< replay speed (time factor) */
     double swapintv;            /**< swap interval (hr) (0: no swap) */
     lock_t lock;                /**< lock flag */
-// } file_t;
+/* } file_t; */
 } File_t;
 
 /**

@@ -242,7 +242,7 @@ static int inputobs(obsd_t *obs, int solq, const prcopt_t *popt)
     trace(3,"infunc  : revs=%d iobsu=%d iobsr=%d isbs=%d\n",revs,iobsu,iobsr,isbs);
     
     if (0<=iobsu&&iobsu<obss.n) {
-        // settime((time=obss.data[iobsu].time));
+        /* settime((time=obss.data[iobsu].time)); */
         if (checkbrk("processing : %s Q=%d",time_str(time,0),solq)) {
             aborts=1; showmsg("aborted"); return -1;
         }
@@ -643,7 +643,7 @@ static int readobsnav(gtime_t ts, gtime_t te, double ti, char **infile,
         if (i<j) {
             if (ts.time==0) ts=obs->data[i].time;
             if (te.time==0) te=obs->data[j].time;
-            // settspan(ts,te);
+            /* settspan(ts,te); */
         }
     }
     return 1;
@@ -1110,17 +1110,31 @@ static int execses_b(gtime_t ts, gtime_t te, double ti, const prcopt_t *popt,
             
             if (*p) {
                 strcpy(proc_base,p);
-                if (ts.time) time2str(ts,s,0); else *s='\0';
+                if (ts.time)
+                {
+                    time2str(ts,s,0); 
+                } else
+                {
+                    *s='\0';
+                }
+
                 if (checkbrk("reading    : %s",s)) {
                     stat=1;
                     break;
                 }
-                for (i=0;i<n;i++) reppath(infile[i],ifile[i],t0,"",p);
+                for (i=0;i<n;i++)
+                {
+                    reppath(infile[i],ifile[i],t0,"",p);
+                }
+
                 reppath(outfile,ofile,t0,"",p);
                 
                 stat=execses_r(ts,te,ti,popt,sopt,fopt,flag,ifile,index,n,ofile,rov);
             }
-            if (stat==1||!q) break;
+            if (stat==1||!q)
+            {
+                break;
+            }
         }
         free(base_); for (i=0;i<n;i++) free(ifile[i]);
     }
@@ -1198,22 +1212,36 @@ extern int postpos(gtime_t ts, gtime_t te, double ti, double tu,
         }
         for (i=0;i<MAXINFILE;i++) {
             if (!(ifile[i]=(char *)malloc(1024))) {
-                for (;i>=0;i--) free(ifile[i]);
+                for (;i>=0;i--)
+                {
+                    free(ifile[i]);
+                }
                 closeses(&navs,&pcvss,&pcvsr);
                 return -1;
             }
         }
         if (tu==0.0||tu>86400.0*MAXPRCDAYS) tu=86400.0*MAXPRCDAYS;
-        // settspan(ts,te);
+        /*settspan(ts,te);*/
         tunit=tu<86400.0?tu:86400.0;
         tss=tunit*(int)floor(time2gpst(ts,&week)/tunit);
         
         for (i=0;;i++) { /* for each periods */
             tts=gpst2time(week,tss+i*tu);
             tte=timeadd(tts,tu-DTTOL);
-            if (timediff(tts,te)>0.0) break;
-            if (timediff(tts,ts)<0.0) tts=ts;
-            if (timediff(tte,te)>0.0) tte=te;
+            if (timediff(tts,te)>0.0)
+            {
+                break;
+            }
+
+            if (timediff(tts,ts)<0.0)
+            {
+                tts=ts;
+            }
+
+            if (timediff(tte,te)>0.0)
+            {
+                tte=te;
+            }
             
             strcpy(proc_rov ,"");
             strcpy(proc_base,"");
